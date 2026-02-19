@@ -36,6 +36,7 @@ mod legend;
 mod metadata;
 mod node;
 mod tech;
+mod theme;
 mod tier;
 
 // Re-export all public types at crate root for ergonomic imports.
@@ -53,6 +54,9 @@ pub use legend::LegendEntry;
 pub use metadata::Metadata;
 pub use node::{Node, NodeBuilder};
 pub use tech::Tech;
+pub use theme::{
+    Backgrounds, Borders, ColorSet, Fonts, Spacing, TextColors, Theme, ThemeOverrides, ThemePalette,
+};
 pub use tier::Tier;
 
 /// Returns the version of the dendryform-core crate.

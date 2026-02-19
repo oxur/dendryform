@@ -1,0 +1,58 @@
+# Taproot Dark Theme — the built-in default theme for dendryform.
+#
+# This file is the YAML representation of Theme::dark(). It serves as
+# both a reference and as a starting point for custom themes.
+
+name: dark
+
+palette:
+  blue:
+    accent: "#4fc3f7"
+    dim: "rgba(79, 195, 247, 0.10)"
+    hover_border: "#4fc3f7"
+  green:
+    accent: "#3ddc84"
+    dim: "rgba(61, 220, 132, 0.12)"
+    hover_border: "#3ddc84"
+  amber:
+    accent: "#ffb74d"
+    dim: "rgba(255, 183, 77, 0.10)"
+    hover_border: "#ffb74d"
+  purple:
+    accent: "#b39ddb"
+    dim: "rgba(179, 157, 219, 0.10)"
+    hover_border: "#b39ddb"
+  red:
+    accent: "#ef5350"
+    dim: "rgba(239, 83, 80, 0.10)"
+    hover_border: "#ef5350"
+  teal:
+    accent: "#4dd0e1"
+    dim: "rgba(77, 208, 225, 0.10)"
+    hover_border: "#4dd0e1"
+
+backgrounds:
+  page: "#0a0e14"
+  card: "#111820"
+  card_hover: "#161e29"
+
+text:
+  primary: "#c4cdd9"
+  dim: "#5a6a7a"
+  bright: "#e8edf3"
+
+borders:
+  normal: "#1e2a3a"
+  highlight: "#2a3f5a"
+
+fonts:
+  display: "JetBrains Mono"
+  body: "DM Sans"
+
+spacing:
+  radius: 10
+  radius_sm: 6
+  shadow: "0 2px 20px rgba(0,0,0,0.3)"
+  canvas_width: 1100
+
+animate: true
