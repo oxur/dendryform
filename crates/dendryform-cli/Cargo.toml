@@ -16,5 +16,6 @@ dendryform-core.workspace = true
 dendryform-parse.workspace = true
 dendryform-layout.workspace = true
 dendryform-html.workspace = true
+dendryform-svg.workspace = true
 clap.workspace = true
 serde_yml.workspace = true

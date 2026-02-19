@@ -11,3 +11,6 @@ description = "Static SVG renderer for dendryform diagrams"
 dendryform-core.workspace = true
 dendryform-layout.workspace = true
 thiserror.workspace = true
+
+[dev-dependencies]
+dendryform-parse.workspace = true

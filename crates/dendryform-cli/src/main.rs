@@ -12,6 +12,7 @@ use dendryform_core::Theme;
 use dendryform_html::render_html;
 use dendryform_layout::compute_layout;
 use dendryform_parse::{ParseError, parse_yaml_file};
+use dendryform_svg::render_svg;
 
 /// dendryform — render architecture diagrams from YAML
 #[derive(Parser)]
@@ -23,16 +24,22 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
-    /// Render a diagram file to HTML
+    /// Render a diagram file to HTML or SVG
     Render {
         /// Input YAML file
         input: PathBuf,
-        /// Output file path (defaults to input stem + .html)
+        /// Output file path (defaults to input stem + format extension)
         #[arg(short, long)]
         output: Option<PathBuf>,
         /// Theme name or path (default: dark)
         #[arg(long, default_value = "dark")]
         theme: String,
+        /// Output format: html or svg
+        #[arg(short, long, default_value = "html")]
+        format: String,
+        /// SVG viewport width in pixels (only used with -f svg)
+        #[arg(long, default_value = "1100")]
+        width: f32,
     },
     /// Validate a diagram file without rendering
     Validate {
@@ -53,14 +60,22 @@ fn main() -> ExitCode {
             input,
             output,
             theme: theme_name,
-        } => cmd_render(&input, output.as_deref(), &theme_name),
+            format,
+            width,
+        } => cmd_render(&input, output.as_deref(), &theme_name, &format, width),
         Command::Validate { input } => cmd_validate(&input),
         Command::Init => cmd_init(),
         Command::Themes => cmd_themes(),
     }
 }
 
-fn cmd_render(input: &PathBuf, output: Option<&std::path::Path>, theme_name: &str) -> ExitCode {
+fn cmd_render(
+    input: &PathBuf,
+    output: Option<&std::path::Path>,
+    theme_name: &str,
+    format: &str,
+    width: f32,
+) -> ExitCode {
     let diagram = match parse_yaml_file(input) {
         Ok(d) => d,
         Err(e) => return handle_parse_error(e),
@@ -76,20 +91,33 @@ fn cmd_render(input: &PathBuf, output: Option<&std::path::Path>, theme_name: &st
         }
     };
 
-    let html = match render_html(&plan, &theme) {
-        Ok(h) => h,
-        Err(e) => {
-            eprintln!("error: render failed: {e}");
+    let (rendered, ext) = match format {
+        "html" => match render_html(&plan, &theme) {
+            Ok(h) => (h, "html"),
+            Err(e) => {
+                eprintln!("error: render failed: {e}");
+                return ExitCode::from(2);
+            }
+        },
+        "svg" => match render_svg(&plan, &theme, width) {
+            Ok(s) => (s, "svg"),
+            Err(e) => {
+                eprintln!("error: render failed: {e}");
+                return ExitCode::from(2);
+            }
+        },
+        _ => {
+            eprintln!("error: unsupported format '{format}' (use html or svg)");
             return ExitCode::from(2);
         }
     };
 
     let output_path = match output {
         Some(p) => p.to_path_buf(),
-        None => input.with_extension("html"),
+        None => input.with_extension(ext),
     };
 
-    match std::fs::write(&output_path, &html) {
+    match std::fs::write(&output_path, &rendered) {
         Ok(()) => {
             eprintln!("wrote {}", output_path.display());
             ExitCode::SUCCESS

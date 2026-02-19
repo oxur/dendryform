@@ -225,6 +225,7 @@ dependencies = [
  "dendryform-html",
  "dendryform-layout",
  "dendryform-parse",
+ "dendryform-svg",
  "serde_yml",
 ]
 
@@ -298,6 +299,7 @@ version = "0.0.1"
 dependencies = [
  "dendryform-core",
  "dendryform-layout",
+ "dendryform-parse",
  "thiserror",
 ]
 
