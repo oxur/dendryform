@@ -1,0 +1,13 @@
+[package]
+name = "dendryform-ascii"
+version = "0.0.1"
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "ASCII art renderer for dendryform diagrams"
+
+[dependencies]
+dendryform-core.workspace = true
+dendryform-layout.workspace = true
+thiserror.workspace = true

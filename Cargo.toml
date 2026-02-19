@@ -1,13 +1,62 @@
+[workspace]
+members = [
+    "crates/dendryform-core",
+    "crates/dendryform-parse",
+    "crates/dendryform-layout",
+    "crates/dendryform-html",
+    "crates/dendryform-svg",
+    "crates/dendryform-png",
+    "crates/dendryform-ascii",
+    "crates/dendryform-export",
+    "crates/dendryform-cli",
+]
+resolver = "3"
+
+[workspace.package]
+edition = "2024"
+authors = ["Duncan"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/oxur/dendryform"
+
+[workspace.dependencies]
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_yml = "0.0.12"
+
+# Error handling
+thiserror = "2"
+
+# Identity
+uuid = { version = "1", features = ["v4", "serde"] }
+
+# CLI
+clap = { version = "4", features = ["derive"] }
+
+# SVG → PNG
+resvg = "0.44"
+
+# Internal crates
+dendryform-core = { path = "crates/dendryform-core" }
+dendryform-parse = { path = "crates/dendryform-parse" }
+dendryform-layout = { path = "crates/dendryform-layout" }
+dendryform-html = { path = "crates/dendryform-html" }
+dendryform-svg = { path = "crates/dendryform-svg" }
+dendryform-png = { path = "crates/dendryform-png" }
+dendryform-ascii = { path = "crates/dendryform-ascii" }
+dendryform-export = { path = "crates/dendryform-export" }
+
 [package]
 name = "dendryform"
 version = "0.0.1"
-edition = "2024"
-authors = ["Duncan"]
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
 description = "Declarative software architecture diagrams — beautiful, dark-themed, simple schema"
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/oxur/dendryform"
 keywords = ["architecture", "diagram", "visualization", "developer-tools"]
 categories = ["visualization"]
 readme = "README.md"
 
 [dependencies]
+dendryform-core.workspace = true

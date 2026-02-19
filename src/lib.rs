@@ -4,7 +4,7 @@
 //! from a simple schema.
 //!
 //! Named for the 23 dendriform models of tree architecture
-//! (Hallé & Oldeman, 1970), because every system has a branching pattern
+//! (Halle & Oldeman, 1970), because every system has a branching pattern
 //! worth revealing.
 //!
 //! ## Status
@@ -16,11 +16,10 @@
 //! `dendryform` takes a declarative description of a software system — nodes,
 //! edges, containment, tiers — and renders it as a beautiful, interactive HTML
 //! architecture diagram.
-//!
-//! Think of it as: **Structurizr's data model** meets **hand-crafted visual
-//! design** meets **Rust's type safety**.
 
-/// dendryform is coming soon.
+pub use dendryform_core as core;
+
+/// Returns the version of the dendryform crate.
 pub fn version() -> &'static str {
     env!("CARGO_PKG_VERSION")
 }
@@ -30,7 +29,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn version_is_set() {
+    fn test_version_is_set() {
         assert_eq!(version(), "0.0.1");
     }
 }

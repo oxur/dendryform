@@ -1,0 +1,14 @@
+[package]
+name = "dendryform-png"
+version = "0.0.1"
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "PNG renderer for dendryform diagrams (SVG to PNG via resvg)"
+
+[dependencies]
+dendryform-core.workspace = true
+dendryform-svg.workspace = true
+resvg.workspace = true
+thiserror.workspace = true

@@ -1,0 +1,12 @@
+[package]
+name = "dendryform-layout"
+version = "0.0.1"
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Shared layout engine that produces a LayoutPlan from a Diagram"
+
+[dependencies]
+dendryform-core.workspace = true
+thiserror.workspace = true

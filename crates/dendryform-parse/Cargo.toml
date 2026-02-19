@@ -1,0 +1,15 @@
+[package]
+name = "dendryform-parse"
+version = "0.0.1"
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "YAML and JSON parser for dendryform diagram definitions"
+
+[dependencies]
+dendryform-core.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+serde_yml.workspace = true
+thiserror.workspace = true

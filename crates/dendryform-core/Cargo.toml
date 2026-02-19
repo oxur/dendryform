@@ -1,0 +1,15 @@
+[package]
+name = "dendryform-core"
+version = "0.0.1"
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Core schema types, validation, theme, and layout plan for dendryform"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+serde_yml.workspace = true
+thiserror.workspace = true
+uuid.workspace = true
