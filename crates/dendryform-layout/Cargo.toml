@@ -10,3 +10,7 @@ description = "Shared layout engine that produces a LayoutPlan from a Diagram"
 [dependencies]
 dendryform-core.workspace = true
 thiserror.workspace = true
+
+[dev-dependencies]
+dendryform-parse.workspace = true
+serde_json.workspace = true
