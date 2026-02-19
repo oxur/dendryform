@@ -1,6 +1,7 @@
 //! Layer enum — the ordered visual elements of a diagram.
 
-use serde::{Deserialize, Serialize};
+use serde::de::{self, MapAccess, Visitor};
+use serde::{Deserialize, Deserializer, Serialize};
 
 use crate::connector::Connector;
 use crate::tier::Tier;
@@ -29,7 +30,18 @@ impl FlowLabels {
 /// Layers are rendered in order from top to bottom. Each layer is
 /// exactly one of: a tier (horizontal band of nodes), a connector
 /// (visual link between tiers), or flow labels (directional arrows).
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+///
+/// In YAML, each layer is a map with a single key identifying the variant:
+/// ```yaml
+/// - tier:
+///     id: main
+///     nodes: [...]
+/// - connector:
+///     style: line
+/// - flow_labels:
+///     items: [...]
+/// ```
+#[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 #[non_exhaustive]
 pub enum Layer {
@@ -39,6 +51,48 @@ pub enum Layer {
     Connector(Connector),
     /// Directional labels between tiers.
     FlowLabels(FlowLabels),
+}
+
+impl<'de> Deserialize<'de> for Layer {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        deserializer.deserialize_map(LayerVisitor)
+    }
+}
+
+struct LayerVisitor;
+
+impl<'de> Visitor<'de> for LayerVisitor {
+    type Value = Layer;
+
+    fn expecting(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("a map with a single key: \"tier\", \"connector\", or \"flow_labels\"")
+    }
+
+    fn visit_map<A>(self, mut map: A) -> Result<Self::Value, A::Error>
+    where
+        A: MapAccess<'de>,
+    {
+        let key: String = map
+            .next_key()?
+            .ok_or_else(|| de::Error::custom("expected a layer variant key"))?;
+
+        let layer = match key.as_str() {
+            "tier" => Layer::Tier(map.next_value()?),
+            "connector" => Layer::Connector(map.next_value()?),
+            "flow_labels" => Layer::FlowLabels(map.next_value()?),
+            other => {
+                return Err(de::Error::unknown_variant(
+                    other,
+                    &["tier", "connector", "flow_labels"],
+                ));
+            }
+        };
+
+        Ok(layer)
+    }
 }
 
 #[cfg(test)]
@@ -66,5 +120,40 @@ mod tests {
         let labels = FlowLabels::new(vec!["test".to_owned()]);
         let layer = Layer::FlowLabels(labels);
         assert!(matches!(layer, Layer::FlowLabels(_)));
+    }
+
+    #[test]
+    fn test_yaml_round_trip_tier() {
+        let tier = Tier::new(NodeId::new("test").unwrap(), vec![]);
+        let layer = Layer::Tier(tier);
+        let json = serde_json::to_string(&layer).unwrap();
+        let deserialized: Layer = serde_json::from_str(&json).unwrap();
+        assert_eq!(layer, deserialized);
+    }
+
+    #[test]
+    fn test_yaml_round_trip_connector() {
+        let conn = Connector::new(ConnectorStyle::Dots);
+        let layer = Layer::Connector(conn);
+        let json = serde_json::to_string(&layer).unwrap();
+        let deserialized: Layer = serde_json::from_str(&json).unwrap();
+        assert_eq!(layer, deserialized);
+    }
+
+    #[test]
+    fn test_yaml_round_trip_flow_labels() {
+        let labels = FlowLabels::new(vec!["test".to_owned()]);
+        let layer = Layer::FlowLabels(labels);
+        let json = serde_json::to_string(&layer).unwrap();
+        let deserialized: Layer = serde_json::from_str(&json).unwrap();
+        assert_eq!(layer, deserialized);
+    }
+
+    #[test]
+    fn test_deserialize_unknown_variant() {
+        let json = r#"{"unknown": {}}"#;
+        let err = serde_json::from_str::<Layer>(json).unwrap_err();
+        let msg = format!("{err}");
+        assert!(msg.contains("unknown"));
     }
 }
