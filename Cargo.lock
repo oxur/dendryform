@@ -221,15 +221,11 @@ name = "dendryform-cli"
 version = "0.0.1"
 dependencies = [
  "clap",
- "dendryform-ascii",
  "dendryform-core",
- "dendryform-export",
  "dendryform-html",
  "dendryform-layout",
  "dendryform-parse",
- "dendryform-png",
- "dendryform-svg",
- "thiserror",
+ "serde_yml",
 ]
 
 [[package]]

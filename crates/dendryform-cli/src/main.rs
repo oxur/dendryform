@@ -2,13 +2,229 @@
 //!
 //! Command-line interface for rendering software architecture diagrams
 //! from declarative YAML/JSON definitions.
-//!
-//! ## Usage
-//!
-//! ```text
-//! dendryform render architecture.yaml -o architecture.html
-//! ```
 
-fn main() {
-    println!("dendryform {}", dendryform_core::version());
+use std::path::PathBuf;
+use std::process::ExitCode;
+
+use clap::{Parser, Subcommand};
+
+use dendryform_core::Theme;
+use dendryform_html::render_html;
+use dendryform_layout::compute_layout;
+use dendryform_parse::{ParseError, parse_yaml_file};
+
+/// dendryform — render architecture diagrams from YAML
+#[derive(Parser)]
+#[command(name = "dendryform", version, about)]
+struct Cli {
+    #[command(subcommand)]
+    command: Command,
+}
+
+#[derive(Subcommand)]
+enum Command {
+    /// Render a diagram file to HTML
+    Render {
+        /// Input YAML file
+        input: PathBuf,
+        /// Output file path (defaults to input stem + .html)
+        #[arg(short, long)]
+        output: Option<PathBuf>,
+        /// Theme name or path (default: dark)
+        #[arg(long, default_value = "dark")]
+        theme: String,
+    },
+    /// Validate a diagram file without rendering
+    Validate {
+        /// Input YAML file
+        input: PathBuf,
+    },
+    /// Generate a starter YAML diagram to stdout
+    Init,
+    /// List available built-in themes
+    Themes,
+}
+
+fn main() -> ExitCode {
+    let cli = Cli::parse();
+
+    match cli.command {
+        Command::Render {
+            input,
+            output,
+            theme: theme_name,
+        } => cmd_render(&input, output.as_deref(), &theme_name),
+        Command::Validate { input } => cmd_validate(&input),
+        Command::Init => cmd_init(),
+        Command::Themes => cmd_themes(),
+    }
+}
+
+fn cmd_render(input: &PathBuf, output: Option<&std::path::Path>, theme_name: &str) -> ExitCode {
+    let diagram = match parse_yaml_file(input) {
+        Ok(d) => d,
+        Err(e) => return handle_parse_error(e),
+    };
+
+    let theme = resolve_theme(theme_name);
+
+    let plan = match compute_layout(&diagram) {
+        Ok(p) => p,
+        Err(e) => {
+            eprintln!("error: layout failed: {e}");
+            return ExitCode::from(2);
+        }
+    };
+
+    let html = match render_html(&plan, &theme) {
+        Ok(h) => h,
+        Err(e) => {
+            eprintln!("error: render failed: {e}");
+            return ExitCode::from(2);
+        }
+    };
+
+    let output_path = match output {
+        Some(p) => p.to_path_buf(),
+        None => input.with_extension("html"),
+    };
+
+    match std::fs::write(&output_path, &html) {
+        Ok(()) => {
+            eprintln!("wrote {}", output_path.display());
+            ExitCode::SUCCESS
+        }
+        Err(e) => {
+            eprintln!("error: failed to write output: {e}");
+            ExitCode::from(2)
+        }
+    }
+}
+
+fn cmd_validate(input: &PathBuf) -> ExitCode {
+    match parse_yaml_file(input) {
+        Ok(diagram) => {
+            let layer_count = diagram.layers().len();
+            let edge_count = diagram.edges().len();
+            let legend_count = diagram.legend().len();
+            eprintln!(
+                "valid: {layer_count} layers, {edge_count} edges, {legend_count} legend entries"
+            );
+            ExitCode::SUCCESS
+        }
+        Err(e) => handle_parse_error(e),
+    }
+}
+
+fn cmd_init() -> ExitCode {
+    print!(
+        r#"diagram:
+  title:
+    text: "system architecture"
+    accent: "myproject"
+  subtitle: "a brief description of the system"
+  theme: dark
+
+layers:
+  - tier:
+      id: clients
+      label: "Clients"
+      nodes:
+        - id: web-app
+          kind: system
+          color: blue
+          icon: "◇"
+          title: "Web App"
+          description: "The main user-facing application"
+          tech:
+            - "React"
+            - "TypeScript"
+
+  - connector:
+      style: line
+      label: "HTTPS"
+
+  - tier:
+      id: services
+      label: "Services"
+      layout:
+        grid:
+          columns: 2
+      nodes:
+        - id: api
+          kind: component
+          color: green
+          icon: "◈"
+          title: "API Server"
+          description: "REST API gateway"
+          tech:
+            - "Rust"
+            - "axum"
+        - id: worker
+          kind: component
+          color: amber
+          icon: "◈"
+          title: "Worker"
+          description: "Background job processor"
+          tech:
+            - "tokio"
+
+legend:
+  - color: blue
+    label: "Clients"
+  - color: green
+    label: "API"
+  - color: amber
+    label: "Workers"
+
+edges:
+  - from: web-app
+    to: api
+    kind: uses
+    label: "REST calls"
+  - from: api
+    to: worker
+    kind: uses
+    label: "job dispatch"
+"#
+    );
+    ExitCode::SUCCESS
+}
+
+fn cmd_themes() -> ExitCode {
+    eprintln!("Available themes:");
+    eprintln!("  dark  — Taproot dark theme (default)");
+    ExitCode::SUCCESS
+}
+
+fn resolve_theme(name: &str) -> Theme {
+    match name {
+        "dark" => Theme::dark(),
+        path => {
+            // Try loading as a file path
+            match std::fs::read_to_string(path) {
+                Ok(content) => match serde_yml::from_str(&content) {
+                    Ok(theme) => theme,
+                    Err(e) => {
+                        eprintln!("warning: failed to parse theme '{path}': {e}");
+                        eprintln!("falling back to dark theme");
+                        Theme::dark()
+                    }
+                },
+                Err(_) => {
+                    eprintln!("warning: unknown theme '{name}', using dark");
+                    Theme::dark()
+                }
+            }
+        }
+    }
+}
+
+fn handle_parse_error(err: ParseError) -> ExitCode {
+    eprintln!("error: {err}");
+    match err {
+        ParseError::Yaml(_) | ParseError::Json(_) | ParseError::Io(_) => ExitCode::from(2),
+        ParseError::Validation(_) => ExitCode::from(1),
+        _ => ExitCode::from(2),
+    }
 }
