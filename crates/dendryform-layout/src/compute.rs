@@ -457,4 +457,66 @@ mod tests {
             panic!("expected external services tier");
         }
     }
+
+    #[test]
+    fn test_ai_kasu_layout() {
+        let yaml = include_str!("../../../examples/ai-kasu/architecture.yaml");
+        let diagram: Diagram = dendryform_parse::parse_yaml(yaml).unwrap();
+        let plan = compute_layout(&diagram).unwrap();
+
+        assert_eq!(plan.header.title_accent, "ai-kasu");
+        assert_eq!(plan.layers.len(), 7);
+        assert_eq!(plan.legend.entries.len(), 6);
+
+        // First layer: MCP Clients tier with 3 nodes in 3-column grid
+        if let LayerGeometry::Tier(tier) = &plan.layers[0] {
+            assert_eq!(tier.nodes.len(), 3);
+            assert_eq!(tier.columns, 3);
+        } else {
+            panic!("expected clients tier");
+        }
+
+        // Second layer: connector
+        assert!(matches!(plan.layers[1], LayerGeometry::Connector(_)));
+
+        // Third layer: server tier with nested container (solid + dashed)
+        if let LayerGeometry::Tier(tier) = &plan.layers[2] {
+            assert!(tier.container.is_some());
+            let c = tier.container.as_ref().unwrap();
+            assert_eq!(c.label, "kasu-server · rust binary");
+        } else {
+            panic!("expected server tier");
+        }
+    }
+
+    #[test]
+    fn test_oxur_lisp_layout() {
+        let yaml = include_str!("../../../examples/oxur-lisp/architecture.yaml");
+        let diagram: Diagram = dendryform_parse::parse_yaml(yaml).unwrap();
+        let plan = compute_layout(&diagram).unwrap();
+
+        assert_eq!(plan.header.title_accent, "oxur");
+        assert_eq!(plan.layers.len(), 9);
+        assert_eq!(plan.legend.entries.len(), 6);
+
+        // First layer: source input (single node)
+        if let LayerGeometry::Tier(tier) = &plan.layers[0] {
+            assert_eq!(tier.nodes.len(), 1);
+            assert_eq!(tier.columns, 1);
+        } else {
+            panic!("expected source input tier");
+        }
+
+        // Second layer: connector
+        assert!(matches!(plan.layers[1], LayerGeometry::Connector(_)));
+
+        // Third layer: pipeline container
+        if let LayerGeometry::Tier(tier) = &plan.layers[2] {
+            assert!(tier.container.is_some());
+            let c = tier.container.as_ref().unwrap();
+            assert_eq!(c.label, "oxur compilation pipeline");
+        } else {
+            panic!("expected pipeline tier");
+        }
+    }
 }

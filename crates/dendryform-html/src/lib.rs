@@ -313,6 +313,45 @@ mod tests {
     }
 
     #[test]
+    fn test_render_ai_kasu_full() {
+        let yaml = include_str!("../../../examples/ai-kasu/architecture.yaml");
+        let diagram = dendryform_parse::parse_yaml(yaml).unwrap();
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("<!DOCTYPE html>"));
+        assert!(html.contains("ai-kasu"));
+        assert!(html.contains("MCP server architecture"));
+        assert!(html.contains("Claude Code"));
+        assert!(html.contains("KnowledgeEngine"));
+        assert!(html.contains("container-solid"));
+        assert!(html.contains("container-dashed"));
+        assert!(html.contains("knowledge engine"));
+        assert!(html.contains("flow-labels"));
+        assert!(html.contains("legend"));
+        assert!(html.contains("Tool Registries"));
+    }
+
+    #[test]
+    fn test_render_oxur_lisp_full() {
+        let yaml = include_str!("../../../examples/oxur-lisp/architecture.yaml");
+        let diagram = dendryform_parse::parse_yaml(yaml).unwrap();
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("<!DOCTYPE html>"));
+        assert!(html.contains("oxur"));
+        assert!(html.contains("language architecture"));
+        assert!(html.contains("Stage 1: Parse"));
+        assert!(html.contains("container-solid"));
+        assert!(html.contains("container-dashed"));
+        assert!(html.contains("oxur compilation pipeline"));
+        assert!(html.contains("flow-labels"));
+        assert!(html.contains("legend"));
+        assert!(html.contains("Frontend (oxur-lang)"));
+    }
+
+    #[test]
     fn test_html_escaping() {
         let node = Node::builder()
             .id(NodeId::new("test").unwrap())

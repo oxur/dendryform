@@ -1,6 +1,6 @@
 //! # dendryform-layout
 //!
-//! Shared layout engine that produces a [`LayoutPlan`] from a [`Diagram`].
+//! Shared layout engine that produces a [`LayoutPlan`] from a [`Diagram`](dendryform_core::Diagram).
 //!
 //! The layout plan contains relative positioning, geometry, and
 //! connector routing. Format-specific renderers (HTML, SVG) consume

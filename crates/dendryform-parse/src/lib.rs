@@ -3,7 +3,7 @@
 //! YAML and JSON parser for dendryform diagram definitions.
 //!
 //! Reads a diagram string or file, deserializes it into a validated
-//! [`Diagram`](dendryform_core::Diagram). Validation (duplicate IDs,
+//! [`dendryform_core::Diagram`]. Validation (duplicate IDs,
 //! dangling edges, empty tiers, nesting depth) happens automatically
 //! during deserialization.
 //!
@@ -96,6 +96,28 @@ mod tests {
         let yaml = include_str!("../../../examples/taproot/taproot.yml");
         let diagram = parse_yaml(yaml).unwrap();
         assert_eq!(diagram.legend().len(), 6);
+    }
+
+    #[test]
+    fn test_parse_ai_kasu_yaml() {
+        let yaml = include_str!("../../../examples/ai-kasu/architecture.yaml");
+        let diagram = parse_yaml(yaml).expect("ai-kasu architecture.yaml should parse");
+        assert_eq!(diagram.header().title().accent(), "ai-kasu");
+        assert_eq!(diagram.header().title().text(), "MCP server architecture");
+        assert_eq!(diagram.layers().len(), 7);
+        assert_eq!(diagram.legend().len(), 6);
+        assert!(diagram.edges().len() > 20);
+    }
+
+    #[test]
+    fn test_parse_oxur_lisp_yaml() {
+        let yaml = include_str!("../../../examples/oxur-lisp/architecture.yaml");
+        let diagram = parse_yaml(yaml).expect("oxur-lisp architecture.yaml should parse");
+        assert_eq!(diagram.header().title().accent(), "oxur");
+        assert_eq!(diagram.header().title().text(), "language architecture");
+        assert_eq!(diagram.layers().len(), 9);
+        assert_eq!(diagram.legend().len(), 6);
+        assert!(diagram.edges().len() > 15);
     }
 
     #[test]
