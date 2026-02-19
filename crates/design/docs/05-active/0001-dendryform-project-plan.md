@@ -9,7 +9,7 @@ updated: 2026-02-19
 state: Active
 supersedes: null
 superseded-by: null
-version: 1.0
+version: 1.1
 ---
 
 # dendryform — Project Plan
@@ -115,25 +115,40 @@ has zero warnings. CI pipeline green.
 **Scope:** The data model — all Rust types for describing a diagram.
 
 - [ ] `NodeId` newtype (validated slug: lowercase alphanumeric + dots + hyphens)
-- [ ] `Node` with private fields, builder pattern, validated constructor
+      — impl `Display`, `Debug`, `Clone`, `PartialEq`, `Eq`, `Hash`
+- [ ] `Node` with private fields, consuming builder pattern (`self`, not `&mut self`),
+      validated constructor
 - [ ] `NodeKind` enum (Person, System, Container, Component, Infrastructure, Group)
+      — `#[non_exhaustive]`, derive `Copy` (small enum), impl `Display`
 - [ ] `Edge` with `NodeId` references, validated constructor
 - [ ] `EdgeKind` enum (Uses, Reads, Writes, Deploys, Contains)
+      — `#[non_exhaustive]`, derive `Copy`, impl `Display`
 - [ ] `Tier` with label, nodes, layout hint
 - [ ] `TierLayout` enum (Grid { columns }, Auto, Single)
+      — `#[non_exhaustive]`
 - [ ] `Connector` type for inter-tier visual connectors
 - [ ] `Container` type for nested sub-diagrams within a tier
-- [ ] `Diagram` top-level type (title, subtitle, tiers, edges, theme ref, legend flag)
-- [ ] `Tech` newtype for technology badges (not raw String)
-- [ ] `Color` enum/newtype for the named palette (Blue, Green, Amber, Purple, Red, Teal + Custom)
+- [ ] `Diagram` — validated wrapper around a raw deserialized structure.
+      Serde deserializes into `RawDiagram` (unchecked), then
+      `Diagram::try_from(raw)` or `#[serde(try_from = "RawDiagram")]` validates
+      invariants (no duplicate IDs, no dangling edge refs, no empty tiers).
+      The `Diagram` type itself cannot represent an invalid state.
+- [ ] `Tech` newtype for technology badges (not raw String) — impl `Display`
+- [ ] `Color` enum/newtype for the named palette (Blue, Green, Amber, Purple, Red,
+      Teal + Custom) — `#[non_exhaustive]`, impl `Display`
 - [ ] `Metadata` newtype wrapping `HashMap<String, String>` (extensibility escape hatch)
-- [ ] Serde derives on everything (`Serialize`, `Deserialize`)
+      — explicit accessor methods (`get`, `insert`, `iter`, `is_empty`);
+      do NOT impl `Deref<Target = HashMap>` (AP-15)
+- [ ] All types derive `Debug, Clone, PartialEq` at minimum; `Eq, Hash` on ID types
+      and small enums; `Copy` on small enums; `Serialize, Deserialize` on all
 - [ ] `serde(rename_all = "snake_case")` for YAML-friendly field names
 - [ ] `serde(default)` and `skip_serializing_if` where appropriate
 - [ ] Doc comments on every public type, field, and method
+- [ ] Builder methods consume `self` (AP-11: consuming builder prevents reuse bugs)
 - [ ] Unit tests for builders, validation, serialization round-trips
 - [ ] Test: invalid NodeId rejected (spaces, uppercase, empty)
 - [ ] Test: Diagram with duplicate NodeIds rejected
+- [ ] Test: Diagram with dangling edge reference rejected
 
 **Acceptance:** All types compile, serialize/deserialize correctly.
 `cargo test -p dendryform-core` passes with >95% coverage of public API.
@@ -152,7 +167,9 @@ has zero warnings. CI pipeline green.
 - [ ] Font configuration (display font, body font)
 - [ ] Spacing/radius configuration
 - [ ] Animation toggle
-- [ ] Built-in `dark` theme as a `const` or `lazy` static matching Taproot exactly
+- [ ] Built-in `dark` theme via `Theme::dark()` constructor function (not `const` —
+      types contain `String`/`Vec`; not `lazy_static` — use `std::sync::LazyLock`
+      only if a global static is truly needed, otherwise just call the constructor)
 - [ ] Theme loading from YAML file
 - [ ] Theme merge semantics (user overrides on top of built-in)
 - [ ] `themes/dark.yml` — the reference theme in YAML form
@@ -171,8 +188,10 @@ Theme YAML round-trips correctly. Merge produces expected overrides.
 **Scope:** Parse YAML input into validated `Diagram` IR.
 
 - [ ] `parse_yaml(input: &str) -> Result<Diagram, ParseError>`
-- [ ] `parse_yaml_file(path: &Path) -> Result<Diagram, ParseError>`
-- [ ] `ParseError` type with line/column info where possible
+- [ ] `parse_yaml_file(path: impl AsRef<Path>) -> Result<Diagram, ParseError>`
+      (API-03: accept `impl AsRef<Path>`, not `&Path`)
+- [ ] `ParseError` type with line/column info where possible, using `thiserror`
+      with `#[from]` for serde_yml and IO error conversion (EH-01, EH-07)
 - [ ] Handle theme resolution: `theme: dark` → built-in, `theme: ./path` → load file
 - [ ] Handle the full YAML structure from the design sketch:
   - Tiers with nodes
@@ -207,18 +226,22 @@ both — include it here if easy, or defer to a later milestone.
 **Scope:** Transform Diagram IR into a LayoutPlan with logical positioning.
 
 - [ ] `LayoutPlan` struct — the positioned output
-- [ ] `TierLayout` — grid spec, gap ratios, sizing weights per tier
-- [ ] `NodeLayout` — grid column/row, column span, relative weight, nested plan
-- [ ] `ConnectorLayout` — position, label, style (line vs dots)
-- [ ] `ContainerLayout` — bounding area, nested layout plan
-- [ ] `LegendLayout` — items with color swatches and labels
-- [ ] `compute_layout(diagram: &Diagram) -> LayoutPlan`
+- [ ] `LayoutError` — per-crate error type using `thiserror` (EH-07),
+      with `From` impls for `?` propagation from core errors (EH-01)
+- [ ] `TierGeometry` — grid spec, gap ratios, sizing weights per tier
+      (named `TierGeometry`, NOT `TierLayout`, to avoid collision with the
+      `TierLayout` enum in dendryform-core which represents the user's intent)
+- [ ] `NodeGeometry` — grid column/row, column span, relative weight, nested plan
+- [ ] `ConnectorGeometry` — position, label, style (line vs dots)
+- [ ] `ContainerGeometry` — bounding area, nested layout plan
+- [ ] `LegendGeometry` — items with color swatches and labels
+- [ ] `compute_layout(diagram: &Diagram) -> Result<LayoutPlan, LayoutError>`
 - [ ] Logic: walk tiers top-to-bottom, assign grid positions based on TierLayout
 - [ ] Logic: compute connector positions between tiers
 - [ ] Logic: recurse into containers for nested layout
 - [ ] Logic: compute legend entries from color usage in diagram
 - [ ] `ViewportHint` — preferred aspect ratio, reference width (1100px default)
-- [ ] For SVG: `resolve_absolute(plan: &LayoutPlan, width: f32) -> AbsoluteLayout`
+- [ ] For SVG: `resolve_absolute(plan: &LayoutPlan, width: f32) -> Result<AbsoluteLayout, LayoutError>`
   - Monospace font metrics (JetBrains Mono character width at given size)
   - Concrete x, y, width, height for every element
   - Text wrapping decisions based on available box width
@@ -238,7 +261,9 @@ tiers, containers, connectors, and the legend.
 
 **Scope:** Render LayoutPlan to self-contained, responsive HTML.
 
-- [ ] `render_html(plan: &LayoutPlan, theme: &Theme) -> String`
+- [ ] `render_html(plan: &LayoutPlan, theme: &Theme) -> Result<String, RenderError>`
+      (AP-28: rendering can fail — template errors, malformed data)
+- [ ] `RenderError` — per-crate error type using `thiserror` (EH-07)
 - [ ] Decide: Askama (compile-time) vs Tera (runtime) — evaluate both, pick one
   - If Askama: templates in `templates/` dir, compiled into binary
   - If Tera: templates loaded at runtime, supports custom user templates
@@ -254,7 +279,9 @@ tiers, containers, connectors, and the legend.
   - Legend template
 - [ ] Responsive CSS: media queries for mobile collapse
 - [ ] Hover states and animations (controlled by theme.animate)
-- [ ] Google Fonts import for JetBrains Mono + DM Sans
+- [ ] Font strategy: embed JetBrains Mono + DM Sans as base64 WOFF2 in the HTML
+      (a Google Fonts import would contradict the self-contained requirement;
+      alternatively, provide a `--fonts external` flag for network-dependent mode)
 - [ ] Output: single self-contained HTML file (no external dependencies)
 - [ ] Doc comments, tests
 - [ ] **Snapshot test: render taproot.yml → compare against reference HTML**
@@ -325,7 +352,9 @@ following the README, and produce a beautiful HTML diagram. Phase 1 complete.
 
 **Scope:** Static SVG output that matches HTML appearance at a fixed viewport.
 
-- [ ] `render_svg(plan: &LayoutPlan, theme: &Theme, width: f32) -> String`
+- [ ] `render_svg(plan: &LayoutPlan, theme: &Theme, width: f32) -> Result<String, SvgError>`
+      (AP-28: rendering can fail)
+- [ ] `SvgError` — per-crate error type using `thiserror` (EH-07)
 - [ ] Uses `AbsoluteLayout` from dendryform-layout
 - [ ] SVG elements: `<rect>`, `<text>`, `<line>`, `<path>`, `<g>` grouping
 - [ ] Monospace text layout using JetBrains Mono character metrics
@@ -350,7 +379,9 @@ looks like the HTML screenshot when viewed at 1100px width.
 
 **Scope:** Rasterize SVG to PNG via resvg.
 
-- [ ] `render_png(svg: &str, scale: f32) -> Vec<u8>`
+- [ ] `render_png(svg: &str, scale: f32) -> Result<Vec<u8>, PngError>`
+      (AP-28: resvg can fail on bad SVG, missing fonts, memory)
+- [ ] `PngError` — per-crate error type using `thiserror` (EH-07)
 - [ ] Integration with resvg + tiny-skia
 - [ ] Configurable DPI / scale factor (1x, 2x for retina)
 - [ ] Font loading for resvg (bundle JetBrains Mono or load from system)
@@ -367,7 +398,9 @@ looks like the HTML screenshot when viewed at 1100px width.
 
 **Scope:** Lossy text rendering for terminals and code comments.
 
-- [ ] `render_ascii(plan: &LayoutPlan, width: usize) -> String`
+- [ ] `render_ascii(plan: &LayoutPlan, width: usize) -> Result<String, AsciiError>`
+      (AP-28: rendering can fail)
+- [ ] `AsciiError` — per-crate error type using `thiserror` (EH-07)
 - [ ] Box-drawing characters for containers and nodes (`┌─┐│└─┘`)
 - [ ] Tier labels as uppercase headers
 - [ ] Node cards: name + abbreviated description
@@ -411,19 +444,31 @@ terminal output that captures the system structure.
 
 **Scope:** Define the `Exporter` trait and shared logic for all interop formats.
 
+- [ ] `ExportError` — per-crate error type using `thiserror` (EH-07)
+- [ ] `LossyWarning` — structured type describing what was lost in translation
+      (e.g., tier structure flattened, custom colors mapped to nearest C4 color)
+- [ ] `ExportResult<T>` — bundles output + warnings:
+  ```rust
+  pub struct ExportResult<T> {
+      output: T,           // private field
+      warnings: Vec<LossyWarning>,  // private field
+  }
+  // with accessor methods: output(), warnings(), into_output()
+  ```
 - [ ] `Exporter` trait:
   ```rust
   pub trait Exporter {
       type Output;
-      type Error;
-      fn export(&self, diagram: &Diagram) -> Result<Self::Output, Self::Error>;
+      fn export(&self, diagram: &Diagram) -> Result<ExportResult<Self::Output>, ExportError>;
   }
   ```
+  Note: single `ExportError` type for all exporters (not an associated type)
+  since export errors share common structure. If exporters need format-specific
+  error variants, use an enum with `#[non_exhaustive]`.
 - [ ] Shared filtering logic: determine visible elements for a given view/scope
 - [ ] Shared ID mapping: slug → UUID for Structurizr compat
 - [ ] `NodeKind` → C4 element type mapping table
 - [ ] `EdgeKind` → relationship string mapping
-- [ ] Lossy conversion warnings: structured list of what was lost in translation
 
 **Acceptance:** Trait compiles, mapping tables are complete and tested.
 
