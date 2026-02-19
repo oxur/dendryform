@@ -118,8 +118,7 @@ mod tests {
     use super::*;
     use dendryform_core::{
         Color, Connector, ConnectorStyle, Container, ContainerBorder, Diagram, DiagramHeader, Edge,
-        FlowLabels, Layer, LegendEntry, Node, NodeId, NodeKind, RawDiagram, Tier,
-        TierLayout,
+        FlowLabels, Layer, LegendEntry, Node, NodeId, NodeKind, RawDiagram, Tier, TierLayout,
     };
 
     fn test_node(id: &str) -> Node {

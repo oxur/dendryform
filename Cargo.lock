@@ -260,6 +260,8 @@ version = "0.0.1"
 dependencies = [
  "dendryform-core",
  "dendryform-layout",
+ "dendryform-parse",
+ "serde_json",
  "thiserror",
 ]
 
@@ -268,6 +270,8 @@ name = "dendryform-layout"
 version = "0.0.1"
 dependencies = [
  "dendryform-core",
+ "dendryform-parse",
+ "serde_json",
  "thiserror",
 ]
 
