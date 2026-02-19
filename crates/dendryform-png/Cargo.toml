@@ -7,8 +7,15 @@ license.workspace = true
 repository.workspace = true
 description = "PNG renderer for dendryform diagrams (SVG to PNG via resvg)"
 
+[features]
+bundled-fonts = []
+
 [dependencies]
 dendryform-core.workspace = true
+dendryform-layout.workspace = true
 dendryform-svg.workspace = true
 resvg.workspace = true
 thiserror.workspace = true
+
+[dev-dependencies]
+dendryform-parse.workspace = true

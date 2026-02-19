@@ -12,6 +12,7 @@ use dendryform_core::Theme;
 use dendryform_html::render_html;
 use dendryform_layout::compute_layout;
 use dendryform_parse::{ParseError, parse_yaml_file};
+use dendryform_png::render_png;
 use dendryform_svg::render_svg;
 
 /// dendryform — render architecture diagrams from YAML
@@ -24,7 +25,7 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
-    /// Render a diagram file to HTML or SVG
+    /// Render a diagram file to HTML, SVG, or PNG
     Render {
         /// Input YAML file
         input: PathBuf,
@@ -34,12 +35,15 @@ enum Command {
         /// Theme name or path (default: dark)
         #[arg(long, default_value = "dark")]
         theme: String,
-        /// Output format: html or svg
+        /// Output format: html, svg, or png
         #[arg(short, long, default_value = "html")]
         format: String,
-        /// SVG viewport width in pixels (only used with -f svg)
+        /// SVG viewport width in pixels (used with svg and png formats)
         #[arg(long, default_value = "1100")]
         width: f32,
+        /// Scale factor for PNG output (1.0 = 1x, 2.0 = retina)
+        #[arg(long, default_value = "1.0")]
+        scale: f32,
     },
     /// Validate a diagram file without rendering
     Validate {
@@ -62,7 +66,15 @@ fn main() -> ExitCode {
             theme: theme_name,
             format,
             width,
-        } => cmd_render(&input, output.as_deref(), &theme_name, &format, width),
+            scale,
+        } => cmd_render(
+            &input,
+            output.as_deref(),
+            &theme_name,
+            &format,
+            width,
+            scale,
+        ),
         Command::Validate { input } => cmd_validate(&input),
         Command::Init => cmd_init(),
         Command::Themes => cmd_themes(),
@@ -75,6 +87,7 @@ fn cmd_render(
     theme_name: &str,
     format: &str,
     width: f32,
+    scale: f32,
 ) -> ExitCode {
     let diagram = match parse_yaml_file(input) {
         Ok(d) => d,
@@ -90,6 +103,38 @@ fn cmd_render(
             return ExitCode::from(2);
         }
     };
+
+    // PNG produces binary output, handle separately.
+    if format == "png" {
+        let svg = match render_svg(&plan, &theme, width) {
+            Ok(s) => s,
+            Err(e) => {
+                eprintln!("error: SVG render failed: {e}");
+                return ExitCode::from(2);
+            }
+        };
+        let png_bytes = match render_png(&svg, scale) {
+            Ok(b) => b,
+            Err(e) => {
+                eprintln!("error: PNG render failed: {e}");
+                return ExitCode::from(2);
+            }
+        };
+        let output_path = match output {
+            Some(p) => p.to_path_buf(),
+            None => input.with_extension("png"),
+        };
+        return match std::fs::write(&output_path, &png_bytes) {
+            Ok(()) => {
+                eprintln!("wrote {}", output_path.display());
+                ExitCode::SUCCESS
+            }
+            Err(e) => {
+                eprintln!("error: failed to write output: {e}");
+                ExitCode::from(2)
+            }
+        };
+    }
 
     let (rendered, ext) = match format {
         "html" => match render_html(&plan, &theme) {
@@ -107,7 +152,7 @@ fn cmd_render(
             }
         },
         _ => {
-            eprintln!("error: unsupported format '{format}' (use html or svg)");
+            eprintln!("error: unsupported format '{format}' (use html, svg, or png)");
             return ExitCode::from(2);
         }
     };

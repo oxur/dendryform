@@ -225,6 +225,7 @@ dependencies = [
  "dendryform-html",
  "dendryform-layout",
  "dendryform-parse",
+ "dendryform-png",
  "dendryform-svg",
  "serde_yml",
 ]
@@ -288,6 +289,8 @@ name = "dendryform-png"
 version = "0.0.1"
 dependencies = [
  "dendryform-core",
+ "dendryform-layout",
+ "dendryform-parse",
  "dendryform-svg",
  "resvg",
  "thiserror",
