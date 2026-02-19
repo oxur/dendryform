@@ -35,3 +35,4 @@ config.toml
 /bin
 /data
 /.fastembed_cache/
+/examples

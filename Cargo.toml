@@ -1,0 +1,13 @@
+[package]
+name = "dendryform"
+version = "0.0.1"
+edition = "2024"
+authors = ["Duncan"]
+description = "Declarative software architecture diagrams — beautiful, dark-themed, simple schema"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/oxur/dendryform"
+keywords = ["architecture", "diagram", "visualization", "developer-tools"]
+categories = ["visualization"]
+readme = "README.md"
+
+[dependencies]
