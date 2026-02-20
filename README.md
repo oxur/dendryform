@@ -20,6 +20,68 @@ Named for the 23 [dendriform models](https://en.wikipedia.org/wiki/Plant_archite
 
 click for full-size
 
+## Quick Example
+
+```yaml
+diagram:
+  title:
+    text: "My API"
+    accent: "My API"
+  subtitle: "Two-tier service architecture"
+  theme: dark
+
+layers:
+  - tier:
+      id: clients
+      label: "Clients"
+      nodes:
+        - id: web
+          kind: person
+          color: blue
+          icon: "◇"
+          title: "Web App"
+          description: "React frontend"
+          tech: ["TypeScript"]
+  - connector:
+      style: line
+      label: "HTTPS"
+  - tier:
+      id: services
+      label: "Services"
+      nodes:
+        - id: api
+          kind: system
+          color: green
+          icon: "◈"
+          title: "API Server"
+          description: "REST endpoints"
+          tech: ["Rust", "Axum"]
+        - id: db
+          kind: infrastructure
+          color: amber
+          icon: "◯"
+          title: "PostgreSQL"
+          description: "Primary store"
+          tech: ["RDS"]
+
+edges:
+  - from: web
+    to: api
+    kind: uses
+    label: "requests"
+  - from: api
+    to: db
+    kind: reads
+
+legend:
+  - color: blue
+    label: "Clients"
+  - color: green
+    label: "Services"
+  - color: amber
+    label: "Data"
+```
+
 ## Usage
 
 ### 1 — Generate an `architecture.yaml` with Claude Code
