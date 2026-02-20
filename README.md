@@ -12,13 +12,13 @@
 
 Named for the 23 [dendriform models](https://en.wikipedia.org/wiki/Plant_architecture) of tree architecture (Halle & Oldeman, 1970), because every system has a branching pattern worth revealing.
 
-## Status
-
-**v0.1.0** — CLI is working. HTML, SVG, and PNG renderers are complete. Schema design is stable.
-
 ## What It Does
 
 `dendryform` takes a declarative YAML description of a software system — nodes, edges, containment, tiers — and renders it as a beautiful, dark-themed architecture diagram in HTML, SVG, or PNG.
+
+[![Taproot architecture diagram][taproot-medium]][taproot-large]
+
+click for full-size
 
 ## Usage
 
@@ -26,7 +26,7 @@ Named for the 23 [dendriform models](https://en.wikipedia.org/wiki/Plant_archite
 
 The fastest way to diagram an existing codebase is to let an AI read the schema and your source, then write the YAML for you. Point Claude Code at the bundled schema reference:
 
-```
+```text
 Read assets/schema/DIAGRAM-YAML-SCHEMA.md, then analyse the source code
 in src/ and generate an architecture.yaml file that captures the system
 architecture using the dendryform schema.
@@ -57,15 +57,9 @@ dendryform render architecture.yaml -o diagram.png --scale 2.0
 
 Run `dendryform --help` or `dendryform render --help` for all options including `--theme` and `--width`.
 
-### Example output
-
-[![][taproot-medium]][taproot-large]
-
-*(click for full-size)*
-
 ## Workspace Structure
 
-```
+```text
 dendryform/
 ├── Cargo.toml                  # Workspace root
 ├── crates/
