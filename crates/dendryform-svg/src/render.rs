@@ -213,7 +213,11 @@ fn write_node(
     };
 
     let available_width = r.w - 2.0 * m.node_padding_x;
-    let desc_lines = m.wrap_text(node.node.description(), available_width, m.node_desc_font_size);
+    let desc_lines = m.wrap_text(
+        node.node.description(),
+        available_width,
+        m.node_desc_font_size,
+    );
     let line_h = m.line_height(m.node_desc_font_size);
 
     writeln!(
