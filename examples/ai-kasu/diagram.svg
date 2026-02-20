@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 2059" width="1100" height="2059">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 2257" width="1100" height="2257">
   <rect width="100%" height="100%" fill="#0a0e14"/>
   <defs>
     <style>
@@ -19,27 +19,31 @@
   </text>
   <text x="36" y="163" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">MCP CLIENTS</text>
   <g>
-    <rect x="32" y="173" width="337.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="32" y="173" width="337.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="32" y="173" width="337.33334" height="2" rx="10" fill="#4fc3f7"/>
     <text x="52" y="205" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#4fc3f7">◇</tspan> Claude Code
     </text>
-    <text x="52" y="221" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">AI coding assistant consuming knowledge tools via MCP
+    <text x="52" y="221" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="52" dy="0">AI coding assistant consuming knowledge tools via</tspan>
+      <tspan x="52" dy="18">MCP</tspan>
     </text>
-    <rect x="52" y="229" width="34" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="60" y="241" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">MCP
+    <rect x="52" y="247" width="34" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="60" y="259" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">MCP
     </text>
   </g>
   <g>
-    <rect x="381.33334" y="173" width="337.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="381.33334" y="173" width="337.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="381.33334" y="173" width="337.33334" height="2" rx="10" fill="#4fc3f7"/>
     <text x="401.33334" y="205" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#4fc3f7">◇</tspan> IDE Plugin
     </text>
-    <text x="401.33334" y="221" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">Editor extensions querying concept cards and search
+    <text x="401.33334" y="221" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="401.33334" dy="0">Editor extensions querying concept cards and</tspan>
+      <tspan x="401.33334" dy="18">search</tspan>
     </text>
-    <rect x="401.33334" y="229" width="34" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="409.33334" y="241" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">MCP
+    <rect x="401.33334" y="247" width="34" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="409.33334" y="259" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">MCP
     </text>
   </g>
   <g>
@@ -48,355 +52,402 @@
     <text x="750.6667" y="205" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#4fc3f7">◇</tspan> CLI / Scripts
     </text>
-    <text x="750.6667" y="221" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">Automation and batch queries over stdio transport
+    <text x="750.6667" y="221" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="750.6667" dy="0">Automation and batch queries over stdio transport</tspan>
     </text>
     <rect x="750.6667" y="229" width="46" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
     <text x="758.6667" y="241" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">stdio
     </text>
   </g>
-  <line x1="550" y1="307" x2="550" y2="335" stroke="url(#connector-grad)" stroke-width="2" marker-end="url(#arrowhead)"/>
-  <text x="534" y="324.33334" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">MCP protocol (stdio or streamable HTTP)
+  <line x1="550" y1="325" x2="550" y2="353" stroke="url(#connector-grad)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="534" y="342.33334" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">MCP protocol (stdio or streamable HTTP)
   </text>
-  <rect x="32" y="339" width="1036" height="1221" rx="14" fill="rgba(17,24,32,0.5)" stroke="#1e2a3a" stroke-width="1"/>
-  <rect x="51" y="319" width="218" height="14" fill="#0a0e14"/>
-  <text x="56" y="329" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#3ddc84">KASU-SERVER · RUST BINARY</text>
-  <text x="60" y="373" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">TRANSPORT &amp; AUTH</text>
+  <rect x="32" y="357" width="1036" height="1365" rx="14" fill="rgba(17,24,32,0.5)" stroke="#1e2a3a" stroke-width="1"/>
+  <rect x="51" y="337" width="218" height="14" fill="#0a0e14"/>
+  <text x="56" y="347" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#3ddc84">KASU-SERVER · RUST BINARY</text>
+  <text x="60" y="391" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">TRANSPORT &amp; AUTH</text>
   <g>
-    <rect x="56" y="383" width="321.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="56" y="383" width="321.33334" height="2" rx="10" fill="#3ddc84"/>
-    <text x="76" y="415" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="56" y="401" width="321.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="56" y="401" width="321.33334" height="2" rx="10" fill="#3ddc84"/>
+    <text x="76" y="433" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#3ddc84">◈</tspan> Stdio Transport
     </text>
-    <text x="76" y="431" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">Local MCP over stdin/stdout for development and CLI use
+    <text x="76" y="449" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="76" dy="0">Local MCP over stdin/stdout for development</tspan>
+      <tspan x="76" dy="18">and CLI use</tspan>
     </text>
-    <rect x="76" y="439" width="70" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="84" y="451" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">rmcp 0.14
+    <rect x="76" y="475" width="70" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="84" y="487" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">rmcp 0.14
     </text>
   </g>
   <g>
-    <rect x="389.33334" y="383" width="321.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="389.33334" y="383" width="321.33334" height="2" rx="10" fill="#3ddc84"/>
-    <text x="409.33334" y="415" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="389.33334" y="401" width="321.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="389.33334" y="401" width="321.33334" height="2" rx="10" fill="#3ddc84"/>
+    <text x="409.33334" y="433" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#3ddc84">◈</tspan> HTTP Transport
     </text>
-    <text x="409.33334" y="431" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">Streamable HTTP with axum router, health endpoint, graceful shutdown
+    <text x="409.33334" y="449" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="409.33334" dy="0">Streamable HTTP with axum router, health</tspan>
+      <tspan x="409.33334" dy="18">endpoint, graceful shutdown</tspan>
     </text>
-    <rect x="409.33334" y="439" width="64" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="417.33334" y="451" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">axum 0.8
+    <rect x="409.33334" y="475" width="64" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="417.33334" y="487" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">axum 0.8
     </text>
-    <rect x="479.33334" y="439" width="70" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="487.33334" y="451" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">rmcp 0.14
+    <rect x="479.33334" y="475" width="70" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="487.33334" y="487" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">rmcp 0.14
     </text>
   </g>
   <g>
-    <rect x="722.6667" y="383" width="321.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="722.6667" y="383" width="321.33334" height="2" rx="10" fill="#3ddc84"/>
-    <text x="742.6667" y="415" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="722.6667" y="401" width="321.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="722.6667" y="401" width="321.33334" height="2" rx="10" fill="#3ddc84"/>
+    <text x="742.6667" y="433" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#3ddc84">◈</tspan> OAuth2 Auth
     </text>
-    <text x="742.6667" y="431" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">Google OAuth2 token validation, RFC 9728/8414 MCP discovery endpoints
+    <text x="742.6667" y="449" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="742.6667" dy="0">Google OAuth2 token validation, RFC 9728/8414</tspan>
+      <tspan x="742.6667" dy="18">MCP discovery endpoints</tspan>
     </text>
-    <rect x="742.6667" y="439" width="124.00001" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="750.6667" y="451" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk-auth-google
+    <rect x="742.6667" y="475" width="124.00001" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="750.6667" y="487" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk-auth-google
     </text>
-    <rect x="872.6667" y="439" width="46" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="880.6667" y="451" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Tower
+    <rect x="872.6667" y="475" width="46" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="880.6667" y="487" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Tower
     </text>
   </g>
-  <circle cx="536" cy="524.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="543" cy="524.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="550" cy="524.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="557" cy="524.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="564" cy="524.5" r="1.5" fill="#2a3f5a"/>
-  <text x="60" y="546" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">MCP SERVER</text>
+  <circle cx="536" cy="560.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="543" cy="560.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="550" cy="560.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="557" cy="560.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="564" cy="560.5" r="1.5" fill="#2a3f5a"/>
+  <text x="60" y="582" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">MCP SERVER</text>
   <g>
-    <rect x="56" y="556" width="988" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="56" y="556" width="988" height="2" rx="10" fill="#3ddc84"/>
-    <text x="550" y="588" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="56" y="592" width="988" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="56" y="592" width="988" height="2" rx="10" fill="#3ddc84"/>
+    <text x="550" y="624" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#3ddc84">◈</tspan> FabrykMcpServer
     </text>
-    <text x="550" y="604" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">Trait-based MCP server with CompositeRegistry dispatching tool calls to registered backends
+    <text x="550" y="640" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="550" dy="0">Trait-based MCP server with CompositeRegistry dispatching tool calls to registered backends</tspan>
     </text>
-    <rect x="474" y="612" width="76" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="482" y="624" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk-mcp
+    <rect x="474" y="648" width="76" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="482" y="660" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk-mcp
     </text>
-    <rect x="556" y="612" width="70" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="564" y="624" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">rmcp 0.14
+    <rect x="556" y="648" width="70" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="564" y="660" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">rmcp 0.14
     </text>
   </g>
-  <circle cx="536" cy="697.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="543" cy="697.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="550" cy="697.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="557" cy="697.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="564" cy="697.5" r="1.5" fill="#2a3f5a"/>
-  <text x="60" y="719" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">TOOL REGISTRIES</text>
+  <circle cx="536" cy="733.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="543" cy="733.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="550" cy="733.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="557" cy="733.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="564" cy="733.5" r="1.5" fill="#2a3f5a"/>
+  <text x="60" y="755" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">TOOL REGISTRIES</text>
   <g>
-    <rect x="56" y="729" width="321.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="56" y="729" width="321.33334" height="2" rx="10" fill="#ffb74d"/>
-    <text x="76" y="761" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="56" y="765" width="321.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="56" y="765" width="321.33334" height="2" rx="10" fill="#ffb74d"/>
+    <text x="76" y="797" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#ffb74d">⊕</tspan> ContentTools
     </text>
-    <text x="76" y="777" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">list_concepts, get_concept — card lookup and browsing by category/tier
+    <text x="76" y="813" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="76" dy="0">list_concepts, get_concept — card lookup and</tspan>
+      <tspan x="76" dy="18">browsing by category/tier</tspan>
     </text>
-    <rect x="76" y="785" width="124.00001" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="84" y="797" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk-mcp-content
+    <rect x="76" y="839" width="124.00001" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="84" y="851" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk-mcp-content
     </text>
   </g>
   <g>
-    <rect x="389.33334" y="729" width="321.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="389.33334" y="729" width="321.33334" height="2" rx="10" fill="#ffb74d"/>
-    <text x="409.33334" y="761" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="389.33334" y="765" width="321.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="389.33334" y="765" width="321.33334" height="2" rx="10" fill="#ffb74d"/>
+    <text x="409.33334" y="797" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#ffb74d">⊕</tspan> FtsTools
     </text>
-    <text x="409.33334" y="777" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">search — full-text search across concept cards and source documents
+    <text x="409.33334" y="813" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="409.33334" dy="0">search — full-text search across concept</tspan>
+      <tspan x="409.33334" dy="18">cards and source documents</tspan>
     </text>
-    <rect x="409.33334" y="785" width="100" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="417.33334" y="797" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk-mcp-fts
+    <rect x="409.33334" y="839" width="100" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="417.33334" y="851" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk-mcp-fts
     </text>
   </g>
   <g>
-    <rect x="722.6667" y="729" width="321.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="722.6667" y="729" width="321.33334" height="2" rx="10" fill="#ffb74d"/>
-    <text x="742.6667" y="761" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="722.6667" y="765" width="321.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="722.6667" y="765" width="321.33334" height="2" rx="10" fill="#ffb74d"/>
+    <text x="742.6667" y="797" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#ffb74d">⊕</tspan> GraphTools
     </text>
-    <text x="742.6667" y="777" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">graph_query, get_neighbors — traverse prerequisite, related, and contrast edges
+    <text x="742.6667" y="813" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="742.6667" dy="0">graph_query, get_neighbors — traverse</tspan>
+      <tspan x="742.6667" dy="18">prerequisite, related, and contrast edges</tspan>
     </text>
-    <rect x="742.6667" y="785" width="112" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="750.6667" y="797" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk-mcp-graph
+    <rect x="742.6667" y="839" width="112" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="750.6667" y="851" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk-mcp-graph
     </text>
   </g>
   <g>
-    <rect x="56" y="835" width="321.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="56" y="835" width="321.33334" height="2" rx="10" fill="#ffb74d"/>
-    <text x="76" y="867" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="56" y="889" width="321.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="56" y="889" width="321.33334" height="2" rx="10" fill="#ffb74d"/>
+    <text x="76" y="921" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#ffb74d">⊕</tspan> SemanticSearchTools
     </text>
-    <text x="76" y="883" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">semantic_search — hybrid vector + FTS with reciprocal rank fusion
+    <text x="76" y="937" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="76" dy="0">semantic_search — hybrid vector + FTS with</tspan>
+      <tspan x="76" dy="18">reciprocal rank fusion</tspan>
     </text>
-    <rect x="76" y="891" width="52" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="84" y="903" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">custom
+    <rect x="76" y="963" width="52" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="84" y="975" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">custom
     </text>
   </g>
   <g>
-    <rect x="389.33334" y="835" width="321.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="389.33334" y="835" width="321.33334" height="2" rx="10" fill="#ffb74d"/>
-    <text x="409.33334" y="867" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="389.33334" y="889" width="321.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="389.33334" y="889" width="321.33334" height="2" rx="10" fill="#ffb74d"/>
+    <text x="409.33334" y="921" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#ffb74d">⊕</tspan> DiagnosticTools
     </text>
-    <text x="409.33334" y="883" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">ping, debug_config — health checks and configuration inspection
+    <text x="409.33334" y="937" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="409.33334" dy="0">ping, debug_config — health checks and</tspan>
+      <tspan x="409.33334" dy="18">configuration inspection</tspan>
     </text>
-    <rect x="409.33334" y="891" width="52" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="417.33334" y="903" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">custom
+    <rect x="409.33334" y="963" width="52" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="417.33334" y="975" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">custom
     </text>
   </g>
-  <circle cx="536" cy="976.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="543" cy="976.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="550" cy="976.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="557" cy="976.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="564" cy="976.5" r="1.5" fill="#2a3f5a"/>
-  <rect x="56" y="988" width="988" height="512" rx="10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="6 3"/>
-  <rect x="69" y="969" width="120.4" height="13" fill="#111820"/>
-  <text x="74" y="978" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="9" letter-spacing="1.5" fill="#b39ddb">KNOWLEDGE ENGINE</text>
+  <circle cx="536" cy="1048.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="543" cy="1048.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="550" cy="1048.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="557" cy="1048.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="564" cy="1048.5" r="1.5" fill="#2a3f5a"/>
+  <rect x="56" y="1060" width="988" height="602" rx="10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="6 3"/>
+  <rect x="69" y="1041" width="120.4" height="13" fill="#111820"/>
+  <text x="74" y="1050" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="9" letter-spacing="1.5" fill="#b39ddb">KNOWLEDGE ENGINE</text>
   <g>
-    <rect x="74" y="1006" width="952" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="74" y="1006" width="952" height="2" rx="10" fill="#b39ddb"/>
-    <text x="550" y="1038" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="74" y="1078" width="952" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="74" y="1078" width="952" height="2" rx="10" fill="#b39ddb"/>
+    <text x="550" y="1110" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#b39ddb">◆</tspan> KnowledgeEngine
     </text>
-    <text x="550" y="1054" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">Central facade — loads cards, orchestrates index builds, decomposes into provider + backends for tool wiring
+    <text x="550" y="1126" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="550" dy="0">Central facade — loads cards, orchestrates index builds, decomposes into provider + backends for tool wiring</tspan>
     </text>
-    <rect x="509" y="1062" width="82" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="517" y="1074" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">async build
+    <rect x="509" y="1134" width="82" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="517" y="1146" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">async build
     </text>
   </g>
-  <circle cx="536" cy="1147.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="543" cy="1147.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="550" cy="1147.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="557" cy="1147.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="564" cy="1147.5" r="1.5" fill="#2a3f5a"/>
-  <text x="78" y="1169" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">BACKENDS</text>
+  <circle cx="536" cy="1219.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="543" cy="1219.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="550" cy="1219.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="557" cy="1219.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="564" cy="1219.5" r="1.5" fill="#2a3f5a"/>
+  <text x="78" y="1241" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">BACKENDS</text>
   <g>
-    <rect x="74" y="1179" width="229" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="74" y="1179" width="229" height="2" rx="10" fill="#b39ddb"/>
-    <text x="94" y="1211" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="74" y="1251" width="229" height="130" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="74" y="1251" width="229" height="2" rx="10" fill="#b39ddb"/>
+    <text x="94" y="1283" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#b39ddb">◆</tspan> InMemoryProvider
     </text>
-    <text x="94" y="1227" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">HashMap-backed card store with filtered listing and category grouping
+    <text x="94" y="1299" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="94" dy="0">HashMap-backed card store with</tspan>
+      <tspan x="94" dy="18">filtered listing and category</tspan>
+      <tspan x="94" dy="18">grouping</tspan>
     </text>
-    <rect x="94" y="1235" width="130" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="102" y="1247" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">ContentItemProvider
+    <rect x="94" y="1343" width="130" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="102" y="1355" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">ContentItemProvider
     </text>
   </g>
   <g>
-    <rect x="315" y="1179" width="229" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="315" y="1179" width="229" height="2" rx="10" fill="#b39ddb"/>
-    <text x="335" y="1211" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="315" y="1251" width="229" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="315" y="1251" width="229" height="2" rx="10" fill="#b39ddb"/>
+    <text x="335" y="1283" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#b39ddb">◆</tspan> FTS Backend
     </text>
-    <text x="335" y="1227" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">Tantivy full-text search over cards and source documents
+    <text x="335" y="1299" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="335" dy="0">Tantivy full-text search over</tspan>
+      <tspan x="335" dy="18">cards and source documents</tspan>
     </text>
-    <rect x="335" y="1235" width="76" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="343" y="1247" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk-fts
+    <rect x="335" y="1325" width="76" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="343" y="1337" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk-fts
     </text>
-    <rect x="417" y="1235" width="58" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="425" y="1247" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Tantivy
+    <rect x="417" y="1325" width="58" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="425" y="1337" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Tantivy
     </text>
   </g>
   <g>
-    <rect x="556" y="1179" width="229" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="556" y="1179" width="229" height="2" rx="10" fill="#b39ddb"/>
-    <text x="576" y="1211" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="556" y="1251" width="229" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="556" y="1251" width="229" height="2" rx="10" fill="#b39ddb"/>
+    <text x="576" y="1283" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#b39ddb">◆</tspan> Graph Backend
     </text>
-    <text x="576" y="1227" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">In-memory knowledge graph with rkyv serialisation cache
+    <text x="576" y="1299" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="576" dy="0">In-memory knowledge graph with</tspan>
+      <tspan x="576" dy="18">rkyv serialisation cache</tspan>
     </text>
-    <rect x="576" y="1235" width="88" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="584" y="1247" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk-graph
+    <rect x="576" y="1325" width="88" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="584" y="1337" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk-graph
     </text>
-    <rect x="670" y="1235" width="40" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="678" y="1247" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">rkyv
+    <rect x="670" y="1325" width="40" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="678" y="1337" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">rkyv
     </text>
   </g>
   <g>
-    <rect x="797" y="1179" width="229" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="797" y="1179" width="229" height="2" rx="10" fill="#b39ddb"/>
-    <text x="817" y="1211" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="797" y="1251" width="229" height="130" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="797" y="1251" width="229" height="2" rx="10" fill="#b39ddb"/>
+    <text x="817" y="1283" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#b39ddb">◆</tspan> Vector Backend
     </text>
-    <text x="817" y="1227" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">LanceDB vector store with FastEmbed embeddings (bge-small-en-v1.5, 384d)
+    <text x="817" y="1299" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="817" dy="0">LanceDB vector store with</tspan>
+      <tspan x="817" dy="18">FastEmbed embeddings</tspan>
+      <tspan x="817" dy="18">(bge-small-en-v1.5, 384d)</tspan>
     </text>
-    <rect x="817" y="1235" width="94" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="825" y="1247" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk-vector
+    <rect x="817" y="1343" width="94" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="825" y="1355" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk-vector
     </text>
-    <rect x="917" y="1235" width="58" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="925" y="1247" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">LanceDB
+    <rect x="917" y="1343" width="58" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="925" y="1355" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">LanceDB
     </text>
   </g>
-  <circle cx="536" cy="1320.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="543" cy="1320.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="550" cy="1320.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="557" cy="1320.5" r="1.5" fill="#2a3f5a"/>
-  <circle cx="564" cy="1320.5" r="1.5" fill="#2a3f5a"/>
-  <text x="78" y="1342" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">ADAPTERS</text>
+  <circle cx="536" cy="1428.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="543" cy="1428.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="550" cy="1428.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="557" cy="1428.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="564" cy="1428.5" r="1.5" fill="#2a3f5a"/>
+  <text x="78" y="1450" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">ADAPTERS</text>
   <g>
-    <rect x="74" y="1352" width="309.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="74" y="1352" width="309.33334" height="2" rx="10" fill="#4dd0e1"/>
-    <text x="94" y="1384" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="74" y="1460" width="309.33334" height="148" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="74" y="1460" width="309.33334" height="2" rx="10" fill="#4dd0e1"/>
+    <text x="94" y="1492" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#4dd0e1">◆</tspan> GraphExtractor
     </text>
-    <text x="94" y="1400" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">Extracts nodes (slug, concept, category, tier) and edges (prerequisites, extends, related, contrasts, harmonisation) from card frontmatter
+    <text x="94" y="1508" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="94" dy="0">Extracts nodes (slug, concept, category,</tspan>
+      <tspan x="94" dy="18">tier) and edges (prerequisites, extends,</tspan>
+      <tspan x="94" dy="18">related, contrasts, harmonisation) from card</tspan>
+      <tspan x="94" dy="18">frontmatter</tspan>
     </text>
-    <rect x="94" y="1408" width="184" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="102" y="1420" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk_graph::GraphExtractor
+    <rect x="94" y="1570" width="184" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="102" y="1582" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk_graph::GraphExtractor
     </text>
   </g>
   <g>
-    <rect x="395.33334" y="1352" width="309.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="395.33334" y="1352" width="309.33334" height="2" rx="10" fill="#4dd0e1"/>
-    <text x="415.33334" y="1384" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="395.33334" y="1460" width="309.33334" height="130" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="395.33334" y="1460" width="309.33334" height="2" rx="10" fill="#4dd0e1"/>
+    <text x="415.33334" y="1492" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#4dd0e1">◆</tspan> DocumentExtractor
     </text>
-    <text x="415.33334" y="1400" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">Two impls — card extractor (rich metadata) and source doc extractor (chapter-level) for FTS indexing
+    <text x="415.33334" y="1508" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="415.33334" dy="0">Two impls — card extractor (rich metadata)</tspan>
+      <tspan x="415.33334" dy="18">and source doc extractor (chapter-level) for</tspan>
+      <tspan x="415.33334" dy="18">FTS indexing</tspan>
     </text>
-    <rect x="415.33334" y="1408" width="190" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="423.33334" y="1420" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk_fts::DocumentExtractor
+    <rect x="415.33334" y="1552" width="190" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="423.33334" y="1564" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk_fts::DocumentExtractor
     </text>
   </g>
   <g>
-    <rect x="716.6667" y="1352" width="309.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="716.6667" y="1352" width="309.33334" height="2" rx="10" fill="#4dd0e1"/>
-    <text x="736.6667" y="1384" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="716.6667" y="1460" width="309.33334" height="130" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="716.6667" y="1460" width="309.33334" height="2" rx="10" fill="#4dd0e1"/>
+    <text x="736.6667" y="1492" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#4dd0e1">◆</tspan> VectorExtractor
     </text>
-    <text x="736.6667" y="1400" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">Composes embedding text from concept, category, aliases, quick definition, and body excerpt
+    <text x="736.6667" y="1508" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="736.6667" dy="0">Composes embedding text from concept,</tspan>
+      <tspan x="736.6667" dy="18">category, aliases, quick definition, and</tspan>
+      <tspan x="736.6667" dy="18">body excerpt</tspan>
     </text>
-    <rect x="736.6667" y="1408" width="196" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="744.6667" y="1420" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk_vector::VectorExtractor
+    <rect x="736.6667" y="1552" width="196" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="744.6667" y="1564" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">fabryk_vector::VectorExtractor
     </text>
   </g>
-  <text x="348.2" y="1597" font-family="'JetBrains Mono', monospace" font-size="9" fill="#2a3f5a">↓</text>
-  <text x="369.40002" y="1597" font-family="'JetBrains Mono', monospace" font-size="9" fill="#5a6a7a">glob *.md + parse YAML frontmatter</text>
-  <text x="601" y="1597" font-family="'JetBrains Mono', monospace" font-size="9" fill="#2a3f5a">↓</text>
-  <text x="622.2" y="1597" font-family="'JetBrains Mono', monospace" font-size="9" fill="#5a6a7a">index content at startup</text>
-  <text x="36" y="1615" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">CONTENT DATA</text>
+  <text x="348.2" y="1759" font-family="'JetBrains Mono', monospace" font-size="9" fill="#2a3f5a">↓</text>
+  <text x="369.40002" y="1759" font-family="'JetBrains Mono', monospace" font-size="9" fill="#5a6a7a">glob *.md + parse YAML frontmatter</text>
+  <text x="601" y="1759" font-family="'JetBrains Mono', monospace" font-size="9" fill="#2a3f5a">↓</text>
+  <text x="622.2" y="1759" font-family="'JetBrains Mono', monospace" font-size="9" fill="#5a6a7a">index content at startup</text>
+  <text x="36" y="1777" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">CONTENT DATA</text>
   <g>
-    <rect x="32" y="1625" width="512" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="32" y="1625" width="512" height="2" rx="10" fill="#ef5350"/>
-    <text x="52" y="1657" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="32" y="1787" width="512" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="32" y="1787" width="512" height="2" rx="10" fill="#ef5350"/>
+    <text x="52" y="1819" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#ef5350">◯</tspan> Concept Cards
     </text>
-    <text x="52" y="1673" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">1,139 harmonised markdown files with rich YAML frontmatter — graph nodes, relationships, aliases, tiers
+    <text x="52" y="1835" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="52" dy="0">1,139 harmonised markdown files with rich YAML frontmatter — graph nodes,</tspan>
+      <tspan x="52" dy="18">relationships, aliases, tiers</tspan>
     </text>
-    <rect x="52" y="1681" width="166" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="60" y="1693" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">concept-cards/harmonised/
+    <rect x="52" y="1861" width="166" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="60" y="1873" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">concept-cards/harmonised/
     </text>
   </g>
   <g>
-    <rect x="556" y="1625" width="512" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="556" y="1625" width="512" height="2" rx="10" fill="#ef5350"/>
-    <text x="576" y="1657" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="556" y="1787" width="512" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="556" y="1787" width="512" height="2" rx="10" fill="#ef5350"/>
+    <text x="576" y="1819" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#ef5350">◯</tspan> Source Documents
     </text>
-    <text x="576" y="1673" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">~97 MB of chapter-level markdown across 8 corpora for deep full-text and vector search
+    <text x="576" y="1835" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="576" dy="0">~97 MB of chapter-level markdown across 8 corpora for deep full-text and</tspan>
+      <tspan x="576" dy="18">vector search</tspan>
     </text>
-    <rect x="576" y="1681" width="82" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="584" y="1693" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">sources-md/
+    <rect x="576" y="1861" width="82" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="584" y="1873" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">sources-md/
     </text>
-    <rect x="664" y="1681" width="70" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="672" y="1693" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">8 corpora
+    <rect x="664" y="1861" width="70" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="672" y="1873" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">8 corpora
     </text>
   </g>
-  <line x1="550" y1="1759" x2="550" y2="1787" stroke="url(#connector-grad)" stroke-width="2" marker-end="url(#arrowhead)"/>
-  <text x="534" y="1776.3334" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">on-disk markdown + YAML
+  <line x1="550" y1="1939" x2="550" y2="1967" stroke="url(#connector-grad)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="534" y="1956.3334" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">on-disk markdown + YAML
   </text>
-  <text x="36" y="1801" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">EXTERNAL SERVICES</text>
+  <text x="36" y="1981" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">EXTERNAL SERVICES</text>
   <g>
-    <rect x="32" y="1811" width="512" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="32" y="1811" width="512" height="2" rx="10" fill="#4dd0e1"/>
-    <text x="52" y="1843" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="32" y="1991" width="512" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="32" y="1991" width="512" height="2" rx="10" fill="#4dd0e1"/>
+    <text x="52" y="2023" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#4dd0e1">◯</tspan> Google OAuth2
     </text>
-    <text x="52" y="1859" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">JWKS public keys and userinfo endpoint for token validation and domain-scoped access control
+    <text x="52" y="2039" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="52" dy="0">JWKS public keys and userinfo endpoint for token validation and domain-scoped</tspan>
+      <tspan x="52" dy="18">access control</tspan>
     </text>
-    <rect x="52" y="1867" width="40" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="60" y="1879" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">JWKS
+    <rect x="52" y="2065" width="40" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="60" y="2077" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">JWKS
     </text>
-    <rect x="98" y="1867" width="100" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="106" y="1879" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">OpenID Connect
+    <rect x="98" y="2065" width="100" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="106" y="2077" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">OpenID Connect
     </text>
   </g>
   <g>
-    <rect x="556" y="1811" width="512" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
-    <rect x="556" y="1811" width="512" height="2" rx="10" fill="#4dd0e1"/>
-    <text x="576" y="1843" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+    <rect x="556" y="1991" width="512" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="556" y="1991" width="512" height="2" rx="10" fill="#4dd0e1"/>
+    <text x="576" y="2023" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
       <tspan fill="#4dd0e1">◯</tspan> Fabryk Crate Ecosystem
     </text>
-    <text x="576" y="1859" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">Shared Rust libraries (core, content, fts, graph, vector, mcp, auth) providing reusable knowledge infrastructure
+    <text x="576" y="2039" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="576" dy="0">Shared Rust libraries (core, content, fts, graph, vector, mcp, auth) providing</tspan>
+      <tspan x="576" dy="18">reusable knowledge infrastructure</tspan>
     </text>
-    <rect x="576" y="1867" width="106" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="584" y="1879" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">~/lab/oxur/ecl/
+    <rect x="576" y="2065" width="106" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="584" y="2077" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">~/lab/oxur/ecl/
     </text>
-    <rect x="688" y="1867" width="70" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    <text x="696" y="1879" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">path deps
+    <rect x="688" y="2065" width="70" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="696" y="2077" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">path deps
     </text>
   </g>
-  <rect x="169" y="1981" width="10" height="10" rx="3" fill="#4fc3f7"/>
-  <text x="185" y="1990" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">MCP Clients
+  <rect x="169" y="2179" width="10" height="10" rx="3" fill="#4fc3f7"/>
+  <text x="185" y="2188" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">MCP Clients
   </text>
-  <rect x="275" y="1981" width="10" height="10" rx="3" fill="#3ddc84"/>
-  <text x="291" y="1990" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Transport &amp; Server
+  <rect x="275" y="2179" width="10" height="10" rx="3" fill="#3ddc84"/>
+  <text x="291" y="2188" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Transport &amp; Server
   </text>
-  <rect x="423" y="1981" width="10" height="10" rx="3" fill="#ffb74d"/>
-  <text x="439" y="1990" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Tool Registries
+  <rect x="423" y="2179" width="10" height="10" rx="3" fill="#ffb74d"/>
+  <text x="439" y="2188" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Tool Registries
   </text>
-  <rect x="553" y="1981" width="10" height="10" rx="3" fill="#b39ddb"/>
-  <text x="569" y="1990" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Knowledge Engine
+  <rect x="553" y="2179" width="10" height="10" rx="3" fill="#b39ddb"/>
+  <text x="569" y="2188" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Knowledge Engine
   </text>
-  <rect x="689" y="1981" width="10" height="10" rx="3" fill="#4dd0e1"/>
-  <text x="705" y="1990" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Adapters &amp; External
+  <rect x="689" y="2179" width="10" height="10" rx="3" fill="#4dd0e1"/>
+  <text x="705" y="2188" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Adapters &amp; External
   </text>
-  <rect x="843" y="1981" width="10" height="10" rx="3" fill="#ef5350"/>
-  <text x="859" y="1990" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Content Data
+  <rect x="843" y="2179" width="10" height="10" rx="3" fill="#ef5350"/>
+  <text x="859" y="2188" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Content Data
   </text>
 </svg>

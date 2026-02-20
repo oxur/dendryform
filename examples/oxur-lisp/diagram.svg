@@ -1,0 +1,454 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 2267" width="1100" height="2267">
+  <rect width="100%" height="100%" fill="#0a0e14"/>
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&amp;family=DM+Sans:wght@300;400;500;600;700&amp;display=swap');
+    </style>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="4" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+      <polygon points="0 0, 8 3, 0 6" fill="#1e2a3a"/>
+    </marker>
+    <linearGradient id="connector-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a3f5a"/>
+      <stop offset="100%" stop-color="#1e2a3a"/>
+    </linearGradient>
+  </defs>
+  <text x="550" y="76" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-weight="600" font-size="28" fill="#e8edf3">
+    <tspan fill="#3ddc84">oxur</tspan> · language architecture
+  </text>
+  <text x="550" y="97" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-weight="300" font-size="13" fill="#5a6a7a">lisp dialect compiling to rust via a 6-stage pipeline
+  </text>
+  <text x="36" y="163" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">SOURCE INPUT</text>
+  <g>
+    <rect x="32" y="173" width="1036" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="32" y="173" width="1036" height="2" rx="10" fill="#4fc3f7"/>
+    <text x="550" y="205" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#4fc3f7">◇</tspan> Oxur Source (.oxr)
+    </text>
+    <text x="550" y="221" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="550" dy="0">Lisp syntax with macros, sugar, and Rust interop</tspan>
+    </text>
+    <rect x="462" y="229" width="94" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="470" y="241" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">S-expressions
+    </text>
+    <rect x="562" y="229" width="76" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="570" y="241" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Homoiconic
+    </text>
+  </g>
+  <line x1="550" y1="307" x2="550" y2="335" stroke="url(#connector-grad)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="534" y="324.33334" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">raw text
+  </text>
+  <rect x="32" y="339" width="1036" height="682" rx="14" fill="rgba(17,24,32,0.5)" stroke="#1e2a3a" stroke-width="1"/>
+  <rect x="51" y="319" width="210" height="14" fill="#0a0e14"/>
+  <text x="56" y="329" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#3ddc84">OXUR COMPILATION PIPELINE</text>
+  <rect x="56" y="363" width="988" height="184" rx="10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="6 3"/>
+  <rect x="69" y="344" width="148" height="13" fill="#111820"/>
+  <text x="74" y="353" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="9" letter-spacing="1.5" fill="#3ddc84">OXUR-LANG (FRONTEND)</text>
+  <g>
+    <rect x="74" y="381" width="470" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="74" y="381" width="470" height="2" rx="10" fill="#3ddc84"/>
+    <text x="94" y="413" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#3ddc84">◈</tspan> Stage 1: Parse
+    </text>
+    <text x="94" y="429" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="94" dy="0">Lexer and reader convert raw text to Surface Forms with source position</tspan>
+      <tspan x="94" dy="18">tracking</tspan>
+    </text>
+    <rect x="94" y="455" width="70" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="102" y="467" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Tokenizer
+    </text>
+    <rect x="170" y="455" width="94" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="178" y="467" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Reader Macros
+    </text>
+  </g>
+  <g>
+    <rect x="556" y="381" width="470" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="556" y="381" width="470" height="2" rx="10" fill="#3ddc84"/>
+    <text x="576" y="413" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#3ddc84">◈</tspan> Stage 2: Expand
+    </text>
+    <text x="576" y="429" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="576" dy="0">Macro expansion and desugaring produce Core Forms (the stable IR)</tspan>
+    </text>
+    <rect x="576" y="437" width="100" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="584" y="449" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Macro Expander
+    </text>
+    <rect x="682" y="437" width="94" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="690" y="449" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Core Forms IR
+    </text>
+  </g>
+  <circle cx="536" cy="594.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="543" cy="594.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="550" cy="594.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="557" cy="594.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="564" cy="594.5" r="1.5" fill="#2a3f5a"/>
+  <rect x="56" y="606" width="988" height="184" rx="10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="6 3"/>
+  <rect x="69" y="587" width="141.1" height="13" fill="#111820"/>
+  <text x="74" y="596" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="9" letter-spacing="1.5" fill="#b39ddb">OXUR-COMP (BACKEND)</text>
+  <g>
+    <rect x="74" y="624" width="470" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="74" y="624" width="470" height="2" rx="10" fill="#b39ddb"/>
+    <text x="94" y="656" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#b39ddb">◆</tspan> Stage 3: Lower
+    </text>
+    <text x="94" y="672" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="94" dy="0">Crosses semantic boundary from Lisp concepts to Rust concepts in</tspan>
+      <tspan x="94" dy="18">S-expression form (Oxur AST)</tspan>
+    </text>
+    <rect x="94" y="698" width="118.00001" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="102" y="710" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Semantic Lowering
+    </text>
+  </g>
+  <g>
+    <rect x="556" y="624" width="470" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="556" y="624" width="470" height="2" rx="10" fill="#b39ddb"/>
+    <text x="576" y="656" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#b39ddb">◆</tspan> Stage 4: De-S-expression
+    </text>
+    <text x="576" y="672" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="576" dy="0">Converts Oxur AST S-expressions to syn crate Rust AST structures via</tspan>
+      <tspan x="576" dy="18">oxur-ast builders</tspan>
+    </text>
+    <rect x="576" y="698" width="64" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="584" y="710" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">oxur-ast
+    </text>
+    <rect x="646" y="698" width="34" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="654" y="710" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">syn
+    </text>
+  </g>
+  <circle cx="536" cy="837.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="543" cy="837.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="550" cy="837.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="557" cy="837.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="564" cy="837.5" r="1.5" fill="#2a3f5a"/>
+  <g>
+    <rect x="56" y="849" width="488" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="56" y="849" width="488" height="2" rx="10" fill="#ffb74d"/>
+    <text x="76" y="881" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#ffb74d">◈</tspan> Stage 5: Generate
+    </text>
+    <text x="76" y="897" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="76" dy="0">Pretty-prints Rust source from syn AST (fast via quote or pretty via</tspan>
+      <tspan x="76" dy="18">prettyplease)</tspan>
+    </text>
+    <rect x="76" y="923" width="46" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="84" y="935" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">quote
+    </text>
+    <rect x="128" y="923" width="88" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="136" y="935" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">prettyplease
+    </text>
+  </g>
+  <g>
+    <rect x="556" y="849" width="488" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="556" y="849" width="488" height="2" rx="10" fill="#ffb74d"/>
+    <text x="576" y="881" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#ffb74d">◈</tspan> Stage 6: Compile
+    </text>
+    <text x="576" y="897" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="576" dy="0">Delegates to rustc for type checking, borrow checking, LLVM codegen, and</tspan>
+      <tspan x="576" dy="18">native binary output</tspan>
+    </text>
+    <rect x="576" y="923" width="46" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="584" y="935" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">rustc
+    </text>
+    <rect x="628" y="923" width="46" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="636" y="935" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">cargo
+    </text>
+    <rect x="680" y="923" width="40" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="688" y="935" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">LLVM
+    </text>
+  </g>
+  <text x="362.2" y="1058" font-family="'JetBrains Mono', monospace" font-size="9" fill="#2a3f5a">↓</text>
+  <text x="383.40002" y="1058" font-family="'JetBrains Mono', monospace" font-size="9" fill="#5a6a7a">source tracking</text>
+  <text x="512.4" y="1058" font-family="'JetBrains Mono', monospace" font-size="9" fill="#2a3f5a">↓</text>
+  <text x="533.60004" y="1058" font-family="'JetBrains Mono', monospace" font-size="9" fill="#5a6a7a">AST bridge</text>
+  <text x="635.60004" y="1058" font-family="'JetBrains Mono', monospace" font-size="9" fill="#2a3f5a">↓</text>
+  <text x="656.80005" y="1058" font-family="'JetBrains Mono', monospace" font-size="9" fill="#5a6a7a">REPL evaluation</text>
+  <text x="36" y="1076" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">FOUNDATION AND TOOLING</text>
+  <rect x="32" y="1086" width="1036" height="646" rx="14" fill="rgba(17,24,32,0.5)" stroke="#1e2a3a" stroke-width="1"/>
+  <rect x="51" y="1066" width="146" height="14" fill="#0a0e14"/>
+  <text x="56" y="1076" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#4dd0e1">SUPPORTING CRATES</text>
+  <g>
+    <rect x="56" y="1110" width="321.33334" height="130" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="56" y="1110" width="321.33334" height="2" rx="10" fill="#4dd0e1"/>
+    <text x="76" y="1142" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#4dd0e1">◆</tspan> oxur-smap
+    </text>
+    <text x="76" y="1158" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="76" dy="0">Multi-stage source mapping tracks Node IDs</tspan>
+      <tspan x="76" dy="18">through Surface, Core, and Rust</tspan>
+      <tspan x="76" dy="18">transformations for error translation</tspan>
+    </text>
+    <rect x="76" y="1202" width="52" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="84" y="1214" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">NodeId
+    </text>
+    <rect x="134" y="1202" width="70" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="142" y="1214" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">SourcePos
+    </text>
+    <rect x="210" y="1202" width="70" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="218" y="1214" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">SourceMap
+    </text>
+  </g>
+  <g>
+    <rect x="389.33334" y="1110" width="321.33334" height="130" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="389.33334" y="1110" width="321.33334" height="2" rx="10" fill="#4dd0e1"/>
+    <text x="409.33334" y="1142" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#4dd0e1">◆</tspan> oxur-ast (aster)
+    </text>
+    <text x="409.33334" y="1158" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="409.33334" dy="0">Bidirectional Rust AST to S-expression</tspan>
+      <tspan x="409.33334" dy="18">conversion with round-trip verification (95%</tspan>
+      <tspan x="409.33334" dy="18">complete)</tspan>
+    </text>
+    <rect x="409.33334" y="1202" width="34" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="417.33334" y="1214" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">syn
+    </text>
+    <rect x="449.33334" y="1202" width="94" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="457.33334" y="1214" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">S-expressions
+    </text>
+    <rect x="549.3334" y="1202" width="58" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="557.3334" y="1214" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Builder
+    </text>
+  </g>
+  <g>
+    <rect x="722.6667" y="1110" width="321.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="722.6667" y="1110" width="321.33334" height="2" rx="10" fill="#4dd0e1"/>
+    <text x="742.6667" y="1142" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#4dd0e1">◆</tspan> oxur-pretty (oxurfmt)
+    </text>
+    <text x="742.6667" y="1158" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="742.6667" dy="0">Configurable S-expression formatter with</tspan>
+      <tspan x="742.6667" dy="18">multiple layout strategies</tspan>
+    </text>
+    <rect x="742.6667" y="1184" width="70" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="750.6667" y="1196" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Formatter
+    </text>
+    <rect x="818.6667" y="1184" width="88" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="826.6667" y="1196" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Rules Engine
+    </text>
+  </g>
+  <circle cx="536" cy="1287.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="543" cy="1287.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="550" cy="1287.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="557" cy="1287.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="564" cy="1287.5" r="1.5" fill="#2a3f5a"/>
+  <rect x="56" y="1299" width="988" height="202" rx="10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="6 3"/>
+  <rect x="69" y="1280" width="237.70001" height="13" fill="#111820"/>
+  <text x="74" y="1289" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="9" letter-spacing="1.5" fill="#ffb74d">OXUR-REPL (INTERACTIVE EXECUTION)</text>
+  <g>
+    <rect x="74" y="1317" width="309.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="74" y="1317" width="309.33334" height="2" rx="10" fill="#ffb74d"/>
+    <text x="94" y="1349" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#ffb74d">◈</tspan> REPL Client
+    </text>
+    <text x="94" y="1365" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="94" dy="0">Thin protocol endpoint with terminal UI via</tspan>
+      <tspan x="94" dy="18">reedline and in-process or TCP transport</tspan>
+    </text>
+    <rect x="94" y="1391" width="64" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="102" y="1403" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">reedline
+    </text>
+    <rect x="164" y="1391" width="64" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="172" y="1403" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">postcard
+    </text>
+  </g>
+  <g>
+    <rect x="395.33334" y="1317" width="309.33334" height="130" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="395.33334" y="1317" width="309.33334" height="2" rx="10" fill="#ffb74d"/>
+    <text x="415.33334" y="1349" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#ffb74d">◈</tspan> REPL Server
+    </text>
+    <text x="415.33334" y="1365" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="415.33334" dy="0">Session manager with three-tier evaluation:</tspan>
+      <tspan x="415.33334" dy="18">calculator mode, cached compilation, and JIT</tspan>
+      <tspan x="415.33334" dy="18">subprocess</tspan>
+    </text>
+    <rect x="415.33334" y="1409" width="100" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="423.33334" y="1421" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">SessionManager
+    </text>
+    <rect x="521.3334" y="1409" width="100" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="529.3334" y="1421" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">CachedCompiler
+    </text>
+  </g>
+  <g>
+    <rect x="716.6667" y="1317" width="309.33334" height="130" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="716.6667" y="1317" width="309.33334" height="2" rx="10" fill="#ffb74d"/>
+    <text x="736.6667" y="1349" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#ffb74d">◈</tspan> Subprocess Executor
+    </text>
+    <text x="736.6667" y="1365" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="736.6667" dy="0">Isolated process for user code execution</tspan>
+      <tspan x="736.6667" dy="18">enabling Ctrl-C interruption and crash</tspan>
+      <tspan x="736.6667" dy="18">recovery</tspan>
+    </text>
+    <rect x="736.6667" y="1409" width="52" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="744.6667" y="1421" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">dlopen
+    </text>
+    <rect x="794.6667" y="1409" width="88" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="802.6667" y="1421" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">stdin/stdout
+    </text>
+  </g>
+  <circle cx="536" cy="1548.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="543" cy="1548.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="550" cy="1548.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="557" cy="1548.5" r="1.5" fill="#2a3f5a"/>
+  <circle cx="564" cy="1548.5" r="1.5" fill="#2a3f5a"/>
+  <g>
+    <rect x="56" y="1560" width="321.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="56" y="1560" width="321.33334" height="2" rx="10" fill="#4fc3f7"/>
+    <text x="76" y="1592" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#4fc3f7">◈</tspan> oxur-cli (oxur)
+    </text>
+    <text x="76" y="1608" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="76" dy="0">Unified CLI with common I/O, colored output,</tspan>
+      <tspan x="76" dy="18">progress tracking, and REPL integration</tspan>
+    </text>
+    <rect x="76" y="1634" width="40" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="84" y="1646" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">clap
+    </text>
+    <rect x="122" y="1634" width="58" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="130" y="1646" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">colored
+    </text>
+    <rect x="186" y="1634" width="52" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="194" y="1646" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">tabled
+    </text>
+  </g>
+  <g>
+    <rect x="389.33334" y="1560" width="321.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="389.33334" y="1560" width="321.33334" height="2" rx="10" fill="#4fc3f7"/>
+    <text x="409.33334" y="1592" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#4fc3f7">◈</tspan> cargo-oxur
+    </text>
+    <text x="409.33334" y="1608" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="409.33334" dy="0">Cargo subcommand for building Oxur projects</tspan>
+      <tspan x="409.33334" dy="18">with caching and project scanning</tspan>
+    </text>
+    <rect x="409.33334" y="1634" width="100" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="417.33334" y="1646" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">cargo metadata
+    </text>
+  </g>
+  <g>
+    <rect x="722.6667" y="1560" width="321.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="722.6667" y="1560" width="321.33334" height="2" rx="10" fill="#4fc3f7"/>
+    <text x="742.6667" y="1592" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#4fc3f7">◈</tspan> oxur-odm (odm)
+    </text>
+    <text x="742.6667" y="1608" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="742.6667" dy="0">Design document manager with state lifecycle</tspan>
+      <tspan x="742.6667" dy="18">tracking, git integration, and indexing</tspan>
+    </text>
+    <rect x="742.6667" y="1634" width="40" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="750.6667" y="1646" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">YAML
+    </text>
+    <rect x="788.6667" y="1634" width="34" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="796.6667" y="1646" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Git
+    </text>
+    <rect x="828.6667" y="1634" width="94" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="836.6667" y="1646" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">State Machine
+    </text>
+  </g>
+  <text x="410.3" y="1769" font-family="'JetBrains Mono', monospace" font-size="9" fill="#2a3f5a">↓</text>
+  <text x="431.5" y="1769" font-family="'JetBrains Mono', monospace" font-size="9" fill="#5a6a7a">Treebeard interpreter</text>
+  <text x="592.9" y="1769" font-family="'JetBrains Mono', monospace" font-size="9" fill="#2a3f5a">↓</text>
+  <text x="614.10004" y="1769" font-family="'JetBrains Mono', monospace" font-size="9" fill="#5a6a7a">tiered storage</text>
+  <text x="36" y="1787" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">RUNTIME (PLANNED)</text>
+  <g>
+    <rect x="32" y="1797" width="337.33334" height="130" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="32" y="1797" width="337.33334" height="2" rx="10" fill="#ef5350"/>
+    <text x="52" y="1829" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#ef5350">⬡</tspan> Treebeard Runtime
+    </text>
+    <text x="52" y="1845" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="52" dy="0">Tree-walking interpreter for syn AST with</tspan>
+      <tspan x="52" dy="18">LanguageFrontend trait, environment bindings, and</tspan>
+      <tspan x="52" dy="18">rustc escape hatch</tspan>
+    </text>
+    <rect x="52" y="1889" width="88" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="60" y="1901" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">syn AST eval
+    </text>
+    <rect x="146" y="1889" width="76" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="154" y="1901" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Value repr
+    </text>
+    <rect x="228" y="1889" width="34" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="236" y="1901" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">TCO
+    </text>
+  </g>
+  <g>
+    <rect x="381.33334" y="1797" width="337.33334" height="130" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="381.33334" y="1797" width="337.33334" height="2" rx="10" fill="#ef5350"/>
+    <text x="401.33334" y="1829" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#ef5350">⬡</tspan> Tiered Storage
+    </text>
+    <text x="401.33334" y="1845" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="401.33334" dy="0">Four-tier storage: in-memory (DashMap),</tspan>
+      <tspan x="401.33334" dy="18">persistent KV (redb), SQLite for history search,</tspan>
+      <tspan x="401.33334" dy="18">filesystem archive</tspan>
+    </text>
+    <rect x="401.33334" y="1889" width="58" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="409.33334" y="1901" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">DashMap
+    </text>
+    <rect x="465.33334" y="1889" width="40" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="473.33334" y="1901" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">redb
+    </text>
+    <rect x="511.33334" y="1889" width="52" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="519.3334" y="1901" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">SQLite
+    </text>
+  </g>
+  <g>
+    <rect x="730.6667" y="1797" width="337.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="730.6667" y="1797" width="337.33334" height="2" rx="10" fill="#ef5350"/>
+    <text x="750.6667" y="1829" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#ef5350">⬡</tspan> Macro System
+    </text>
+    <text x="750.6667" y="1845" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="750.6667" dy="0">Phased macro system: core macros (v1.0) with</tspan>
+      <tspan x="750.6667" dy="18">defmacro, quasiquote, gensym; user macros in v2.0</tspan>
+    </text>
+    <rect x="750.6667" y="1871" width="64" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="758.6667" y="1883" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Hygienic
+    </text>
+    <rect x="820.6667" y="1871" width="94" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="828.6667" y="1883" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Quote/Unquote
+    </text>
+  </g>
+  <line x1="550" y1="1967" x2="550" y2="1995" stroke="url(#connector-grad)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="534" y="1984.3334" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">native binary output
+  </text>
+  <text x="36" y="2009" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="10" letter-spacing="2" fill="#5a6a7a">OUTPUT</text>
+  <g>
+    <rect x="32" y="2019" width="1036" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
+    <rect x="32" y="2019" width="1036" height="2" rx="10" fill="#4fc3f7"/>
+    <text x="550" y="2051" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
+      <tspan fill="#4fc3f7">⬡</tspan> Native Binary / Library
+    </text>
+    <text x="550" y="2067" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
+      <tspan x="550" dy="0">Compiled Rust binary with full type safety, memory safety, LLVM optimizations, and access to the entire Rust crate ecosystem</tspan>
+    </text>
+    <rect x="448" y="2075" width="46" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="456" y="2087" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">rustc
+    </text>
+    <rect x="500" y="2075" width="40" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="508" y="2087" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">LLVM
+    </text>
+    <rect x="546" y="2075" width="106" height="14" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="554" y="2087" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Cargo ecosystem
+    </text>
+  </g>
+  <rect x="112" y="2189" width="10" height="10" rx="3" fill="#3ddc84"/>
+  <text x="128" y="2198" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Frontend (oxur-lang)
+  </text>
+  <rect x="272" y="2189" width="10" height="10" rx="3" fill="#b39ddb"/>
+  <text x="288" y="2198" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Backend (oxur-comp)
+  </text>
+  <rect x="426" y="2189" width="10" height="10" rx="3" fill="#ffb74d"/>
+  <text x="442" y="2198" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Codegen and REPL
+  </text>
+  <rect x="562" y="2189" width="10" height="10" rx="3" fill="#4dd0e1"/>
+  <text x="578" y="2198" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Foundation Crates
+  </text>
+  <rect x="704" y="2189" width="10" height="10" rx="3" fill="#4fc3f7"/>
+  <text x="720" y="2198" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">CLI Tooling and I/O
+  </text>
+  <rect x="858" y="2189" width="10" height="10" rx="3" fill="#ef5350"/>
+  <text x="874" y="2198" font-family="'JetBrains Mono', monospace" font-size="10" fill="#5a6a7a">Planned / In Design
+  </text>
+</svg>
