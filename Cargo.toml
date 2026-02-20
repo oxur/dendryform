@@ -18,6 +18,8 @@ edition = "2024"
 authors = ["Duncan"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/oxur/dendryform"
+keywords = ["architecture", "diagram", "visualization", "developer-tools"]
+categories = ["visualization"]
 
 [workspace.dependencies]
 # Serialization
@@ -55,8 +57,8 @@ authors.workspace = true
 license.workspace = true
 repository.workspace = true
 description = "Declarative software architecture diagrams — beautiful, dark-themed, simple schema"
-keywords = ["architecture", "diagram", "visualization", "developer-tools"]
-categories = ["visualization"]
+keywords.workspace = true
+categories.workspace = true
 readme = "README.md"
 
 [dependencies]

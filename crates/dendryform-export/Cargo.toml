@@ -6,6 +6,8 @@ authors.workspace = true
 license.workspace = true
 repository.workspace = true
 description = "Lossy exporters for dendryform (Structurizr DSL, JSON, Mermaid)"
+keywords.workspace = true
+categories.workspace = true
 
 [dependencies]
 dendryform-core.workspace = true
