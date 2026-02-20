@@ -550,3 +550,538 @@ fn write_legend(
 
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use dendryform_core::{
+        Color, Container, ContainerBorder, Diagram, DiagramHeader, FlowLabels, Layer, LegendEntry,
+        Node, NodeId, NodeKind, RawDiagram, Tech, Tier, TierLayout, Title,
+    };
+    use dendryform_layout::compute_layout;
+
+    fn test_node(id: &str, color: Color) -> Node {
+        Node::builder()
+            .id(NodeId::new(id).unwrap())
+            .kind(NodeKind::System)
+            .color(color)
+            .icon("\u{25c7}")
+            .title(id)
+            .description("test node")
+            .build()
+            .unwrap()
+    }
+
+    fn test_node_with_tech(id: &str, color: Color, techs: Vec<&str>) -> Node {
+        Node::builder()
+            .id(NodeId::new(id).unwrap())
+            .kind(NodeKind::System)
+            .color(color)
+            .icon("\u{25c7}")
+            .title(id)
+            .description("test node with tech")
+            .tech(techs.into_iter().map(Tech::new).collect())
+            .build()
+            .unwrap()
+    }
+
+    fn make_diagram(layers: Vec<Layer>, legend: Vec<LegendEntry>) -> Diagram {
+        let raw = RawDiagram {
+            diagram: DiagramHeader::new(Title::new("test", "accent"), "subtitle", "dark"),
+            layers,
+            legend,
+            edges: vec![],
+        };
+        Diagram::try_from(raw).unwrap()
+    }
+
+    #[test]
+    fn test_render_single_node_centered() {
+        let mut tier = Tier::new(
+            NodeId::new("main").unwrap(),
+            vec![test_node("app", Color::Blue)],
+        );
+        tier.set_layout(TierLayout::Single);
+        let diagram = make_diagram(vec![Layer::Tier(tier)], vec![]);
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        // Single node should use middle text-anchor
+        assert!(svg.contains("text-anchor=\"middle\""));
+        assert!(svg.contains("app"));
+    }
+
+    #[test]
+    fn test_render_node_with_tech_badges() {
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::new(
+                NodeId::new("main").unwrap(),
+                vec![test_node_with_tech(
+                    "app",
+                    Color::Blue,
+                    vec!["Rust", "axum"],
+                )],
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        assert!(svg.contains("Rust"));
+        assert!(svg.contains("axum"));
+        // Badge rects
+        assert!(svg.contains("rx=\"4\""));
+    }
+
+    #[test]
+    fn test_render_dashed_container() {
+        let container = Container::new(
+            "services",
+            ContainerBorder::Dashed,
+            Color::Purple,
+            vec![Layer::Tier(Tier::new(
+                NodeId::new("inner").unwrap(),
+                vec![test_node("svc", Color::Purple)],
+            ))],
+        );
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("svc-tier").unwrap(),
+                container,
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        assert!(svg.contains("stroke-dasharray=\"6 3\""));
+        assert!(svg.contains("SERVICES"));
+    }
+
+    #[test]
+    fn test_render_empty_legend() {
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::new(
+                NodeId::new("main").unwrap(),
+                vec![test_node("a", Color::Blue)],
+            ))],
+            vec![], // empty legend
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+        // Should not contain legend swatch rects (aside from node rects)
+        assert!(svg.contains("</svg>"));
+    }
+
+    #[test]
+    fn test_render_tier_with_label() {
+        let mut tier = Tier::new(
+            NodeId::new("main").unwrap(),
+            vec![test_node("a", Color::Blue)],
+        );
+        tier.set_label("My Section");
+        let diagram = make_diagram(vec![Layer::Tier(tier)], vec![]);
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        assert!(svg.contains("MY SECTION"));
+    }
+
+    #[test]
+    fn test_render_container_with_flow_labels() {
+        let container = Container::new(
+            "server",
+            ContainerBorder::Solid,
+            Color::Green,
+            vec![
+                Layer::Tier(Tier::new(
+                    NodeId::new("top").unwrap(),
+                    vec![test_node("a", Color::Green)],
+                )),
+                Layer::FlowLabels(FlowLabels::new(vec!["queries".to_owned()])),
+                Layer::Tier(Tier::new(
+                    NodeId::new("bottom").unwrap(),
+                    vec![test_node("b", Color::Green)],
+                )),
+            ],
+        );
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("server").unwrap(),
+                container,
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        assert!(svg.contains("queries"));
+    }
+
+    #[test]
+    fn test_render_multi_row_grid() {
+        let mut tier = Tier::new(
+            NodeId::new("grid").unwrap(),
+            vec![
+                test_node("a", Color::Blue),
+                test_node("b", Color::Blue),
+                test_node("c", Color::Blue),
+                test_node("d", Color::Green),
+                test_node("e", Color::Green),
+            ],
+        );
+        tier.set_layout(TierLayout::Grid { columns: 3 });
+        let diagram = make_diagram(vec![Layer::Tier(tier)], vec![]);
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        assert!(svg.contains("a"));
+        assert!(svg.contains("e"));
+    }
+
+    #[test]
+    fn test_render_empty_flow_labels_no_output() {
+        let container = Container::new(
+            "server",
+            ContainerBorder::Solid,
+            Color::Green,
+            vec![
+                Layer::Tier(Tier::new(
+                    NodeId::new("top").unwrap(),
+                    vec![test_node("a", Color::Green)],
+                )),
+                Layer::FlowLabels(FlowLabels::new(vec![])),
+                Layer::Tier(Tier::new(
+                    NodeId::new("bottom").unwrap(),
+                    vec![test_node("b", Color::Green)],
+                )),
+            ],
+        );
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("server").unwrap(),
+                container,
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+        // Should still render without error
+        assert!(svg.contains("</svg>"));
+    }
+
+    #[test]
+    fn test_render_legend_entries() {
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::new(
+                NodeId::new("main").unwrap(),
+                vec![test_node("a", Color::Blue)],
+            ))],
+            vec![
+                LegendEntry::new(Color::Blue, "Clients"),
+                LegendEntry::new(Color::Green, "Servers"),
+            ],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        // Legend should contain swatch rects and label text
+        assert!(svg.contains("Clients"));
+        assert!(svg.contains("Servers"));
+    }
+
+    #[test]
+    fn test_render_external_connector_with_label() {
+        use dendryform_core::{Connector, ConnectorStyle};
+
+        let diagram = make_diagram(
+            vec![
+                Layer::Tier(Tier::new(
+                    NodeId::new("top").unwrap(),
+                    vec![test_node("a", Color::Blue)],
+                )),
+                Layer::Connector(Connector::with_label(ConnectorStyle::Line, "HTTPS")),
+                Layer::Tier(Tier::new(
+                    NodeId::new("bottom").unwrap(),
+                    vec![test_node("b", Color::Green)],
+                )),
+            ],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        // External connector should have line and arrowhead marker
+        assert!(svg.contains("marker-end=\"url(#arrowhead)\""));
+        // Protocol label should appear
+        assert!(svg.contains("HTTPS"));
+        // Should use connector gradient
+        assert!(svg.contains("url(#connector-grad)"));
+    }
+
+    #[test]
+    fn test_render_external_connector_without_label() {
+        use dendryform_core::{Connector, ConnectorStyle};
+
+        let diagram = make_diagram(
+            vec![
+                Layer::Tier(Tier::new(
+                    NodeId::new("top").unwrap(),
+                    vec![test_node("a", Color::Blue)],
+                )),
+                Layer::Connector(Connector::new(ConnectorStyle::Line)),
+                Layer::Tier(Tier::new(
+                    NodeId::new("bottom").unwrap(),
+                    vec![test_node("b", Color::Green)],
+                )),
+            ],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        // Should have a line connector but no protocol label text
+        assert!(svg.contains("marker-end=\"url(#arrowhead)\""));
+    }
+
+    #[test]
+    fn test_render_internal_connector_dots() {
+        use dendryform_core::{Connector, ConnectorStyle};
+
+        let container = Container::new(
+            "server",
+            ContainerBorder::Solid,
+            Color::Green,
+            vec![
+                Layer::Tier(Tier::new(
+                    NodeId::new("top").unwrap(),
+                    vec![test_node("a", Color::Green)],
+                )),
+                Layer::Connector(Connector::new(ConnectorStyle::Dots)),
+                Layer::Tier(Tier::new(
+                    NodeId::new("bottom").unwrap(),
+                    vec![test_node("b", Color::Green)],
+                )),
+            ],
+        );
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("server").unwrap(),
+                container,
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        // Internal dots should produce circles
+        assert!(svg.contains("<circle"));
+    }
+
+    #[test]
+    fn test_render_single_node_with_tech_badges_centered() {
+        let mut tier = Tier::new(
+            NodeId::new("main").unwrap(),
+            vec![test_node_with_tech(
+                "app",
+                Color::Blue,
+                vec!["Rust", "axum"],
+            )],
+        );
+        tier.set_layout(TierLayout::Single);
+        let diagram = make_diagram(vec![Layer::Tier(tier)], vec![]);
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        // Single node with tech: centered badges and middle text-anchor
+        assert!(svg.contains("text-anchor=\"middle\""));
+        assert!(svg.contains("Rust"));
+        assert!(svg.contains("axum"));
+        assert!(svg.contains("rx=\"4\""));
+    }
+
+    #[test]
+    fn test_render_solid_container() {
+        let container = Container::new(
+            "backend",
+            ContainerBorder::Solid,
+            Color::Green,
+            vec![Layer::Tier(Tier::new(
+                NodeId::new("inner").unwrap(),
+                vec![test_node("api", Color::Green)],
+            ))],
+        );
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("outer").unwrap(),
+                container,
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        // Solid container should have fill and normal border stroke
+        assert!(svg.contains("rgba(17,24,32,0.5)"));
+        assert!(svg.contains("BACKEND"));
+    }
+
+    #[test]
+    fn test_render_top_level_flow_labels() {
+        let diagram = make_diagram(
+            vec![
+                Layer::Tier(Tier::new(
+                    NodeId::new("top").unwrap(),
+                    vec![test_node("a", Color::Blue)],
+                )),
+                Layer::FlowLabels(FlowLabels::new(vec![
+                    "SQL queries".to_owned(),
+                    "cache reads".to_owned(),
+                ])),
+                Layer::Tier(Tier::new(
+                    NodeId::new("bottom").unwrap(),
+                    vec![test_node("b", Color::Green)],
+                )),
+            ],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        // Flow labels should appear with arrow characters and text
+        assert!(svg.contains("SQL queries"));
+        assert!(svg.contains("cache reads"));
+        // Arrow character (down arrow)
+        assert!(svg.contains("\u{2193}"));
+    }
+
+    #[test]
+    fn test_render_tier_without_label() {
+        let tier = Tier::new(
+            NodeId::new("main").unwrap(),
+            vec![test_node("a", Color::Blue)],
+        );
+        let diagram = make_diagram(vec![Layer::Tier(tier)], vec![]);
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        // Should render nodes but no tier label text with letter-spacing
+        assert!(svg.contains("a"));
+        assert!(svg.contains("</svg>"));
+    }
+
+    #[test]
+    fn test_render_node_with_long_description_wraps() {
+        let node = Node::builder()
+            .id(NodeId::new("app").unwrap())
+            .kind(NodeKind::System)
+            .color(Color::Blue)
+            .icon("\u{25c7}")
+            .title("Application")
+            .description(
+                "This is a very long description that should wrap across multiple lines when rendered in the SVG output because the available width is limited",
+            )
+            .build()
+            .unwrap();
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::new(
+                NodeId::new("main").unwrap(),
+                vec![node],
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        // Multi-line description should produce multiple tspan elements with dy attribute
+        assert!(svg.contains("<tspan"));
+        assert!(svg.contains("Application"));
+    }
+
+    #[test]
+    fn test_render_container_with_connector_inside() {
+        use dendryform_core::{Connector, ConnectorStyle};
+
+        let container = Container::new(
+            "server",
+            ContainerBorder::Solid,
+            Color::Green,
+            vec![
+                Layer::Tier(Tier::new(
+                    NodeId::new("edge").unwrap(),
+                    vec![test_node("gateway", Color::Green)],
+                )),
+                Layer::Connector(Connector::new(ConnectorStyle::Dots)),
+                Layer::Tier(Tier::new(
+                    NodeId::new("core").unwrap(),
+                    vec![
+                        test_node("api", Color::Blue),
+                        test_node("auth", Color::Purple),
+                    ],
+                )),
+            ],
+        );
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("server").unwrap(),
+                container,
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        assert!(svg.contains("gateway"));
+        assert!(svg.contains("api"));
+        assert!(svg.contains("auth"));
+        assert!(svg.contains("<circle")); // dots connector
+        assert!(svg.contains("SERVER"));
+    }
+
+    #[test]
+    fn test_render_full_example_taproot() {
+        let yaml = include_str!("../../../examples/taproot/architecture.yaml");
+        let diagram: Diagram = dendryform_parse::parse_yaml(yaml).unwrap();
+        let plan = dendryform_layout::compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        // Verify it produces valid SVG
+        assert!(svg.starts_with("<svg"));
+        assert!(svg.contains("</svg>"));
+        // Check for key diagram elements
+        assert!(svg.contains("taproot"));
+        assert!(svg.contains("Streamable HTTP"));
+    }
+
+    #[test]
+    fn test_render_full_example_ai_kasu() {
+        let yaml = include_str!("../../../examples/ai-kasu/architecture.yaml");
+        let diagram: Diagram = dendryform_parse::parse_yaml(yaml).unwrap();
+        let plan = dendryform_layout::compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let svg = render_svg(&plan, &theme, 1100.0).unwrap();
+
+        assert!(svg.starts_with("<svg"));
+        assert!(svg.contains("</svg>"));
+        assert!(svg.contains("ai-kasu"));
+    }
+}

@@ -388,4 +388,103 @@ mod tests {
         let deserialized: Diagram = serde_json::from_str(&json).unwrap();
         assert_eq!(diagram, deserialized);
     }
+
+    #[test]
+    fn test_nesting_too_deep_rejected() {
+        // Build 5-deep nesting to exceed MAX_NESTING_DEPTH = 3.
+        // Depths: top(1) -> l1t(2) -> l2t(3) -> l3t(4) — depth 4 > 3, triggers error.
+        let deepest_tier = Tier::new(NodeId::new("deep").unwrap(), vec![test_node("d")]);
+        let level4 = Container::new(
+            "l4",
+            ContainerBorder::Dashed,
+            Color::Blue,
+            vec![Layer::Tier(deepest_tier)],
+        );
+        let level3 = Container::new(
+            "l3",
+            ContainerBorder::Dashed,
+            Color::Blue,
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("l3t").unwrap(),
+                level4,
+            ))],
+        );
+        let level2 = Container::new(
+            "l2",
+            ContainerBorder::Dashed,
+            Color::Blue,
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("l2t").unwrap(),
+                level3,
+            ))],
+        );
+        let level1 = Container::new(
+            "l1",
+            ContainerBorder::Dashed,
+            Color::Blue,
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("l1t").unwrap(),
+                level2,
+            ))],
+        );
+        let top_tier = Tier::with_container(NodeId::new("top").unwrap(), level1);
+
+        let raw = RawDiagram {
+            diagram: DiagramHeader::new(Title::new("test", "test"), "test", "dark"),
+            layers: vec![Layer::Tier(top_tier)],
+            legend: vec![],
+            edges: vec![],
+        };
+        let err = Diagram::try_from(raw).unwrap_err();
+        assert!(matches!(err, ValidationError::NestingTooDeep { .. }));
+    }
+
+    #[test]
+    fn test_diagram_accessors() {
+        let raw = simple_raw(
+            vec![test_node("app")],
+            vec![Edge::new(
+                NodeId::new("app").unwrap(),
+                NodeId::new("app").unwrap(),
+                EdgeKind::Uses,
+            )],
+        );
+        let diagram = Diagram::try_from(raw).unwrap();
+
+        assert_eq!(diagram.header().title().text(), "test");
+        assert_eq!(diagram.header().title().accent(), "test");
+        assert_eq!(diagram.header().subtitle(), "a test diagram");
+        assert_eq!(diagram.header().theme(), "dark");
+        assert_eq!(diagram.layers().len(), 1);
+        assert_eq!(diagram.edges().len(), 1);
+        assert!(diagram.legend().is_empty());
+    }
+
+    #[test]
+    fn test_nested_container_node_ids_collected() {
+        let container = Container::new(
+            "server",
+            ContainerBorder::Solid,
+            Color::Green,
+            vec![Layer::Tier(Tier::new(
+                NodeId::new("inner").unwrap(),
+                vec![test_node("api")],
+            ))],
+        );
+        let raw = RawDiagram {
+            diagram: DiagramHeader::new(Title::new("test", "test"), "test", "dark"),
+            layers: vec![Layer::Tier(Tier::with_container(
+                NodeId::new("server").unwrap(),
+                container,
+            ))],
+            legend: vec![],
+            edges: vec![Edge::new(
+                NodeId::new("api").unwrap(),
+                NodeId::new("api").unwrap(),
+                EdgeKind::Uses,
+            )],
+        };
+        // Edge referencing nested "api" should pass validation
+        assert!(Diagram::try_from(raw).is_ok());
+    }
 }

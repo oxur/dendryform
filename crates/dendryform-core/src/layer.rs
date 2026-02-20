@@ -156,4 +156,74 @@ mod tests {
         let msg = format!("{err}");
         assert!(msg.contains("unknown"));
     }
+
+    #[test]
+    fn test_deserialize_empty_map_rejected() {
+        let json = "{}";
+        let err = serde_json::from_str::<Layer>(json).unwrap_err();
+        let msg = format!("{err}");
+        assert!(msg.contains("expected a layer variant key"));
+    }
+
+    #[test]
+    fn test_flow_labels_items_accessor() {
+        let labels = FlowLabels::new(vec!["a".to_owned(), "b".to_owned(), "c".to_owned()]);
+        assert_eq!(labels.items().len(), 3);
+        assert_eq!(labels.items()[0], "a");
+        assert_eq!(labels.items()[2], "c");
+    }
+
+    #[test]
+    fn test_flow_labels_serde_round_trip() {
+        let labels = FlowLabels::new(vec!["SQL queries".to_owned()]);
+        let json = serde_json::to_string(&labels).unwrap();
+        let deserialized: FlowLabels = serde_json::from_str(&json).unwrap();
+        assert_eq!(labels, deserialized);
+    }
+
+    #[test]
+    fn test_layer_debug() {
+        let labels = FlowLabels::new(vec!["test".to_owned()]);
+        let layer = Layer::FlowLabels(labels);
+        let debug = format!("{layer:?}");
+        assert!(debug.contains("FlowLabels"));
+    }
+
+    #[test]
+    fn test_layer_clone_eq() {
+        let conn = Connector::new(ConnectorStyle::Line);
+        let layer = Layer::Connector(conn);
+        let cloned = layer.clone();
+        assert_eq!(layer, cloned);
+    }
+
+    #[test]
+    fn test_deserialize_from_non_map_type_rejected() {
+        // Try to deserialize from a JSON array (not a map)
+        let json = r#"["tier", {}]"#;
+        let err = serde_json::from_str::<Layer>(json).unwrap_err();
+        let msg = format!("{err}");
+        // The expecting() method should describe what was expected
+        assert!(
+            msg.contains("tier")
+                || msg.contains("connector")
+                || msg.contains("flow_labels")
+                || msg.contains("map")
+                || msg.contains("invalid type")
+        );
+    }
+
+    #[test]
+    fn test_deserialize_from_string_rejected() {
+        let json = r#""tier""#;
+        let err = serde_json::from_str::<Layer>(json).unwrap_err();
+        let msg = format!("{err}");
+        assert!(msg.contains("invalid type") || msg.contains("map"));
+    }
+
+    #[test]
+    fn test_flow_labels_empty() {
+        let labels = FlowLabels::new(vec![]);
+        assert!(labels.items().is_empty());
+    }
 }

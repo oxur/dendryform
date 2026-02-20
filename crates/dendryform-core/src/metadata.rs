@@ -85,4 +85,46 @@ mod tests {
         let deserialized: Metadata = serde_json::from_str(&json).unwrap();
         assert_eq!(meta, deserialized);
     }
+
+    #[test]
+    fn test_iter() {
+        let mut meta = Metadata::new();
+        meta.insert("a", "1");
+        meta.insert("b", "2");
+        let pairs: Vec<_> = meta.iter().collect();
+        assert_eq!(pairs.len(), 2);
+    }
+
+    #[test]
+    fn test_insert_returns_previous() {
+        let mut meta = Metadata::new();
+        let prev = meta.insert("key", "value1");
+        assert!(prev.is_none());
+        let prev = meta.insert("key", "value2");
+        assert_eq!(prev, Some("value1".to_owned()));
+        assert_eq!(meta.get("key"), Some("value2"));
+    }
+
+    #[test]
+    fn test_default() {
+        let meta = Metadata::default();
+        assert!(meta.is_empty());
+        assert_eq!(meta.len(), 0);
+    }
+
+    #[test]
+    fn test_debug() {
+        let mut meta = Metadata::new();
+        meta.insert("k", "v");
+        let debug = format!("{meta:?}");
+        assert!(debug.contains("Metadata"));
+    }
+
+    #[test]
+    fn test_clone_eq() {
+        let mut meta = Metadata::new();
+        meta.insert("x", "y");
+        let cloned = meta.clone();
+        assert_eq!(meta, cloned);
+    }
 }

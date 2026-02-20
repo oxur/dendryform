@@ -151,4 +151,30 @@ mod tests {
         let result: Result<NodeId, _> = serde_json::from_str("\"Has Spaces\"");
         assert!(result.is_err());
     }
+
+    #[test]
+    fn test_as_str() {
+        let id = NodeId::new("my-node").unwrap();
+        assert_eq!(id.as_str(), "my-node");
+    }
+
+    #[test]
+    fn test_clone_and_hash() {
+        use std::collections::HashSet;
+        let id = NodeId::new("x").unwrap();
+        let cloned = id.clone();
+        assert_eq!(id, cloned);
+
+        let mut set = HashSet::new();
+        set.insert(id);
+        set.insert(cloned);
+        assert_eq!(set.len(), 1);
+    }
+
+    #[test]
+    fn test_dots_and_underscores_valid() {
+        assert!(NodeId::new("a.b.c").is_ok());
+        assert!(NodeId::new("a_b_c").is_ok());
+        assert!(NodeId::new("a-b_c.d").is_ok());
+    }
 }

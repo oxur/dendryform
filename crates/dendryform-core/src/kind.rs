@@ -74,33 +74,57 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_node_kind_display() {
+    fn test_node_kind_display_all() {
         assert_eq!(format!("{}", NodeKind::Person), "person");
+        assert_eq!(format!("{}", NodeKind::System), "system");
+        assert_eq!(format!("{}", NodeKind::Container), "container");
+        assert_eq!(format!("{}", NodeKind::Component), "component");
         assert_eq!(format!("{}", NodeKind::Infrastructure), "infrastructure");
+        assert_eq!(format!("{}", NodeKind::Group), "group");
     }
 
     #[test]
-    fn test_edge_kind_display() {
+    fn test_edge_kind_display_all() {
         assert_eq!(format!("{}", EdgeKind::Uses), "uses");
+        assert_eq!(format!("{}", EdgeKind::Reads), "reads");
+        assert_eq!(format!("{}", EdgeKind::Writes), "writes");
+        assert_eq!(format!("{}", EdgeKind::Deploys), "deploys");
         assert_eq!(format!("{}", EdgeKind::Contains), "contains");
     }
 
     #[test]
-    fn test_node_kind_serde() {
-        let kind = NodeKind::Component;
-        let json = serde_json::to_string(&kind).unwrap();
-        assert_eq!(json, "\"component\"");
-        let deserialized: NodeKind = serde_json::from_str(&json).unwrap();
-        assert_eq!(kind, deserialized);
+    fn test_node_kind_serde_all_variants() {
+        let variants = vec![
+            (NodeKind::Person, "\"person\""),
+            (NodeKind::System, "\"system\""),
+            (NodeKind::Container, "\"container\""),
+            (NodeKind::Component, "\"component\""),
+            (NodeKind::Infrastructure, "\"infrastructure\""),
+            (NodeKind::Group, "\"group\""),
+        ];
+        for (kind, expected_json) in variants {
+            let json = serde_json::to_string(&kind).unwrap();
+            assert_eq!(json, expected_json);
+            let deserialized: NodeKind = serde_json::from_str(&json).unwrap();
+            assert_eq!(kind, deserialized);
+        }
     }
 
     #[test]
-    fn test_edge_kind_serde() {
-        let kind = EdgeKind::Reads;
-        let json = serde_json::to_string(&kind).unwrap();
-        assert_eq!(json, "\"reads\"");
-        let deserialized: EdgeKind = serde_json::from_str(&json).unwrap();
-        assert_eq!(kind, deserialized);
+    fn test_edge_kind_serde_all_variants() {
+        let variants = vec![
+            (EdgeKind::Uses, "\"uses\""),
+            (EdgeKind::Reads, "\"reads\""),
+            (EdgeKind::Writes, "\"writes\""),
+            (EdgeKind::Deploys, "\"deploys\""),
+            (EdgeKind::Contains, "\"contains\""),
+        ];
+        for (kind, expected_json) in variants {
+            let json = serde_json::to_string(&kind).unwrap();
+            assert_eq!(json, expected_json);
+            let deserialized: EdgeKind = serde_json::from_str(&json).unwrap();
+            assert_eq!(kind, deserialized);
+        }
     }
 
     #[test]
@@ -112,5 +136,49 @@ mod tests {
         let c = EdgeKind::Writes;
         let d = c;
         assert_eq!(c, d);
+    }
+
+    #[test]
+    fn test_node_kind_hash() {
+        use std::collections::HashSet;
+        let mut set = HashSet::new();
+        set.insert(NodeKind::Person);
+        set.insert(NodeKind::System);
+        set.insert(NodeKind::Person); // duplicate
+        assert_eq!(set.len(), 2);
+    }
+
+    #[test]
+    fn test_edge_kind_hash() {
+        use std::collections::HashSet;
+        let mut set = HashSet::new();
+        set.insert(EdgeKind::Uses);
+        set.insert(EdgeKind::Reads);
+        set.insert(EdgeKind::Uses); // duplicate
+        assert_eq!(set.len(), 2);
+    }
+
+    #[test]
+    fn test_node_kind_debug() {
+        let debug = format!("{:?}", NodeKind::Infrastructure);
+        assert!(debug.contains("Infrastructure"));
+    }
+
+    #[test]
+    fn test_edge_kind_debug() {
+        let debug = format!("{:?}", EdgeKind::Deploys);
+        assert!(debug.contains("Deploys"));
+    }
+
+    #[test]
+    fn test_node_kind_serde_invalid() {
+        let result: Result<NodeKind, _> = serde_json::from_str("\"invalid\"");
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_edge_kind_serde_invalid() {
+        let result: Result<EdgeKind, _> = serde_json::from_str("\"invalid\"");
+        assert!(result.is_err());
     }
 }

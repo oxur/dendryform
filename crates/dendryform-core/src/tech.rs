@@ -56,4 +56,34 @@ mod tests {
         let deserialized: Tech = serde_json::from_str(&json).unwrap();
         assert_eq!(tech, deserialized);
     }
+
+    #[test]
+    fn test_as_str() {
+        let tech = Tech::new("React");
+        assert_eq!(tech.as_str(), "React");
+    }
+
+    #[test]
+    fn test_debug() {
+        let tech = Tech::new("Rust");
+        let debug = format!("{tech:?}");
+        assert!(debug.contains("Rust"));
+    }
+
+    #[test]
+    fn test_clone_eq() {
+        let a = Tech::new("Go");
+        let b = a.clone();
+        assert_eq!(a, b);
+    }
+
+    #[test]
+    fn test_hash() {
+        use std::collections::HashSet;
+        let mut set = HashSet::new();
+        set.insert(Tech::new("Rust"));
+        set.insert(Tech::new("Go"));
+        set.insert(Tech::new("Rust"));
+        assert_eq!(set.len(), 2);
+    }
 }

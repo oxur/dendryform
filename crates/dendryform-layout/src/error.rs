@@ -38,3 +38,63 @@ impl From<dendryform_core::ValidationError> for LayoutError {
         Self::Validation(e)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use dendryform_core::ValidationError;
+
+    #[test]
+    fn test_layout_error_display_validation() {
+        let inner = ValidationError::MissingField { field: "id" };
+        let err = LayoutError::Validation(inner);
+        let msg = format!("{err}");
+        assert!(msg.contains("validation error during layout"));
+        assert!(msg.contains("id"));
+    }
+
+    #[test]
+    fn test_layout_error_display_constraint_violation() {
+        let err = LayoutError::ConstraintViolation {
+            message: "columns must be > 0".to_owned(),
+        };
+        let msg = format!("{err}");
+        assert!(msg.contains("layout constraint"));
+        assert!(msg.contains("columns must be > 0"));
+    }
+
+    #[test]
+    fn test_layout_error_debug() {
+        let err = LayoutError::ConstraintViolation {
+            message: "test".to_owned(),
+        };
+        let debug = format!("{err:?}");
+        assert!(debug.contains("ConstraintViolation"));
+    }
+
+    #[test]
+    fn test_layout_error_source_validation() {
+        let inner = ValidationError::MissingField { field: "id" };
+        let err = LayoutError::Validation(inner);
+        let source = std::error::Error::source(&err);
+        assert!(source.is_some());
+    }
+
+    #[test]
+    fn test_layout_error_source_constraint_is_none() {
+        let err = LayoutError::ConstraintViolation {
+            message: "test".to_owned(),
+        };
+        let source = std::error::Error::source(&err);
+        assert!(source.is_none());
+    }
+
+    #[test]
+    fn test_layout_error_from_validation_error() {
+        let inner = ValidationError::EmptyTier {
+            id: "t1".to_owned(),
+        };
+        let err: LayoutError = inner.into();
+        assert!(matches!(err, LayoutError::Validation(_)));
+    }
+}

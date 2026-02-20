@@ -31,3 +31,37 @@ impl From<fmt::Error> for SvgError {
         Self::Fmt(e)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_svg_error_display_fmt() {
+        let inner = fmt::Error;
+        let err = SvgError::Fmt(inner);
+        let msg = format!("{err}");
+        assert!(msg.contains("SVG render formatting error"));
+    }
+
+    #[test]
+    fn test_svg_error_debug() {
+        let err = SvgError::Fmt(fmt::Error);
+        let debug = format!("{err:?}");
+        assert!(debug.contains("Fmt"));
+    }
+
+    #[test]
+    fn test_svg_error_source() {
+        let err = SvgError::Fmt(fmt::Error);
+        let source = std::error::Error::source(&err);
+        assert!(source.is_some());
+    }
+
+    #[test]
+    fn test_svg_error_from_fmt_error() {
+        let inner = fmt::Error;
+        let err: SvgError = inner.into();
+        assert!(matches!(err, SvgError::Fmt(_)));
+    }
+}

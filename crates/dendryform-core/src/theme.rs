@@ -639,4 +639,92 @@ mod tests {
         let from_code = Theme::dark();
         assert_eq!(from_file, from_code);
     }
+
+    #[test]
+    fn test_merge_overrides_text() {
+        let base = Theme::dark();
+        let overrides = ThemeOverrides {
+            text: Some(TextColors::new("#aaa", "#bbb", "#ccc")),
+            ..Default::default()
+        };
+        let merged = base.merge(overrides);
+        assert_eq!(merged.text().primary(), "#aaa");
+        assert_eq!(merged.text().dim(), "#bbb");
+        assert_eq!(merged.text().bright(), "#ccc");
+    }
+
+    #[test]
+    fn test_merge_overrides_borders() {
+        let base = Theme::dark();
+        let overrides = ThemeOverrides {
+            borders: Some(Borders::new("#111", "#222")),
+            ..Default::default()
+        };
+        let merged = base.merge(overrides);
+        assert_eq!(merged.borders().normal(), "#111");
+        assert_eq!(merged.borders().highlight(), "#222");
+    }
+
+    #[test]
+    fn test_merge_overrides_fonts() {
+        let base = Theme::dark();
+        let overrides = ThemeOverrides {
+            fonts: Some(Fonts::new("Fira Code", "Inter")),
+            ..Default::default()
+        };
+        let merged = base.merge(overrides);
+        assert_eq!(merged.fonts().display(), "Fira Code");
+        assert_eq!(merged.fonts().body(), "Inter");
+    }
+
+    #[test]
+    fn test_merge_overrides_spacing() {
+        let base = Theme::dark();
+        let overrides = ThemeOverrides {
+            spacing: Some(Spacing::new(12, 8, "none", 900)),
+            ..Default::default()
+        };
+        let merged = base.merge(overrides);
+        assert_eq!(merged.spacing().radius(), 12);
+        assert_eq!(merged.spacing().radius_sm(), 8);
+        assert_eq!(merged.spacing().shadow(), "none");
+        assert_eq!(merged.spacing().canvas_width(), 900);
+    }
+
+    #[test]
+    fn test_palette_iter() {
+        let theme = Theme::dark();
+        let count = theme.palette().iter().count();
+        assert_eq!(count, 6); // Blue, Green, Amber, Purple, Red, Teal
+    }
+
+    #[test]
+    fn test_dark_theme_exact_amber_values() {
+        let theme = Theme::dark();
+        let amber = theme.palette().get(Color::Amber).unwrap();
+        assert_eq!(amber.accent(), "#ffb74d");
+        assert_eq!(amber.dim(), "rgba(255, 183, 77, 0.10)");
+        assert_eq!(amber.hover_border(), "#ffb74d");
+    }
+
+    #[test]
+    fn test_dark_theme_exact_purple_values() {
+        let theme = Theme::dark();
+        let purple = theme.palette().get(Color::Purple).unwrap();
+        assert_eq!(purple.accent(), "#b39ddb");
+    }
+
+    #[test]
+    fn test_dark_theme_exact_red_values() {
+        let theme = Theme::dark();
+        let red = theme.palette().get(Color::Red).unwrap();
+        assert_eq!(red.accent(), "#ef5350");
+    }
+
+    #[test]
+    fn test_dark_theme_exact_teal_values() {
+        let theme = Theme::dark();
+        let teal = theme.palette().get(Color::Teal).unwrap();
+        assert_eq!(teal.accent(), "#4dd0e1");
+    }
 }

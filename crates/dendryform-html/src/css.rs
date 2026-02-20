@@ -329,3 +329,331 @@ fn write_responsive(css: &mut String) -> Result<(), RenderError> {
     writeln!(css, "  }}")?;
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use dendryform_core::Theme;
+
+    fn dark_theme() -> Theme {
+        Theme::dark()
+    }
+
+    #[test]
+    fn test_generate_css_ok() {
+        let theme = dark_theme();
+        let css = generate_css(&theme).unwrap();
+        assert!(!css.is_empty());
+    }
+
+    #[test]
+    fn test_css_variables() {
+        let theme = dark_theme();
+        let mut css = String::new();
+        write_css_variables(&mut css, &theme).unwrap();
+        assert!(css.contains(":root"));
+        assert!(css.contains("--bg:"));
+        assert!(css.contains("--bg-card:"));
+        assert!(css.contains("--bg-card-hover:"));
+        assert!(css.contains("--border:"));
+        assert!(css.contains("--border-highlight:"));
+        assert!(css.contains("--text:"));
+        assert!(css.contains("--text-dim:"));
+        assert!(css.contains("--text-bright:"));
+        assert!(css.contains("--radius:"));
+        assert!(css.contains("--radius-sm:"));
+        assert!(css.contains("--shadow:"));
+    }
+
+    #[test]
+    fn test_base_styles() {
+        let mut css = String::new();
+        write_base_styles(&mut css).unwrap();
+        assert!(css.contains("body"));
+        assert!(css.contains(".canvas"));
+        assert!(css.contains("box-sizing: border-box"));
+    }
+
+    #[test]
+    fn test_header_styles() {
+        let theme = dark_theme();
+        let mut css = String::new();
+        write_header_styles(&mut css, &theme).unwrap();
+        assert!(css.contains(".header"));
+        assert!(css.contains("h1"));
+        assert!(css.contains(".subtitle"));
+    }
+
+    #[test]
+    fn test_tier_styles() {
+        let mut css = String::new();
+        write_tier_styles(&mut css).unwrap();
+        assert!(css.contains(".tier"));
+        assert!(css.contains("animation-delay"));
+        assert!(css.contains(".tier-label"));
+    }
+
+    #[test]
+    fn test_connector_styles() {
+        let mut css = String::new();
+        write_connector_styles(&mut css).unwrap();
+        assert!(css.contains(".connector"));
+        assert!(css.contains(".line"));
+        assert!(css.contains(".protocol-label"));
+    }
+
+    #[test]
+    fn test_node_styles() {
+        let theme = dark_theme();
+        let mut css = String::new();
+        write_node_styles(&mut css, &theme).unwrap();
+        assert!(css.contains(".node"));
+        assert!(css.contains(".node-title"));
+        assert!(css.contains(".node-desc"));
+        assert!(css.contains(".node-tech"));
+    }
+
+    #[test]
+    fn test_color_variants() {
+        let theme = dark_theme();
+        let mut css = String::new();
+        write_color_variants(&mut css, &theme).unwrap();
+        assert!(css.contains("::before"));
+        assert!(css.contains(":hover"));
+    }
+
+    #[test]
+    fn test_single_node_styles() {
+        let mut css = String::new();
+        write_single_node_styles(&mut css).unwrap();
+        assert!(css.contains(".client-node"));
+    }
+
+    #[test]
+    fn test_container_styles() {
+        let theme = dark_theme();
+        let mut css = String::new();
+        write_container_styles(&mut css, &theme).unwrap();
+        assert!(css.contains(".container-solid"));
+        assert!(css.contains(".container-dashed"));
+        assert!(css.contains(".container-label"));
+    }
+
+    #[test]
+    fn test_grid_styles() {
+        let mut css = String::new();
+        write_grid_styles(&mut css).unwrap();
+        assert!(css.contains(".grid-1"));
+        assert!(css.contains(".grid-2"));
+        assert!(css.contains(".grid-3"));
+        assert!(css.contains(".grid-4"));
+    }
+
+    #[test]
+    fn test_internal_connector_styles() {
+        let theme = dark_theme();
+        let mut css = String::new();
+        write_internal_connector_styles(&mut css, &theme).unwrap();
+        assert!(css.contains(".internal-connector"));
+        assert!(css.contains(".dots"));
+        assert!(css.contains(".dot"));
+    }
+
+    #[test]
+    fn test_flow_label_styles() {
+        let theme = dark_theme();
+        let mut css = String::new();
+        write_flow_label_styles(&mut css, &theme).unwrap();
+        assert!(css.contains(".flow-labels"));
+        assert!(css.contains(".flow-label"));
+        assert!(css.contains(".arrow"));
+    }
+
+    #[test]
+    fn test_legend_styles() {
+        let theme = dark_theme();
+        let mut css = String::new();
+        write_legend_styles(&mut css, &theme).unwrap();
+        assert!(css.contains(".legend"));
+        assert!(css.contains(".legend-item"));
+        assert!(css.contains(".swatch"));
+    }
+
+    #[test]
+    fn test_animations_enabled() {
+        let theme = dark_theme();
+        let mut css = String::new();
+        write_animations(&mut css, &theme).unwrap();
+        assert!(css.contains("@keyframes fadeIn"));
+        assert!(css.contains("@keyframes slideUp"));
+    }
+
+    #[test]
+    fn test_animations_disabled() {
+        let theme = dark_theme();
+        let overrides = dendryform_core::ThemeOverrides {
+            animate: Some(false),
+            ..Default::default()
+        };
+        let theme = theme.merge(overrides);
+        let mut css = String::new();
+        write_animations(&mut css, &theme).unwrap();
+        assert!(css.contains("animation: none !important"));
+        assert!(!css.contains("@keyframes"));
+    }
+
+    #[test]
+    fn test_responsive() {
+        let mut css = String::new();
+        write_responsive(&mut css).unwrap();
+        assert!(css.contains("@media (max-width: 800px)"));
+        assert!(css.contains(".grid-4"));
+        assert!(css.contains(".grid-3"));
+        assert!(css.contains(".canvas"));
+        assert!(css.contains(".flow-labels"));
+    }
+
+    #[test]
+    fn test_generate_css_contains_all_sections() {
+        let theme = dark_theme();
+        let css = generate_css(&theme).unwrap();
+
+        // Verify CSS variables
+        assert!(css.contains(":root"));
+        assert!(css.contains("--bg:"));
+
+        // Verify base styles
+        assert!(css.contains("box-sizing: border-box"));
+        assert!(css.contains("body"));
+
+        // Verify header styles
+        assert!(css.contains(".header"));
+        assert!(css.contains(".subtitle"));
+
+        // Verify tier styles
+        assert!(css.contains(".tier"));
+        assert!(css.contains(".tier-label"));
+
+        // Verify connector styles
+        assert!(css.contains(".connector"));
+        assert!(css.contains(".protocol-label"));
+
+        // Verify node styles
+        assert!(css.contains(".node"));
+        assert!(css.contains(".node-title"));
+        assert!(css.contains(".node-desc"));
+        assert!(css.contains(".node-tech"));
+
+        // Verify color variant styles
+        assert!(css.contains("::before"));
+
+        // Verify single node styles
+        assert!(css.contains(".client-node"));
+
+        // Verify container styles
+        assert!(css.contains(".container-solid"));
+        assert!(css.contains(".container-dashed"));
+
+        // Verify grid styles
+        assert!(css.contains(".grid-1"));
+        assert!(css.contains(".grid-4"));
+
+        // Verify internal connector styles
+        assert!(css.contains(".internal-connector"));
+        assert!(css.contains(".dot"));
+
+        // Verify flow label styles
+        assert!(css.contains(".flow-labels"));
+        assert!(css.contains(".flow-label"));
+
+        // Verify legend styles
+        assert!(css.contains(".legend"));
+        assert!(css.contains(".swatch"));
+
+        // Verify animations (enabled by default)
+        assert!(css.contains("@keyframes fadeIn"));
+        assert!(css.contains("@keyframes slideUp"));
+
+        // Verify responsive
+        assert!(css.contains("@media"));
+    }
+
+    #[test]
+    fn test_css_variables_palette_entries() {
+        let theme = dark_theme();
+        let mut css = String::new();
+        write_css_variables(&mut css, &theme).unwrap();
+
+        // Verify palette variables exist (we may not know exact colors due to HashMap ordering)
+        assert!(css.contains("--accent-"));
+    }
+
+    #[test]
+    fn test_color_variants_hover_and_icon() {
+        let theme = dark_theme();
+        let mut css = String::new();
+        write_color_variants(&mut css, &theme).unwrap();
+
+        // Each palette color should generate three rules: ::before, :hover, .icon
+        assert!(css.contains("::before"));
+        assert!(css.contains(":hover"));
+        assert!(css.contains(".icon"));
+    }
+
+    #[test]
+    fn test_legend_styles_swatch_per_color() {
+        let theme = dark_theme();
+        let mut css = String::new();
+        write_legend_styles(&mut css, &theme).unwrap();
+
+        // Should have swatch rules for palette colors
+        assert!(css.contains(".swatch."));
+        assert!(css.contains("var(--accent-"));
+    }
+
+    #[test]
+    fn test_tier_styles_animation_delays() {
+        let mut css = String::new();
+        write_tier_styles(&mut css).unwrap();
+
+        // Should have animation delays for tiers 2-6
+        assert!(css.contains("nth-child(2)"));
+        assert!(css.contains("nth-child(6)"));
+        // Check delay values
+        assert!(css.contains("0.1s"));
+        assert!(css.contains("0.5s"));
+    }
+
+    #[test]
+    fn test_grid_styles_all_four_columns() {
+        let mut css = String::new();
+        write_grid_styles(&mut css).unwrap();
+
+        // Verify repeat(N, 1fr) for all grid sizes
+        assert!(css.contains("repeat(1, 1fr)"));
+        assert!(css.contains("repeat(2, 1fr)"));
+        assert!(css.contains("repeat(3, 1fr)"));
+        assert!(css.contains("repeat(4, 1fr)"));
+    }
+
+    #[test]
+    fn test_node_styles_all_sub_elements() {
+        let theme = dark_theme();
+        let mut css = String::new();
+        write_node_styles(&mut css, &theme).unwrap();
+
+        assert!(css.contains(".node:hover"));
+        assert!(css.contains(".node::before"));
+        assert!(css.contains(".node .node-title .icon"));
+    }
+
+    #[test]
+    fn test_container_styles_both_variants() {
+        let theme = dark_theme();
+        let mut css = String::new();
+        write_container_styles(&mut css, &theme).unwrap();
+
+        assert!(css.contains(".container-solid > .container-label"));
+        assert!(css.contains(".container-dashed > .container-label"));
+    }
+}

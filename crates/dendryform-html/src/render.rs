@@ -288,3 +288,496 @@ fn write_legend(html: &mut String, plan: &LayoutPlan<'_>) -> Result<(), RenderEr
     writeln!(html, "  </div>")?;
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use dendryform_core::{
+        Color, Connector, ConnectorStyle, Container, ContainerBorder, Diagram, DiagramHeader,
+        FlowLabels, Layer, LegendEntry, Node, NodeId, NodeKind, RawDiagram, Tech, Tier, TierLayout,
+        Title,
+    };
+    use dendryform_layout::compute_layout;
+
+    fn test_node(id: &str, color: Color) -> Node {
+        Node::builder()
+            .id(NodeId::new(id).unwrap())
+            .kind(NodeKind::System)
+            .color(color)
+            .icon("\u{25c7}")
+            .title(id)
+            .description("test node")
+            .build()
+            .unwrap()
+    }
+
+    fn test_node_with_tech(id: &str, color: Color, techs: Vec<&str>) -> Node {
+        Node::builder()
+            .id(NodeId::new(id).unwrap())
+            .kind(NodeKind::System)
+            .color(color)
+            .icon("\u{25c7}")
+            .title(id)
+            .description("test node with tech")
+            .tech(techs.into_iter().map(Tech::new).collect())
+            .build()
+            .unwrap()
+    }
+
+    fn make_diagram(layers: Vec<Layer>, legend: Vec<LegendEntry>) -> Diagram {
+        let raw = RawDiagram {
+            diagram: DiagramHeader::new(Title::new("test", "accent"), "subtitle", "dark"),
+            layers,
+            legend,
+            edges: vec![],
+        };
+        Diagram::try_from(raw).unwrap()
+    }
+
+    #[test]
+    fn test_escape_html_function() {
+        assert_eq!(escape_html("a & b"), "a &amp; b");
+        assert_eq!(escape_html("<tag>"), "&lt;tag&gt;");
+        assert_eq!(escape_html("a \"b\""), "a &quot;b&quot;");
+        assert_eq!(escape_html("no special"), "no special");
+    }
+
+    #[test]
+    fn test_render_internal_connector() {
+        let container = Container::new(
+            "server",
+            ContainerBorder::Solid,
+            Color::Green,
+            vec![
+                Layer::Tier(Tier::new(
+                    NodeId::new("inner1").unwrap(),
+                    vec![test_node("a", Color::Green)],
+                )),
+                Layer::Connector(Connector::new(ConnectorStyle::Dots)),
+                Layer::Tier(Tier::new(
+                    NodeId::new("inner2").unwrap(),
+                    vec![test_node("b", Color::Green)],
+                )),
+            ],
+        );
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("server").unwrap(),
+                container,
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("internal-connector"));
+        assert!(html.contains("dot"));
+    }
+
+    #[test]
+    fn test_render_nested_dashed_container() {
+        let inner_container = Container::new(
+            "inner-service",
+            ContainerBorder::Dashed,
+            Color::Purple,
+            vec![Layer::Tier(Tier::new(
+                NodeId::new("deep").unwrap(),
+                vec![test_node("deep-api", Color::Purple)],
+            ))],
+        );
+        let outer_container = Container::new(
+            "outer-server",
+            ContainerBorder::Solid,
+            Color::Green,
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("inner-tier").unwrap(),
+                inner_container,
+            ))],
+        );
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("outer").unwrap(),
+                outer_container,
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("container-solid"));
+        assert!(html.contains("container-dashed"));
+        assert!(html.contains("outer-server"));
+        assert!(html.contains("inner-service"));
+        assert!(html.contains("deep-api"));
+    }
+
+    #[test]
+    fn test_render_node_with_tech() {
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::new(
+                NodeId::new("main").unwrap(),
+                vec![test_node_with_tech(
+                    "app",
+                    Color::Blue,
+                    vec!["Rust", "axum"],
+                )],
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("node-tech"));
+        assert!(html.contains("Rust"));
+        assert!(html.contains("axum"));
+    }
+
+    #[test]
+    fn test_render_single_node_layout() {
+        let mut tier = Tier::new(
+            NodeId::new("main").unwrap(),
+            vec![test_node("app", Color::Blue)],
+        );
+        tier.set_layout(TierLayout::Single);
+        let diagram = make_diagram(vec![Layer::Tier(tier)], vec![]);
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("client-node"));
+    }
+
+    #[test]
+    fn test_render_connector_without_label() {
+        let diagram = make_diagram(
+            vec![
+                Layer::Tier(Tier::new(
+                    NodeId::new("top").unwrap(),
+                    vec![test_node("a", Color::Blue)],
+                )),
+                Layer::Connector(Connector::new(ConnectorStyle::Line)),
+                Layer::Tier(Tier::new(
+                    NodeId::new("bottom").unwrap(),
+                    vec![test_node("b", Color::Green)],
+                )),
+            ],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("class=\"connector\""));
+        assert!(html.contains("class=\"line\""));
+        // No protocol label element (CSS always defines the class, but no element is emitted)
+        assert!(!html.contains("<div class=\"protocol-label\">"));
+    }
+
+    #[test]
+    fn test_render_empty_legend() {
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::new(
+                NodeId::new("main").unwrap(),
+                vec![test_node("a", Color::Blue)],
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        // Legend div should not be present
+        assert!(!html.contains("class=\"legend\""));
+    }
+
+    #[test]
+    fn test_render_tier_with_label() {
+        let mut tier = Tier::new(
+            NodeId::new("main").unwrap(),
+            vec![test_node("a", Color::Blue)],
+        );
+        tier.set_label("My Section");
+        let diagram = make_diagram(vec![Layer::Tier(tier)], vec![]);
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("tier-label"));
+        assert!(html.contains("My Section"));
+    }
+
+    #[test]
+    fn test_render_container_with_flow_labels() {
+        let container = Container::new(
+            "server",
+            ContainerBorder::Solid,
+            Color::Green,
+            vec![
+                Layer::Tier(Tier::new(
+                    NodeId::new("top").unwrap(),
+                    vec![test_node("a", Color::Green)],
+                )),
+                Layer::FlowLabels(FlowLabels::new(vec!["queries".to_owned()])),
+                Layer::Tier(Tier::new(
+                    NodeId::new("bottom").unwrap(),
+                    vec![test_node("b", Color::Green)],
+                )),
+            ],
+        );
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("server").unwrap(),
+                container,
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("flow-labels"));
+        assert!(html.contains("queries"));
+    }
+
+    #[test]
+    fn test_render_container_with_tier_label() {
+        let container = Container::new(
+            "server",
+            ContainerBorder::Solid,
+            Color::Green,
+            vec![{
+                let mut t = Tier::new(
+                    NodeId::new("inner").unwrap(),
+                    vec![test_node("api", Color::Green)],
+                );
+                t.set_label("Inner Label");
+                Layer::Tier(t)
+            }],
+        );
+        let diagram = make_diagram(
+            vec![{
+                let mut t = Tier::with_container(NodeId::new("outer").unwrap(), container);
+                t.set_label("Outer Label");
+                Layer::Tier(t)
+            }],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("Outer Label"));
+        assert!(html.contains("Inner Label"));
+    }
+
+    #[test]
+    fn test_render_legend_with_entries() {
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::new(
+                NodeId::new("main").unwrap(),
+                vec![test_node("a", Color::Blue)],
+            ))],
+            vec![
+                LegendEntry::new(Color::Blue, "Clients"),
+                LegendEntry::new(Color::Green, "Servers"),
+                LegendEntry::new(Color::Amber, "Data"),
+            ],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("class=\"legend\""));
+        assert!(html.contains("Clients"));
+        assert!(html.contains("Servers"));
+        assert!(html.contains("Data"));
+        assert!(html.contains("swatch blue"));
+        assert!(html.contains("swatch green"));
+        assert!(html.contains("swatch amber"));
+    }
+
+    #[test]
+    fn test_render_connector_with_label() {
+        let diagram = make_diagram(
+            vec![
+                Layer::Tier(Tier::new(
+                    NodeId::new("top").unwrap(),
+                    vec![test_node("a", Color::Blue)],
+                )),
+                Layer::Connector(Connector::with_label(ConnectorStyle::Line, "gRPC")),
+                Layer::Tier(Tier::new(
+                    NodeId::new("bottom").unwrap(),
+                    vec![test_node("b", Color::Green)],
+                )),
+            ],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("protocol-label"));
+        assert!(html.contains("gRPC"));
+    }
+
+    #[test]
+    fn test_render_top_level_flow_labels() {
+        let diagram = make_diagram(
+            vec![
+                Layer::Tier(Tier::new(
+                    NodeId::new("top").unwrap(),
+                    vec![test_node("a", Color::Blue)],
+                )),
+                Layer::FlowLabels(FlowLabels::new(vec![
+                    "SQL queries".to_owned(),
+                    "REST calls".to_owned(),
+                ])),
+                Layer::Tier(Tier::new(
+                    NodeId::new("bottom").unwrap(),
+                    vec![test_node("b", Color::Green)],
+                )),
+            ],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("flow-labels"));
+        assert!(html.contains("SQL queries"));
+        assert!(html.contains("REST calls"));
+        assert!(html.contains("\u{2193}")); // down arrow
+    }
+
+    #[test]
+    fn test_render_container_without_parent_label() {
+        let container = Container::new(
+            "server",
+            ContainerBorder::Solid,
+            Color::Green,
+            vec![Layer::Tier(Tier::new(
+                NodeId::new("inner").unwrap(),
+                vec![test_node("api", Color::Green)],
+            ))],
+        );
+        // No parent tier label set
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("outer").unwrap(),
+                container,
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("container-solid"));
+        assert!(html.contains("server"));
+    }
+
+    #[test]
+    fn test_render_multi_column_grid() {
+        let mut tier = Tier::new(
+            NodeId::new("grid").unwrap(),
+            vec![
+                test_node("a", Color::Blue),
+                test_node("b", Color::Green),
+                test_node("c", Color::Purple),
+            ],
+        );
+        tier.set_layout(TierLayout::Grid { columns: 3 });
+        let diagram = make_diagram(vec![Layer::Tier(tier)], vec![]);
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("grid-3"));
+        assert!(html.contains("a"));
+        assert!(html.contains("b"));
+        assert!(html.contains("c"));
+    }
+
+    #[test]
+    fn test_render_nested_container_with_connector() {
+        let container = Container::new(
+            "server",
+            ContainerBorder::Solid,
+            Color::Green,
+            vec![
+                Layer::Tier(Tier::new(
+                    NodeId::new("top-inner").unwrap(),
+                    vec![test_node("api", Color::Green)],
+                )),
+                Layer::Connector(Connector::new(ConnectorStyle::Dots)),
+                Layer::Tier(Tier::new(
+                    NodeId::new("bot-inner").unwrap(),
+                    vec![test_node("db", Color::Amber)],
+                )),
+            ],
+        );
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("outer").unwrap(),
+                container,
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("internal-connector"));
+        assert!(html.contains("dot"));
+        assert!(html.contains("api"));
+        assert!(html.contains("db"));
+    }
+
+    #[test]
+    fn test_render_full_example_taproot() {
+        let yaml = include_str!("../../../examples/taproot/architecture.yaml");
+        let diagram: Diagram = dendryform_parse::parse_yaml(yaml).unwrap();
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("<!DOCTYPE html>"));
+        assert!(html.contains("</html>"));
+        assert!(html.contains("taproot"));
+        assert!(html.contains("Streamable HTTP"));
+        // Legend should have entries
+        assert!(html.contains("class=\"legend\""));
+    }
+
+    #[test]
+    fn test_render_full_example_ai_kasu() {
+        let yaml = include_str!("../../../examples/ai-kasu/architecture.yaml");
+        let diagram: Diagram = dendryform_parse::parse_yaml(yaml).unwrap();
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("<!DOCTYPE html>"));
+        assert!(html.contains("ai-kasu"));
+        // Should have nested containers
+        assert!(html.contains("container-solid"));
+        assert!(html.contains("container-dashed"));
+    }
+
+    #[test]
+    fn test_render_dashed_container() {
+        let container = Container::new(
+            "internal",
+            ContainerBorder::Dashed,
+            Color::Purple,
+            vec![Layer::Tier(Tier::new(
+                NodeId::new("inner").unwrap(),
+                vec![test_node("svc", Color::Purple)],
+            ))],
+        );
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("outer").unwrap(),
+                container,
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let html = render_html(&plan, &Theme::dark()).unwrap();
+
+        assert!(html.contains("container-dashed"));
+        assert!(html.contains("internal"));
+    }
+
+    #[test]
+    fn test_escape_html_all_special_chars() {
+        let result = escape_html("a & b < c > d \"e\"");
+        assert_eq!(result, "a &amp; b &lt; c &gt; d &quot;e&quot;");
+    }
+}

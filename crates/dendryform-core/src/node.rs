@@ -218,15 +218,112 @@ mod tests {
     }
 
     #[test]
-    fn test_builder_missing_field() {
+    fn test_builder_missing_id() {
         let result = Node::builder()
             .kind(NodeKind::System)
             .color(Color::Blue)
-            .icon("◇")
+            .icon("x")
             .title("Test")
             .description("Test")
             .build();
-        assert!(result.is_err());
+        assert!(matches!(
+            result,
+            Err(ValidationError::MissingField { field: "id" })
+        ));
+    }
+
+    #[test]
+    fn test_builder_missing_kind() {
+        let result = Node::builder()
+            .id(NodeId::new("a").unwrap())
+            .color(Color::Blue)
+            .icon("x")
+            .title("Test")
+            .description("Test")
+            .build();
+        assert!(matches!(
+            result,
+            Err(ValidationError::MissingField { field: "kind" })
+        ));
+    }
+
+    #[test]
+    fn test_builder_missing_color() {
+        let result = Node::builder()
+            .id(NodeId::new("a").unwrap())
+            .kind(NodeKind::System)
+            .icon("x")
+            .title("Test")
+            .description("Test")
+            .build();
+        assert!(matches!(
+            result,
+            Err(ValidationError::MissingField { field: "color" })
+        ));
+    }
+
+    #[test]
+    fn test_builder_missing_icon() {
+        let result = Node::builder()
+            .id(NodeId::new("a").unwrap())
+            .kind(NodeKind::System)
+            .color(Color::Blue)
+            .title("Test")
+            .description("Test")
+            .build();
+        assert!(matches!(
+            result,
+            Err(ValidationError::MissingField { field: "icon" })
+        ));
+    }
+
+    #[test]
+    fn test_builder_missing_title() {
+        let result = Node::builder()
+            .id(NodeId::new("a").unwrap())
+            .kind(NodeKind::System)
+            .color(Color::Blue)
+            .icon("x")
+            .description("Test")
+            .build();
+        assert!(matches!(
+            result,
+            Err(ValidationError::MissingField { field: "title" })
+        ));
+    }
+
+    #[test]
+    fn test_builder_missing_description() {
+        let result = Node::builder()
+            .id(NodeId::new("a").unwrap())
+            .kind(NodeKind::System)
+            .color(Color::Blue)
+            .icon("x")
+            .title("Test")
+            .build();
+        assert!(matches!(
+            result,
+            Err(ValidationError::MissingField {
+                field: "description"
+            })
+        ));
+    }
+
+    #[test]
+    fn test_builder_with_metadata() {
+        let mut meta = Metadata::new();
+        meta.insert("owner", "team-a");
+        let node = Node::builder()
+            .id(NodeId::new("a").unwrap())
+            .kind(NodeKind::System)
+            .color(Color::Blue)
+            .icon("x")
+            .title("Test")
+            .description("Test")
+            .metadata(meta)
+            .build()
+            .unwrap();
+        assert_eq!(node.metadata().get("owner"), Some("team-a"));
     }
 
     #[test]
@@ -235,5 +332,19 @@ mod tests {
         let json = serde_json::to_string_pretty(&node).unwrap();
         let deserialized: Node = serde_json::from_str(&json).unwrap();
         assert_eq!(node, deserialized);
+    }
+
+    #[test]
+    fn test_node_debug() {
+        let node = sample_node();
+        let debug = format!("{node:?}");
+        assert!(debug.contains("web-app"));
+    }
+
+    #[test]
+    fn test_node_clone_eq() {
+        let node = sample_node();
+        let cloned = node.clone();
+        assert_eq!(node, cloned);
     }
 }

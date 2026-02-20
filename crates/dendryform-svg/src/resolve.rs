@@ -599,4 +599,171 @@ mod tests {
             panic!("Expected tier layer");
         }
     }
+
+    #[test]
+    fn test_resolve_dashed_container() {
+        let container = Container::new(
+            "services",
+            ContainerBorder::Dashed,
+            Color::Purple,
+            vec![Layer::Tier(Tier::new(
+                NodeId::new("inner").unwrap(),
+                vec![test_node("svc", Color::Purple)],
+            ))],
+        );
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("svc-tier").unwrap(),
+                container,
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let resolved = resolve(&plan, &theme, 1100.0);
+
+        if let ResolvedLayer::Tier(tier) = &resolved.layers[0] {
+            let c = tier.container.as_ref().unwrap();
+            assert_eq!(c.border, ContainerBorder::Dashed);
+        } else {
+            panic!("Expected tier layer");
+        }
+    }
+
+    #[test]
+    fn test_resolve_internal_connector() {
+        let container = Container::new(
+            "server",
+            ContainerBorder::Solid,
+            Color::Green,
+            vec![
+                Layer::Tier(Tier::new(
+                    NodeId::new("top").unwrap(),
+                    vec![test_node("a", Color::Green)],
+                )),
+                Layer::Connector(Connector::new(ConnectorStyle::Dots)),
+                Layer::Tier(Tier::new(
+                    NodeId::new("bottom").unwrap(),
+                    vec![test_node("b", Color::Green)],
+                )),
+            ],
+        );
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::with_container(
+                NodeId::new("server").unwrap(),
+                container,
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let resolved = resolve(&plan, &theme, 1100.0);
+
+        if let ResolvedLayer::Tier(tier) = &resolved.layers[0] {
+            let c = tier.container.as_ref().unwrap();
+            assert!(c.layers.len() >= 3);
+            if let ResolvedLayer::Connector(conn) = &c.layers[1] {
+                assert!(conn.is_internal);
+            } else {
+                panic!("Expected connector layer");
+            }
+        } else {
+            panic!("Expected tier layer");
+        }
+    }
+
+    #[test]
+    fn test_resolve_flow_labels() {
+        use dendryform_core::FlowLabels;
+
+        let diagram = make_diagram(
+            vec![
+                Layer::Tier(Tier::new(
+                    NodeId::new("top").unwrap(),
+                    vec![test_node("a", Color::Blue)],
+                )),
+                Layer::FlowLabels(FlowLabels::new(vec![
+                    "SQL queries".to_owned(),
+                    "cache reads".to_owned(),
+                ])),
+                Layer::Tier(Tier::new(
+                    NodeId::new("bottom").unwrap(),
+                    vec![test_node("b", Color::Green)],
+                )),
+            ],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let resolved = resolve(&plan, &theme, 1100.0);
+
+        if let ResolvedLayer::FlowLabels(fl) = &resolved.layers[1] {
+            assert_eq!(fl.items.len(), 2);
+            assert!(fl.center_y > 0.0);
+        } else {
+            panic!("Expected flow labels layer");
+        }
+    }
+
+    #[test]
+    fn test_resolve_tier_with_label() {
+        let mut tier = Tier::new(
+            NodeId::new("main").unwrap(),
+            vec![test_node("a", Color::Blue)],
+        );
+        tier.set_label("My Tier");
+        let diagram = make_diagram(vec![Layer::Tier(tier)], vec![]);
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let resolved = resolve(&plan, &theme, 1100.0);
+
+        if let ResolvedLayer::Tier(tier) = &resolved.layers[0] {
+            assert_eq!(tier.label.as_deref(), Some("My Tier"));
+        } else {
+            panic!("Expected tier layer");
+        }
+    }
+
+    #[test]
+    fn test_resolve_empty_legend() {
+        let diagram = make_diagram(
+            vec![Layer::Tier(Tier::new(
+                NodeId::new("main").unwrap(),
+                vec![test_node("a", Color::Blue)],
+            ))],
+            vec![],
+        );
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let resolved = resolve(&plan, &theme, 1100.0);
+
+        assert!(resolved.legend_entries.is_empty());
+    }
+
+    #[test]
+    fn test_resolve_multi_column_grid() {
+        use dendryform_core::TierLayout;
+
+        let mut tier = Tier::new(
+            NodeId::new("grid").unwrap(),
+            vec![
+                test_node("a", Color::Blue),
+                test_node("b", Color::Blue),
+                test_node("c", Color::Blue),
+            ],
+        );
+        tier.set_layout(TierLayout::Grid { columns: 2 });
+        let diagram = make_diagram(vec![Layer::Tier(tier)], vec![]);
+        let plan = compute_layout(&diagram).unwrap();
+        let theme = Theme::dark();
+        let resolved = resolve(&plan, &theme, 1100.0);
+
+        if let ResolvedLayer::Tier(tier) = &resolved.layers[0] {
+            assert_eq!(tier.nodes.len(), 3);
+            // First two should be on row 0, third on row 1
+            assert!(tier.nodes[0].rect.y < tier.nodes[2].rect.y);
+        } else {
+            panic!("Expected tier layer");
+        }
+    }
 }

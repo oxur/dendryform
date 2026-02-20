@@ -133,4 +133,84 @@ mod tests {
         let layout: TierLayout = serde_yml::from_str(yaml).unwrap();
         assert_eq!(layout, TierLayout::Grid { columns: 4 });
     }
+
+    #[test]
+    fn test_yaml_single_map_form() {
+        let yaml = "single: ~";
+        let layout: TierLayout = serde_yml::from_str(yaml).unwrap();
+        assert_eq!(layout, TierLayout::Single);
+    }
+
+    #[test]
+    fn test_yaml_auto_map_form() {
+        let yaml = "auto: ~";
+        let layout: TierLayout = serde_yml::from_str(yaml).unwrap();
+        assert_eq!(layout, TierLayout::Auto);
+    }
+
+    #[test]
+    fn test_yaml_unknown_string_variant() {
+        let yaml = "\"unknown_variant\"";
+        let result: Result<TierLayout, _> = serde_yml::from_str(yaml);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_yaml_unknown_map_variant() {
+        let yaml = "unknown_key:\n  foo: bar";
+        let result: Result<TierLayout, _> = serde_yml::from_str(yaml);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_json_single_string() {
+        let json = "\"single\"";
+        let layout: TierLayout = serde_json::from_str(json).unwrap();
+        assert_eq!(layout, TierLayout::Single);
+    }
+
+    #[test]
+    fn test_json_auto_string() {
+        let json = "\"auto\"";
+        let layout: TierLayout = serde_json::from_str(json).unwrap();
+        assert_eq!(layout, TierLayout::Auto);
+    }
+
+    #[test]
+    fn test_json_grid_map() {
+        let json = r#"{"grid":{"columns":3}}"#;
+        let layout: TierLayout = serde_json::from_str(json).unwrap();
+        assert_eq!(layout, TierLayout::Grid { columns: 3 });
+    }
+
+    #[test]
+    fn test_debug() {
+        let layout = TierLayout::Grid { columns: 2 };
+        let debug = format!("{layout:?}");
+        assert!(debug.contains("Grid"));
+        assert!(debug.contains("2"));
+    }
+
+    #[test]
+    fn test_clone_eq() {
+        let a = TierLayout::Grid { columns: 4 };
+        let b = a.clone();
+        assert_eq!(a, b);
+    }
+
+    #[test]
+    fn test_serde_auto_round_trip() {
+        let layout = TierLayout::Auto;
+        let json = serde_json::to_string(&layout).unwrap();
+        assert_eq!(json, "\"auto\"");
+        let deserialized: TierLayout = serde_json::from_str(&json).unwrap();
+        assert_eq!(layout, deserialized);
+    }
+
+    #[test]
+    fn test_yaml_empty_map_rejected() {
+        let yaml = "{}";
+        let result: Result<TierLayout, _> = serde_yml::from_str(yaml);
+        assert!(result.is_err());
+    }
 }

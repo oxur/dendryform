@@ -86,4 +86,60 @@ mod tests {
         let deserialized: Connector = serde_json::from_str(&json).unwrap();
         assert_eq!(conn, deserialized);
     }
+
+    #[test]
+    fn test_serde_round_trip_no_label() {
+        let conn = Connector::new(ConnectorStyle::Dots);
+        let json = serde_json::to_string(&conn).unwrap();
+        // label should be omitted via skip_serializing_if
+        assert!(!json.contains("label"));
+        let deserialized: Connector = serde_json::from_str(&json).unwrap();
+        assert_eq!(conn, deserialized);
+    }
+
+    #[test]
+    fn test_connector_style_display() {
+        assert_eq!(format!("{}", ConnectorStyle::Line), "line");
+        assert_eq!(format!("{}", ConnectorStyle::Dots), "dots");
+    }
+
+    #[test]
+    fn test_connector_style_serde() {
+        let line = ConnectorStyle::Line;
+        let json = serde_json::to_string(&line).unwrap();
+        assert_eq!(json, "\"line\"");
+        let deserialized: ConnectorStyle = serde_json::from_str(&json).unwrap();
+        assert_eq!(line, deserialized);
+
+        let dots = ConnectorStyle::Dots;
+        let json = serde_json::to_string(&dots).unwrap();
+        assert_eq!(json, "\"dots\"");
+        let deserialized: ConnectorStyle = serde_json::from_str(&json).unwrap();
+        assert_eq!(dots, deserialized);
+    }
+
+    #[test]
+    fn test_connector_debug() {
+        let conn = Connector::with_label(ConnectorStyle::Line, "HTTPS");
+        let debug = format!("{conn:?}");
+        assert!(debug.contains("Line"));
+        assert!(debug.contains("HTTPS"));
+    }
+
+    #[test]
+    fn test_connector_style_hash() {
+        use std::collections::HashSet;
+        let mut set = HashSet::new();
+        set.insert(ConnectorStyle::Line);
+        set.insert(ConnectorStyle::Dots);
+        set.insert(ConnectorStyle::Line);
+        assert_eq!(set.len(), 2);
+    }
+
+    #[test]
+    fn test_connector_clone_eq() {
+        let a = Connector::with_label(ConnectorStyle::Dots, "test");
+        let b = a.clone();
+        assert_eq!(a, b);
+    }
 }

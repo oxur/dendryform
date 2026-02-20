@@ -202,7 +202,7 @@ format:
 coverage:
 	@echo "$(BLUE)Generating test coverage report...$(RESET)"
 	@echo "$(CYAN)• Running tests with coverage ($(CODE_NAME) crate only)...$(RESET)"
-	@ cargo llvm-cov --lib --no-default-features
+	@ cargo llvm-cov --workspace --no-default-features
 	@echo "$(GREEN)✓ Coverage report generated$(RESET)"
 	@echo "$(YELLOW)→ For detailed HTML report, run: cargo llvm-cov --html --lib --no-default-features$(RESET)"
 
@@ -210,7 +210,7 @@ coverage:
 coverage-html:
 	@echo "$(BLUE)Generating HTML coverage report...$(RESET)"
 	@echo "$(CYAN)• Running tests with coverage ($(CODE_NAME) crate only)...$(RESET)"
-	@cargo llvm-cov --html --lib --no-default-features
+	@cargo llvm-cov --html --workspace --no-default-features
 	@echo "$(GREEN)✓ HTML coverage report generated$(RESET)"
 	@echo "$(CYAN)→ Report: target/llvm-cov/html/index.html$(RESET)"
 

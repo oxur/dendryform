@@ -283,4 +283,53 @@ layers:
         assert!(diagram.edges().is_empty());
         assert!(diagram.legend().is_empty());
     }
+
+    #[test]
+    fn test_parse_json_file_nonexistent() {
+        let err = parse_json_file("/nonexistent/path/to/file.json").unwrap_err();
+        assert!(matches!(err, ParseError::Io(_)));
+        let msg = format!("{err}");
+        assert!(msg.contains("I/O error"));
+    }
+
+    #[test]
+    fn test_parse_json_file_round_trip() {
+        // First parse YAML, serialize to JSON, write to temp file, parse JSON file
+        let yaml = include_str!("../../../examples/taproot/architecture.yaml");
+        let diagram = parse_yaml(yaml).unwrap();
+        let json = serde_json::to_string_pretty(&diagram).unwrap();
+
+        let tmp_dir = std::env::temp_dir();
+        let tmp_file = tmp_dir.join("dendryform_test_parse_json_file.json");
+        std::fs::write(&tmp_file, &json).unwrap();
+
+        let from_file = parse_json_file(&tmp_file).unwrap();
+        assert_eq!(diagram, from_file);
+
+        // Clean up
+        let _ = std::fs::remove_file(&tmp_file);
+    }
+
+    #[test]
+    fn test_parse_yaml_file_valid() {
+        // Write YAML to a temp file, then parse it
+        let yaml = include_str!("../../../examples/taproot/architecture.yaml");
+        let tmp_dir = std::env::temp_dir();
+        let tmp_file = tmp_dir.join("dendryform_test_parse_yaml_file.yaml");
+        std::fs::write(&tmp_file, yaml).unwrap();
+
+        let diagram = parse_yaml_file(&tmp_file).unwrap();
+        assert_eq!(diagram.header().title().accent(), "taproot");
+        assert_eq!(diagram.layers().len(), 5);
+
+        // Clean up
+        let _ = std::fs::remove_file(&tmp_file);
+    }
+
+    #[test]
+    fn test_parse_json_malformed_missing_field() {
+        let json = r#"{"diagram": {"title": {"text": "t", "accent": "a"}, "subtitle": "s"}}"#;
+        let err = parse_json(json).unwrap_err();
+        assert!(matches!(err, ParseError::Json(_)));
+    }
 }
