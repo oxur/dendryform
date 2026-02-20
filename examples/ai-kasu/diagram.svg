@@ -134,7 +134,7 @@
     <rect x="56" y="729" width="321.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="56" y="729" width="321.33334" height="2" rx="10" fill="#ffb74d"/>
     <text x="76" y="761" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#ffb74d">▣</tspan> ContentTools
+      <tspan fill="#ffb74d">⊕</tspan> ContentTools
     </text>
     <text x="76" y="777" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">list_concepts, get_concept — card lookup and browsing by category/tier
     </text>
@@ -146,7 +146,7 @@
     <rect x="389.33334" y="729" width="321.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="389.33334" y="729" width="321.33334" height="2" rx="10" fill="#ffb74d"/>
     <text x="409.33334" y="761" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#ffb74d">▣</tspan> FtsTools
+      <tspan fill="#ffb74d">⊕</tspan> FtsTools
     </text>
     <text x="409.33334" y="777" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">search — full-text search across concept cards and source documents
     </text>
@@ -158,7 +158,7 @@
     <rect x="722.6667" y="729" width="321.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="722.6667" y="729" width="321.33334" height="2" rx="10" fill="#ffb74d"/>
     <text x="742.6667" y="761" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#ffb74d">▣</tspan> GraphTools
+      <tspan fill="#ffb74d">⊕</tspan> GraphTools
     </text>
     <text x="742.6667" y="777" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">graph_query, get_neighbors — traverse prerequisite, related, and contrast edges
     </text>
@@ -170,7 +170,7 @@
     <rect x="56" y="835" width="321.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="56" y="835" width="321.33334" height="2" rx="10" fill="#ffb74d"/>
     <text x="76" y="867" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#ffb74d">▣</tspan> SemanticSearchTools
+      <tspan fill="#ffb74d">⊕</tspan> SemanticSearchTools
     </text>
     <text x="76" y="883" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">semantic_search — hybrid vector + FTS with reciprocal rank fusion
     </text>
@@ -182,7 +182,7 @@
     <rect x="389.33334" y="835" width="321.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="389.33334" y="835" width="321.33334" height="2" rx="10" fill="#ffb74d"/>
     <text x="409.33334" y="867" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#ffb74d">▣</tspan> DiagnosticTools
+      <tspan fill="#ffb74d">⊕</tspan> DiagnosticTools
     </text>
     <text x="409.33334" y="883" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">ping, debug_config — health checks and configuration inspection
     </text>
@@ -324,7 +324,7 @@
     <rect x="32" y="1625" width="512" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="32" y="1625" width="512" height="2" rx="10" fill="#ef5350"/>
     <text x="52" y="1657" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#ef5350">⬡</tspan> Concept Cards
+      <tspan fill="#ef5350">◯</tspan> Concept Cards
     </text>
     <text x="52" y="1673" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">1,139 harmonised markdown files with rich YAML frontmatter — graph nodes, relationships, aliases, tiers
     </text>
@@ -336,7 +336,7 @@
     <rect x="556" y="1625" width="512" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="556" y="1625" width="512" height="2" rx="10" fill="#ef5350"/>
     <text x="576" y="1657" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#ef5350">⬡</tspan> Source Documents
+      <tspan fill="#ef5350">◯</tspan> Source Documents
     </text>
     <text x="576" y="1673" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">~97 MB of chapter-level markdown across 8 corpora for deep full-text and vector search
     </text>
@@ -355,7 +355,7 @@
     <rect x="32" y="1811" width="512" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="32" y="1811" width="512" height="2" rx="10" fill="#4dd0e1"/>
     <text x="52" y="1843" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#4dd0e1">⬡</tspan> Google OAuth2
+      <tspan fill="#4dd0e1">◯</tspan> Google OAuth2
     </text>
     <text x="52" y="1859" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">JWKS public keys and userinfo endpoint for token validation and domain-scoped access control
     </text>
@@ -370,7 +370,7 @@
     <rect x="556" y="1811" width="512" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="556" y="1811" width="512" height="2" rx="10" fill="#4dd0e1"/>
     <text x="576" y="1843" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#4dd0e1">⬡</tspan> Fabryk Crate Ecosystem
+      <tspan fill="#4dd0e1">◯</tspan> Fabryk Crate Ecosystem
     </text>
     <text x="576" y="1859" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">Shared Rust libraries (core, content, fts, graph, vector, mcp, auth) providing reusable knowledge infrastructure
     </text>

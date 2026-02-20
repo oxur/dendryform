@@ -109,35 +109,35 @@ layers:
                 - id: content-tools
                   kind: component
                   color: amber
-                  icon: "▣"
+                  icon: "⊕"
                   title: "ContentTools"
                   description: "list_concepts, get_concept — card lookup and browsing by category/tier"
                   tech: ["fabryk-mcp-content"]
                 - id: fts-tools
                   kind: component
                   color: amber
-                  icon: "▣"
+                  icon: "⊕"
                   title: "FtsTools"
                   description: "search — full-text search across concept cards and source documents"
                   tech: ["fabryk-mcp-fts"]
                 - id: graph-tools
                   kind: component
                   color: amber
-                  icon: "▣"
+                  icon: "⊕"
                   title: "GraphTools"
                   description: "graph_query, get_neighbors — traverse prerequisite, related, and contrast edges"
                   tech: ["fabryk-mcp-graph"]
                 - id: semantic-tools
                   kind: component
                   color: amber
-                  icon: "▣"
+                  icon: "⊕"
                   title: "SemanticSearchTools"
                   description: "semantic_search — hybrid vector + FTS with reciprocal rank fusion"
                   tech: ["custom"]
                 - id: diagnostic-tools
                   kind: component
                   color: amber
-                  icon: "▣"
+                  icon: "⊕"
                   title: "DiagnosticTools"
                   description: "ping, debug_config — health checks and configuration inspection"
                   tech: ["custom"]
@@ -253,14 +253,14 @@ layers:
         - id: concept-cards
           kind: infrastructure
           color: red
-          icon: "⬡"
+          icon: "◯"
           title: "Concept Cards"
           description: "1,139 harmonised markdown files with rich YAML frontmatter — graph nodes, relationships, aliases, tiers"
           tech: ["concept-cards/harmonised/"]
         - id: source-docs
           kind: infrastructure
           color: red
-          icon: "⬡"
+          icon: "◯"
           title: "Source Documents"
           description: "~97 MB of chapter-level markdown across 8 corpora for deep full-text and vector search"
           tech: ["sources-md/", "8 corpora"]
@@ -280,14 +280,14 @@ layers:
         - id: google-oauth
           kind: system
           color: teal
-          icon: "⬡"
+          icon: "◯"
           title: "Google OAuth2"
           description: "JWKS public keys and userinfo endpoint for token validation and domain-scoped access control"
           tech: ["JWKS", "OpenID Connect"]
         - id: fabryk-crates
           kind: system
           color: teal
-          icon: "⬡"
+          icon: "◯"
           title: "Fabryk Crate Ecosystem"
           description: "Shared Rust libraries (core, content, fts, graph, vector, mcp, auth) providing reusable knowledge infrastructure"
           tech: ["~/lab/oxur/ecl/", "path deps"]
