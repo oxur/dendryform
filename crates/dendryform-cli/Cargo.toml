@@ -11,12 +11,16 @@ description = "CLI binary for dendryform — render architecture diagrams from Y
 name = "dendryform"
 path = "src/main.rs"
 
+[features]
+default = ["bundled-fonts"]
+bundled-fonts = ["dendryform-png/bundled-fonts"]
+
 [dependencies]
 dendryform-core.workspace = true
 dendryform-parse.workspace = true
 dendryform-layout.workspace = true
 dendryform-html.workspace = true
 dendryform-svg.workspace = true
-dendryform-png.workspace = true
+dendryform-png = { workspace = true }
 clap.workspace = true
 serde_yml.workspace = true

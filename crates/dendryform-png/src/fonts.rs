@@ -29,8 +29,9 @@ pub fn create_fontdb() -> Arc<fontdb::Database> {
 
     if !has_jetbrains {
         eprintln!(
-            "warning: JetBrains Mono not found. \
-             Install it or enable the 'bundled-fonts' feature for best results."
+            "warning: JetBrains Mono not found; PNG text may render with a fallback font.\n\
+             Install JetBrains Mono from https://www.jetbrains.com/lp/mono/ or rebuild\n\
+             with bundled fonts: cargo build -p dendryform-cli --features bundled-fonts"
         );
     }
 
