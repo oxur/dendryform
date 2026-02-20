@@ -35,9 +35,9 @@ enum Command {
         /// Theme name or path (default: dark)
         #[arg(long, default_value = "dark")]
         theme: String,
-        /// Output format: html, svg, or png
-        #[arg(short, long, default_value = "html")]
-        format: String,
+        /// Output format: html, svg, or png (inferred from -o extension if omitted)
+        #[arg(short, long)]
+        format: Option<String>,
         /// SVG viewport width in pixels (used with svg and png formats)
         #[arg(long, default_value = "1100")]
         width: f32,
@@ -71,7 +71,7 @@ fn main() -> ExitCode {
             &input,
             output.as_deref(),
             &theme_name,
-            &format,
+            format.as_deref(),
             width,
             scale,
         ),
@@ -85,10 +85,19 @@ fn cmd_render(
     input: &PathBuf,
     output: Option<&std::path::Path>,
     theme_name: &str,
-    format: &str,
+    format: Option<&str>,
     width: f32,
     scale: f32,
 ) -> ExitCode {
+    let format = match resolve_format(format, output) {
+        Ok(f) => f,
+        Err(e) => {
+            eprintln!("error: {e}");
+            return ExitCode::from(2);
+        }
+    };
+    let format = format.as_str();
+
     let diagram = match parse_yaml_file(input) {
         Ok(d) => d,
         Err(e) => return handle_parse_error(e),
@@ -291,6 +300,33 @@ fn resolve_theme(name: &str) -> Theme {
             }
         }
     }
+}
+
+fn resolve_format(
+    format: Option<&str>,
+    output: Option<&std::path::Path>,
+) -> Result<String, String> {
+    if let Some(fmt) = format {
+        return match fmt {
+            "html" | "svg" | "png" => Ok(fmt.to_string()),
+            _ => Err(format!(
+                "unsupported format '{fmt}' (use html, svg, or png)"
+            )),
+        };
+    }
+    if let Some(path) = output {
+        if let Some(ext) = path.extension().and_then(|e| e.to_str()) {
+            return match ext {
+                "html" | "htm" => Ok("html".to_string()),
+                "svg" => Ok("svg".to_string()),
+                "png" => Ok("png".to_string()),
+                _ => Err(format!(
+                    "cannot infer format from extension '.{ext}' (use .html, .svg, or .png, or pass -f)"
+                )),
+            };
+        }
+    }
+    Ok("html".to_string())
 }
 
 fn handle_parse_error(err: ParseError) -> ExitCode {
