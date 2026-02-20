@@ -216,13 +216,13 @@ fn resolve_tier<'a>(
         // Compute max node height in this row
         let row_height = row_nodes
             .iter()
-            .map(|ng| compute_node_height(ng.node, m))
+            .map(|ng| compute_node_height(ng.node, m, cell_width))
             .fold(0.0_f32, f32::max);
 
         for ng in &row_nodes {
             let col = ng.grid_column;
             let nx = x_offset + col as f32 * (cell_width + m.grid_gap);
-            let node_h = compute_node_height(ng.node, m);
+            let node_h = compute_node_height(ng.node, m, cell_width);
             let ny = *y;
 
             resolved_nodes.push(ResolvedNode {
@@ -265,12 +265,15 @@ fn resolve_tier<'a>(
     }
 }
 
-fn compute_node_height(node: &Node, m: &SvgMetrics) -> f32 {
+fn compute_node_height(node: &Node, m: &SvgMetrics, cell_width: f32) -> f32 {
+    let available_width = cell_width - 2.0 * m.node_padding_x;
+    let desc_lines = m.wrap_text(node.description(), available_width, m.node_desc_font_size);
+
     let mut h = m.node_accent_bar_height;
     h += m.node_padding_y; // top padding
     h += m.node_title_font_size; // title line
     h += m.node_title_desc_gap;
-    h += m.line_height(m.node_desc_font_size); // desc line
+    h += desc_lines.len() as f32 * m.line_height(m.node_desc_font_size); // wrapped desc
 
     if !node.tech().is_empty() {
         h += m.node_tech_margin_top;

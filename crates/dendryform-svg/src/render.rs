@@ -211,13 +211,27 @@ fn write_node(
     } else {
         content_x
     };
+
+    let available_width = r.w - 2.0 * m.node_padding_x;
+    let desc_lines = m.wrap_text(node.node.description(), available_width, m.node_desc_font_size);
+    let line_h = m.line_height(m.node_desc_font_size);
+
     writeln!(
         svg,
-        "    <text x=\"{desc_x}\" y=\"{cy}\" text-anchor=\"{desc_anchor}\" font-family=\"'{body_font}', sans-serif\" font-size=\"12\" fill=\"{}\">{}",
-        theme.text().dim(),
-        escape_xml(node.node.description())
+        "    <text x=\"{desc_x}\" y=\"{cy}\" text-anchor=\"{desc_anchor}\" font-family=\"'{body_font}', sans-serif\" font-size=\"12\" fill=\"{}\">",
+        theme.text().dim()
     )?;
+    for (i, line) in desc_lines.iter().enumerate() {
+        let dy: f32 = if i == 0 { 0.0 } else { line_h };
+        writeln!(
+            svg,
+            "      <tspan x=\"{desc_x}\" dy=\"{dy}\">{}</tspan>",
+            escape_xml(line)
+        )?;
+    }
     writeln!(svg, "    </text>")?;
+
+    cy += (desc_lines.len() - 1) as f32 * line_h;
 
     // Tech badges
     let tech = node.node.tech();

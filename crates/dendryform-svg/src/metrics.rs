@@ -251,6 +251,35 @@ impl SvgMetrics {
     pub fn line_height(&self, font_size: f32) -> f32 {
         font_size * self.line_height_ratio
     }
+
+    /// Wraps `text` into lines that fit within `available_width`, using the
+    /// proportional body-font width estimate. Returns at least one element.
+    pub fn wrap_text(&self, text: &str, available_width: f32, font_size: f32) -> Vec<String> {
+        let mut lines: Vec<String> = Vec::new();
+        let mut current = String::new();
+        let mut current_width = 0.0_f32;
+        let space_w = self.body_text_width(" ", font_size);
+
+        for word in text.split_whitespace() {
+            let word_w = self.body_text_width(word, font_size);
+            if current.is_empty() {
+                current.push_str(word);
+                current_width = word_w;
+            } else if current_width + space_w + word_w <= available_width {
+                current.push(' ');
+                current.push_str(word);
+                current_width += space_w + word_w;
+            } else {
+                lines.push(std::mem::take(&mut current));
+                current.push_str(word);
+                current_width = word_w;
+            }
+        }
+        if !current.is_empty() || lines.is_empty() {
+            lines.push(current);
+        }
+        lines
+    }
 }
 
 #[cfg(test)]
@@ -285,5 +314,32 @@ mod tests {
         let m = SvgMetrics::default();
         let lh = m.line_height(14.0);
         assert!((lh - 21.0).abs() < f32::EPSILON);
+    }
+
+    #[test]
+    fn test_wrap_text_short_fits_one_line() {
+        let m = SvgMetrics::default();
+        let lines = m.wrap_text("hello world", 200.0, 12.0);
+        assert_eq!(lines.len(), 1);
+        assert_eq!(lines[0], "hello world");
+    }
+
+    #[test]
+    fn test_wrap_text_long_wraps() {
+        let m = SvgMetrics::default();
+        // Each char ≈ 6px at 12px font (0.5 ratio). "hello" = 30px, "world" = 30px,
+        // space = 6px. Total = 66px > 50px limit, so should wrap.
+        let lines = m.wrap_text("hello world", 50.0, 12.0);
+        assert_eq!(lines.len(), 2);
+        assert_eq!(lines[0], "hello");
+        assert_eq!(lines[1], "world");
+    }
+
+    #[test]
+    fn test_wrap_text_empty_returns_one_empty_line() {
+        let m = SvgMetrics::default();
+        let lines = m.wrap_text("", 200.0, 12.0);
+        assert_eq!(lines.len(), 1);
+        assert_eq!(lines[0], "");
     }
 }
