@@ -14,7 +14,7 @@
 //! use dendryform_html::render_html;
 //! use dendryform_layout::compute_layout;
 //!
-//! let diagram = dendryform_parse::parse_yaml_file("examples/taproot/taproot.yml").unwrap();
+//! let diagram = dendryform_parse::parse_yaml_file("examples/taproot/architecture.yaml").unwrap();
 //! let plan = compute_layout(&diagram).unwrap();
 //! let html = render_html(&plan, &Theme::dark()).unwrap();
 //! std::fs::write("output.html", html).unwrap();
@@ -67,7 +67,7 @@ mod tests {
 
     #[test]
     fn test_version_is_set() {
-        assert_eq!(version(), "0.0.1");
+        assert_eq!(version(), "0.1.0");
     }
 
     #[test]
@@ -291,7 +291,7 @@ mod tests {
 
     #[test]
     fn test_render_taproot_full() {
-        let yaml = include_str!("../../../examples/taproot/taproot.yml");
+        let yaml = include_str!("../../../examples/taproot/architecture.yaml");
         let diagram = dendryform_parse::parse_yaml(yaml).unwrap();
         let plan = compute_layout(&diagram).unwrap();
         let html = render_html(&plan, &Theme::dark()).unwrap();

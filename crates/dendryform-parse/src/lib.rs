@@ -12,7 +12,7 @@
 //! ```no_run
 //! use dendryform_parse::parse_yaml_file;
 //!
-//! let diagram = parse_yaml_file("examples/taproot/taproot.yml").unwrap();
+//! let diagram = parse_yaml_file("examples/taproot/architecture.yaml").unwrap();
 //! println!("Diagram: {}", diagram.header().title().text());
 //! ```
 
@@ -59,12 +59,12 @@ mod tests {
 
     #[test]
     fn test_version_is_set() {
-        assert_eq!(version(), "0.0.1");
+        assert_eq!(version(), "0.1.0");
     }
 
     #[test]
     fn test_parse_taproot_yaml() {
-        let yaml = include_str!("../../../examples/taproot/taproot.yml");
+        let yaml = include_str!("../../../examples/taproot/architecture.yaml");
         let diagram = parse_yaml(yaml).expect("taproot.yml should parse successfully");
         assert_eq!(diagram.header().title().text(), "system architecture");
         assert_eq!(diagram.header().title().accent(), "taproot");
@@ -77,7 +77,7 @@ mod tests {
 
     #[test]
     fn test_parse_taproot_yaml_layers() {
-        let yaml = include_str!("../../../examples/taproot/taproot.yml");
+        let yaml = include_str!("../../../examples/taproot/architecture.yaml");
         let diagram = parse_yaml(yaml).unwrap();
         // taproot.yml has: tier, connector, tier, flow_labels, tier = 5 top-level layers
         assert_eq!(diagram.layers().len(), 5);
@@ -85,7 +85,7 @@ mod tests {
 
     #[test]
     fn test_parse_taproot_yaml_edges() {
-        let yaml = include_str!("../../../examples/taproot/taproot.yml");
+        let yaml = include_str!("../../../examples/taproot/architecture.yaml");
         let diagram = parse_yaml(yaml).unwrap();
         // taproot.yml has 18 edges
         assert_eq!(diagram.edges().len(), 18);
@@ -93,7 +93,7 @@ mod tests {
 
     #[test]
     fn test_parse_taproot_yaml_legend() {
-        let yaml = include_str!("../../../examples/taproot/taproot.yml");
+        let yaml = include_str!("../../../examples/taproot/architecture.yaml");
         let diagram = parse_yaml(yaml).unwrap();
         assert_eq!(diagram.legend().len(), 6);
     }
@@ -207,7 +207,7 @@ edges:
 
     #[test]
     fn test_parse_json_round_trip() {
-        let yaml = include_str!("../../../examples/taproot/taproot.yml");
+        let yaml = include_str!("../../../examples/taproot/architecture.yaml");
         let diagram = parse_yaml(yaml).unwrap();
         let json = serde_json::to_string_pretty(&diagram).unwrap();
         let from_json = parse_json(&json).unwrap();

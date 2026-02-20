@@ -11,7 +11,7 @@
 //! ```no_run
 //! use dendryform_layout::compute_layout;
 //!
-//! let diagram = dendryform_parse::parse_yaml_file("examples/taproot/taproot.yml").unwrap();
+//! let diagram = dendryform_parse::parse_yaml_file("examples/taproot/architecture.yaml").unwrap();
 //! let plan = compute_layout(&diagram).unwrap();
 //! println!("Layers: {}", plan.layers.len());
 //! ```
@@ -38,6 +38,6 @@ mod tests {
 
     #[test]
     fn test_version_is_set() {
-        assert_eq!(version(), "0.0.1");
+        assert_eq!(version(), "0.1.0");
     }
 }

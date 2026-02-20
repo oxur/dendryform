@@ -412,7 +412,7 @@ mod tests {
 
     #[test]
     fn test_taproot_layout() {
-        let yaml = include_str!("../../../examples/taproot/taproot.yml");
+        let yaml = include_str!("../../../examples/taproot/architecture.yaml");
         let diagram: Diagram = dendryform_parse::parse_yaml(yaml).unwrap();
         let plan = compute_layout(&diagram).unwrap();
 

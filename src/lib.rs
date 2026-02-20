@@ -30,6 +30,6 @@ mod tests {
 
     #[test]
     fn test_version_is_set() {
-        assert_eq!(version(), "0.0.1");
+        assert_eq!(version(), "0.1.0");
     }
 }

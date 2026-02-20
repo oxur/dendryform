@@ -14,7 +14,7 @@
 //! use dendryform_svg::render_svg;
 //! use dendryform_layout::compute_layout;
 //!
-//! let diagram = dendryform_parse::parse_yaml_file("examples/taproot/taproot.yml").unwrap();
+//! let diagram = dendryform_parse::parse_yaml_file("examples/taproot/architecture.yaml").unwrap();
 //! let plan = compute_layout(&diagram).unwrap();
 //! let svg = render_svg(&plan, &Theme::dark(), 1100.0).unwrap();
 //! std::fs::write("output.svg", svg).unwrap();
@@ -69,7 +69,7 @@ mod tests {
 
     #[test]
     fn test_version_is_set() {
-        assert_eq!(version(), "0.0.1");
+        assert_eq!(version(), "0.1.0");
     }
 
     #[test]
@@ -297,7 +297,7 @@ mod tests {
 
     #[test]
     fn test_render_taproot_svg() {
-        let yaml = include_str!("../../../examples/taproot/taproot.yml");
+        let yaml = include_str!("../../../examples/taproot/architecture.yaml");
         let diagram = dendryform_parse::parse_yaml(yaml).unwrap();
         let plan = compute_layout(&diagram).unwrap();
         let svg = render_svg(&plan, &Theme::dark(), 1100.0).unwrap();
