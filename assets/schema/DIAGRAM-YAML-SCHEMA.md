@@ -279,14 +279,14 @@ layers:
         - id: postgres
           kind: infrastructure
           color: red
-          icon: "⬡"
+          icon: "◯"
           title: "PostgreSQL"
           description: "Primary data store"
           tech: ["RDS"]
         - id: redis
           kind: infrastructure
           color: teal
-          icon: "⬡"
+          icon: "◯"
           title: "Redis"
           description: "Session cache"
           tech: ["ElastiCache"]
@@ -338,10 +338,10 @@ edges:
 |---------|------|---------|
 | External clients/users | ◇ | Browser, mobile app |
 | Server-side components | ◈ | API, auth, config |
-| Tool/capability groups | ▣ | Tool registries |
+| Tool/capability groups | ⊕ | Tool registries |
 | Engine/subsystem internals | ◆ | Search, graph, cache |
 | Client libraries | ◉ | DB client, HTTP client |
-| External services | ⬡ | Database, SaaS, cloud |
+| External services | ◯ | Database, SaaS, cloud |
 
 These are conventions, not enforced. Any single Unicode character works.
 
