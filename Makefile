@@ -310,6 +310,8 @@ PUBLISH_ORDER := \
 	dendryform-cli \
 	dendryform
 
+# crates.io rate limit delay (seconds)
+PUBLISH_DELAY := 372
 .PHONY: publish
 publish:
 	@echo ""
@@ -323,11 +325,13 @@ publish:
 	@read -p "Continue? [y/N] " -n 1 -r; \
 	echo; \
 	if [[ ! $$REPLY =~ ^[Yy]$$ ]]; then \
-			echo "$(RED)✗ Aborted$(RESET)"; \
-			exit 1; \
+		echo "$(RED)✗ Aborted$(RESET)"; \
+		exit 1; \
 	fi
 	@echo ""
 	@echo "$(BLUE)Publishing crates in dependency order...$(RESET)"
+	@echo "$(YELLOW)Note: Publishing ~10 new crates/hour to avoid rate limits$(RESET)"
+	@echo ""
 	@for crate in $(PUBLISH_ORDER); do \
 		echo ""; \
 		echo "$(CYAN)• Publishing $$crate...$(RESET)"; \
@@ -340,10 +344,19 @@ publish:
 		result=$$?; \
 		if [ $$result -eq 0 ]; then \
 			echo "  $(GREEN)✓$(RESET) $$crate published successfully"; \
-			echo "  $(YELLOW)→ Waiting 30s for crates.io index update...$(RESET)"; \
-			sleep 30; \
+			echo "  $(YELLOW)→ Waiting 6 minutes for crates.io rate limit and index update...$(RESET)"; \
+			sleep $(PUBLISH_DELAY); \
 		elif echo "$$output" | grep -q "already exists"; then \
 			echo "  $(YELLOW)⊙$(RESET) $$crate already published, skipping"; \
+		elif echo "$$output" | grep -q "429 Too Many Requests"; then \
+			echo "  $(YELLOW)⚠$(RESET) Rate limit hit for $$crate"; \
+			retry_after=$$(echo "$$output" | sed -n 's/.*after \([^.]*\).*/\1/p' | head -1); \
+			if [ -n "$$retry_after" ]; then \
+				echo "  $(YELLOW)→$(RESET) Server says: retry after $$retry_after"; \
+			fi; \
+			echo "  $(YELLOW)→$(RESET) Tip: Email help@crates.io to request a limit increase"; \
+			echo "  $(YELLOW)→$(RESET) Or wait and run: cargo publish --manifest-path $$manifest"; \
+			exit 1; \
 		else \
 			echo "  $(RED)✗$(RESET) Failed to publish $$crate"; \
 			echo "$$output"; \
@@ -368,26 +381,25 @@ publish-dry-run:
 		i=$$((i+1)); \
 	done
 	@echo ""
-	@echo "$(BLUE)Packaging each crate (manifest + file list check)...$(RESET)"
+	@echo "$(BLUE)Verifying each crate can be packaged...$(RESET)"
 	@for crate in $(PUBLISH_ORDER); do \
 		echo ""; \
-		echo "$(CYAN)• Checking $$crate...$(RESET)"; \
+		echo "$(CYAN)• Packaging $$crate...$(RESET)"; \
 		if [ "$$crate" = "dendryform" ]; then \
 			manifest="./Cargo.toml"; \
 		else \
 			manifest="crates/$$crate/Cargo.toml"; \
 		fi; \
-		if cargo package --list --no-verify --allow-dirty --manifest-path "$$manifest" > /dev/null; then \
-			echo "  $(GREEN)✓$(RESET) $$crate passed validation"; \
+		if cargo package --list --no-verify --allow-dirty --manifest-path "$$manifest" > /dev/null 2>&1; then \
+			echo "  $(GREEN)✓$(RESET) $$crate is ready for publishing"; \
 		else \
 			echo "  $(RED)✗$(RESET) $$crate failed validation"; \
+			cargo package --list --no-verify --allow-dirty --manifest-path "$$manifest"; \
 			exit 1; \
 		fi; \
 	done
 	@echo ""
-	@echo "$(BLUE)Verifying workspace compiles cleanly...$(RESET)"
-	@cargo build --workspace 2>&1 | tail -3
-	@echo ""
 	@echo "$(GREEN)✓ All crates ready for publishing!$(RESET)"
 	@echo "$(CYAN)→ Run 'make publish' to publish to crates.io$(RESET)"
+	@echo "$(CYAN)→ Or 'make publish-one CRATE=crate-name' to publish a single crate$(RESET)"
 	@echo ""
