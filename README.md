@@ -14,29 +14,54 @@ Named for the 23 [dendriform models](https://en.wikipedia.org/wiki/Plant_archite
 
 ## Status
 
-Early development — schema design and HTML renderer in progress.
+**v0.1.0** — CLI is working. HTML, SVG, and PNG renderers are complete. Schema design is stable.
 
-## What This Will Be
+## What It Does
 
-`dendryform` takes a declarative description of a software system — nodes, edges, containment, tiers — and renders it as a beautiful, interactive HTML architecture diagram. It also exports to SVG, PNG, ASCII, Structurizr DSL, and Mermaid.
+`dendryform` takes a declarative YAML description of a software system — nodes, edges, containment, tiers — and renders it as a beautiful, dark-themed architecture diagram in HTML, SVG, or PNG.
 
-```yaml
-title: "myproject - system architecture"
-theme: dark
+## Usage
 
-tiers:
-  - label: Client Layer
-    layout: single
-    nodes:
-      - id: web-app
-        label: Web Application
-        kind: system
-        tech: [React, TypeScript]
+### 1 — Generate an `architecture.yaml` with Claude Code
+
+The fastest way to diagram an existing codebase is to let an AI read the schema and your source, then write the YAML for you. Point Claude Code at the bundled schema reference:
+
 ```
+Read assets/schema/DIAGRAM-YAML-SCHEMA.md, then analyse the source code
+in src/ and generate an architecture.yaml file that captures the system
+architecture using the dendryform schema.
+```
+
+The schema document (`assets/schema/DIAGRAM-YAML-SCHEMA.md`) is written specifically for AI assistants — it covers every field, all valid values, and worked examples.
+
+### 2 — Render to SVG or PNG
+
+Once you have an `architecture.yaml`, render it with the CLI:
 
 ```bash
-dendryform render architecture.yaml -o architecture.html
+# PNG — format inferred from the output extension
+dendryform render architecture.yaml -o diagram.png
+
+# SVG
+dendryform render architecture.yaml -o diagram.svg
+
+# HTML (interactive)
+dendryform render architecture.yaml -o diagram.html
+
+# Explicit format flag
+dendryform render architecture.yaml -f png -o diagram.png
+
+# Retina PNG (2× scale)
+dendryform render architecture.yaml -o diagram.png --scale 2.0
 ```
+
+Run `dendryform --help` or `dendryform render --help` for all options including `--theme` and `--width`.
+
+### Example output
+
+[![][taproot-medium]][taproot-large]
+
+*(click for full-size)*
 
 ## Workspace Structure
 
@@ -50,11 +75,12 @@ dendryform/
 │   ├── dendryform-html/        # LayoutPlan → responsive HTML
 │   ├── dendryform-svg/         # LayoutPlan → static SVG
 │   ├── dendryform-png/         # SVG → PNG (resvg wrapper)
-│   ├── dendryform-ascii/       # LayoutPlan → ASCII art
-│   ├── dendryform-export/      # Lossy exporters (Structurizr DSL, JSON, Mermaid)
+│   ├── dendryform-ascii/       # LayoutPlan → ASCII art (planned)
+│   ├── dendryform-export/      # Lossy exporters: Structurizr DSL, JSON, Mermaid (planned)
 │   └── dendryform-cli/         # CLI binary
-├── themes/                     # Built-in theme definitions
-├── examples/                   # Example diagram YAML files
+├── assets/
+│   └── schema/                 # DIAGRAM-YAML-SCHEMA.md — AI-readable schema reference
+├── examples/                   # Example diagram YAML files and rendered outputs
 └── tests/                      # Integration / snapshot tests
 ```
 
@@ -66,11 +92,13 @@ Licensed under either of [Apache License, Version 2.0](LICENSE-APACHE) or [MIT L
 
 [logo]: assets/images/logo/v1-x250.png
 [logo-large]: assets/images/logo/v1.png
+[taproot-medium]: examples/taproot/diagram-medium.png
+[taproot-large]: examples/taproot/diagram.png
 [build]: https://github.com/oxur/dendryform/actions/workflows/ci.yml
 [build-badge]: https://github.com/oxur/dendryform/actions/workflows/ci.yml/badge.svg
-[crate]: https://crates.io/crates/tessitura
-[crate-badge]: https://img.shields.io/crates/v/tessitura.svg
-[docs]: https://docs.rs/tessitura/
+[crate]: https://crates.io/crates/dendryform
+[crate-badge]: https://img.shields.io/crates/v/dendryform.svg
+[docs]: https://docs.rs/dendryform/
 [docs-badge]: https://img.shields.io/badge/rust-documentation-blue.svg
 [tag-badge]: https://img.shields.io/github/tag/oxur/dendryform.svg
 [tag]: https://github.com/oxur/dendryform/tags
