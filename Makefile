@@ -227,6 +227,50 @@ check-all: build lint coverage
 	@echo "$(GREEN)✓ Full validation complete (build + lint + coverage)$(RESET)"
 	@echo ""
 
+# Ensure cargo-binstall is available for fast tool installation
+.PHONY: ensure-binstall
+ensure-binstall:
+	@command -v cargo-binstall >/dev/null 2>&1 || { \
+		echo "$(YELLOW)→ Installing cargo-binstall...$(RESET)"; \
+		curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash; \
+	}
+
+.PHONY: check-deps
+check-deps: ensure-binstall
+	@echo "$(BLUE)Checking for outdated dependencies...$(RESET)"
+	@command -v cargo-outdated >/dev/null 2>&1 || { \
+		echo "$(YELLOW)→ Installing cargo-outdated...$(RESET)"; \
+		cargo binstall -y cargo-outdated; \
+	}
+	@OUTPUT=$$(cargo outdated --root-deps-only --ignore-external-rel 2>/dev/null); \
+	echo "$$OUTPUT"; \
+	echo ""; \
+	if echo "$$OUTPUT" | grep -E "^[a-z0-9_-]+\s+" | grep -v "^----" | awk '{print $$3}' | grep -v "^---$$" | grep -v "^Compat$$" | grep -E "^[0-9]" | grep -q .; then \
+		echo "$(RED)✗ Compatible dependency updates available$(RESET)"; \
+		echo "$(YELLOW)→ Run 'make deps' to update and commit the updated Cargo.lock$(RESET)"; \
+		exit 1; \
+	else \
+		echo "$(GREEN)✓ All dependencies up to date$(RESET)"; \
+	fi
+.PHONY: deps
+deps: ensure-binstall
+	@echo "$(BLUE)Updating dependencies ...$(RESET)"
+	@command -v cargo-upgrade >/dev/null 2>&1 || { \
+		echo "$(YELLOW)→ Installing cargo-edit...$(RESET)"; \
+		cargo binstall -y cargo-edit; \
+	}
+	@cargo upgrade
+	@echo "$(GREEN)✓ Cargo deps upgraded$(RESET)"
+
+docs: DOCS_PATH = target/doc/$(CODE_NAME)
+docs:
+	@cargo doc --all-features --no-deps --workspace
+	@echo
+	@echo "Docs are available here:"
+	@echo " * $(DOCS_PATH)"
+	@echo " * file://$(shell pwd)/$(DOCS_PATH)/index.html"
+	@echo
+
 # Utility targets
 .PHONY: tracked-files
 tracked-files:
