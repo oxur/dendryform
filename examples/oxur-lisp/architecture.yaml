@@ -247,21 +247,21 @@ layers:
         - id: treebeard
           kind: system
           color: red
-          icon: "⬡"
+          icon: "◯"
           title: "Treebeard Runtime"
           description: "Tree-walking interpreter for syn AST with LanguageFrontend trait, environment bindings, and rustc escape hatch"
           tech: ["syn AST eval", "Value repr", "TCO"]
         - id: repl-storage
           kind: system
           color: red
-          icon: "⬡"
+          icon: "◯"
           title: "Tiered Storage"
           description: "Four-tier storage: in-memory (DashMap), persistent KV (redb), SQLite for history search, filesystem archive"
           tech: ["DashMap", "redb", "SQLite"]
         - id: macro-system
           kind: system
           color: red
-          icon: "⬡"
+          icon: "◯"
           title: "Macro System"
           description: "Phased macro system: core macros (v1.0) with defmacro, quasiquote, gensym; user macros in v2.0"
           tech: ["Hygienic", "Quote/Unquote"]
@@ -279,7 +279,7 @@ layers:
         - id: binary
           kind: infrastructure
           color: blue
-          icon: "⬡"
+          icon: "◯"
           title: "Native Binary / Library"
           description: "Compiled Rust binary with full type safety, memory safety, LLVM optimizations, and access to the entire Rust crate ecosystem"
           tech: ["rustc", "LLVM", "Cargo ecosystem"]

@@ -102,25 +102,25 @@ layers:
                 - id: bq-tools
                   kind: component
                   color: amber
-                  icon: "▣"
+                  icon: "⊕"
                   title: "BQ Tools"
                   description: "execute_query, explain_query, describe_table, get_sample_rows, list_datasets"
                 - id: knowledge-tools
                   kind: component
                   color: amber
-                  icon: "▣"
+                  icon: "⊕"
                   title: "Knowledge"
                   description: "search_domain, semantic_search, get_concept, list_concepts"
                 - id: graph-tools
                   kind: component
                   color: amber
-                  icon: "▣"
+                  icon: "⊕"
                   title: "Graph"
                   description: "query_knowledge_graph, related_concepts, find_path, neighborhood"
                 - id: user-model-tools
                   kind: component
                   color: amber
-                  icon: "▣"
+                  icon: "⊕"
                   title: "User Model"
                   description: "get_user_profile, search_user_model, get_query_history, get_daily_cost"
 
@@ -241,7 +241,7 @@ layers:
         - id: bigquery
           kind: infrastructure
           color: red
-          icon: "⬡"
+          icon: "◯"
           title: "BigQuery"
           description: "banyan · banyan_intermediate · banyan_metrics — 250M+ rows, partitioned by row_created_ts"
           tech:
@@ -249,7 +249,7 @@ layers:
         - id: redis-valkey
           kind: infrastructure
           color: teal
-          icon: "⬡"
+          icon: "◯"
           title: "Redis / Valkey"
           description: "taproot:history:{email}:{ts} · taproot:cost:{email}:{date}"
           tech:
@@ -257,7 +257,7 @@ layers:
         - id: google-oauth2
           kind: infrastructure
           color: blue
-          icon: "⬡"
+          icon: "◯"
           title: "Google OAuth2"
           description: "Identity tokens, Banyan domain validation"
           tech:

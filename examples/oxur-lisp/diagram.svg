@@ -355,7 +355,7 @@
     <rect x="32" y="1797" width="337.33334" height="130" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="32" y="1797" width="337.33334" height="2" rx="10" fill="#ef5350"/>
     <text x="52" y="1829" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#ef5350">⬡</tspan> Treebeard Runtime
+      <tspan fill="#ef5350">◯</tspan> Treebeard Runtime
     </text>
     <text x="52" y="1845" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
       <tspan x="52" dy="0">Tree-walking interpreter for syn AST with</tspan>
@@ -376,7 +376,7 @@
     <rect x="381.33334" y="1797" width="337.33334" height="130" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="381.33334" y="1797" width="337.33334" height="2" rx="10" fill="#ef5350"/>
     <text x="401.33334" y="1829" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#ef5350">⬡</tspan> Tiered Storage
+      <tspan fill="#ef5350">◯</tspan> Tiered Storage
     </text>
     <text x="401.33334" y="1845" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
       <tspan x="401.33334" dy="0">Four-tier storage: in-memory (DashMap),</tspan>
@@ -397,7 +397,7 @@
     <rect x="730.6667" y="1797" width="337.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="730.6667" y="1797" width="337.33334" height="2" rx="10" fill="#ef5350"/>
     <text x="750.6667" y="1829" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#ef5350">⬡</tspan> Macro System
+      <tspan fill="#ef5350">◯</tspan> Macro System
     </text>
     <text x="750.6667" y="1845" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
       <tspan x="750.6667" dy="0">Phased macro system: core macros (v1.0) with</tspan>
@@ -418,7 +418,7 @@
     <rect x="32" y="2019" width="1036" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="32" y="2019" width="1036" height="2" rx="10" fill="#4fc3f7"/>
     <text x="550" y="2051" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#4fc3f7">⬡</tspan> Native Binary / Library
+      <tspan fill="#4fc3f7">◯</tspan> Native Binary / Library
     </text>
     <text x="550" y="2067" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
       <tspan x="550" dy="0">Compiled Rust binary with full type safety, memory safety, LLVM optimizations, and access to the entire Rust crate ecosystem</tspan>

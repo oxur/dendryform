@@ -112,7 +112,7 @@
     <rect x="56" y="574" width="238" height="106" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="56" y="574" width="238" height="2" rx="10" fill="#ffb74d"/>
     <text x="76" y="606" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#ffb74d">▣</tspan> BQ Tools
+      <tspan fill="#ffb74d">⊕</tspan> BQ Tools
     </text>
     <text x="76" y="622" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
       <tspan x="76" dy="0">execute_query, explain_query,</tspan>
@@ -124,7 +124,7 @@
     <rect x="306" y="574" width="238" height="88" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="306" y="574" width="238" height="2" rx="10" fill="#ffb74d"/>
     <text x="326" y="606" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#ffb74d">▣</tspan> Knowledge
+      <tspan fill="#ffb74d">⊕</tspan> Knowledge
     </text>
     <text x="326" y="622" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
       <tspan x="326" dy="0">search_domain, semantic_search,</tspan>
@@ -135,7 +135,7 @@
     <rect x="556" y="574" width="238" height="106" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="556" y="574" width="238" height="2" rx="10" fill="#ffb74d"/>
     <text x="576" y="606" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#ffb74d">▣</tspan> Graph
+      <tspan fill="#ffb74d">⊕</tspan> Graph
     </text>
     <text x="576" y="622" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
       <tspan x="576" dy="0">query_knowledge_graph,</tspan>
@@ -147,7 +147,7 @@
     <rect x="806" y="574" width="238" height="106" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="806" y="574" width="238" height="2" rx="10" fill="#ffb74d"/>
     <text x="826" y="606" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#ffb74d">▣</tspan> User Model
+      <tspan fill="#ffb74d">⊕</tspan> User Model
     </text>
     <text x="826" y="622" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
       <tspan x="826" dy="0">get_user_profile,</tspan>
@@ -283,7 +283,7 @@
     <rect x="32" y="1348" width="337.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="32" y="1348" width="337.33334" height="2" rx="10" fill="#ef5350"/>
     <text x="52" y="1380" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#ef5350">⬡</tspan> BigQuery
+      <tspan fill="#ef5350">◯</tspan> BigQuery
     </text>
     <text x="52" y="1396" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
       <tspan x="52" dy="0">banyan · banyan_intermediate · banyan_metrics</tspan>
@@ -297,7 +297,7 @@
     <rect x="381.33334" y="1348" width="337.33334" height="112" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="381.33334" y="1348" width="337.33334" height="2" rx="10" fill="#4dd0e1"/>
     <text x="401.33334" y="1380" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#4dd0e1">⬡</tspan> Redis / Valkey
+      <tspan fill="#4dd0e1">◯</tspan> Redis / Valkey
     </text>
     <text x="401.33334" y="1396" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
       <tspan x="401.33334" dy="0">taproot:history:{email}:{ts} ·</tspan>
@@ -311,7 +311,7 @@
     <rect x="730.6667" y="1348" width="337.33334" height="94" rx="10" fill="#111820" stroke="#1e2a3a" stroke-width="1"/>
     <rect x="730.6667" y="1348" width="337.33334" height="2" rx="10" fill="#4fc3f7"/>
     <text x="750.6667" y="1380" text-anchor="start" font-family="'JetBrains Mono', monospace" font-weight="500" font-size="14" fill="#e8edf3">
-      <tspan fill="#4fc3f7">⬡</tspan> Google OAuth2
+      <tspan fill="#4fc3f7">◯</tspan> Google OAuth2
     </text>
     <text x="750.6667" y="1396" text-anchor="start" font-family="'DM Sans', sans-serif" font-size="12" fill="#5a6a7a">
       <tspan x="750.6667" dy="0">Identity tokens, Banyan domain validation</tspan>
