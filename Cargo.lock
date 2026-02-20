@@ -209,7 +209,7 @@ dependencies = [
 
 [[package]]
 name = "dendryform-ascii"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "dendryform-core",
  "dendryform-layout",
@@ -218,7 +218,7 @@ dependencies = [
 
 [[package]]
 name = "dendryform-cli"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "clap",
  "dendryform-core",
@@ -232,7 +232,7 @@ dependencies = [
 
 [[package]]
 name = "dendryform-core"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "serde",
  "serde_json",
@@ -243,7 +243,7 @@ dependencies = [
 
 [[package]]
 name = "dendryform-export"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "dendryform-core",
  "serde",
@@ -254,7 +254,7 @@ dependencies = [
 
 [[package]]
 name = "dendryform-html"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "dendryform-core",
  "dendryform-layout",
@@ -265,7 +265,7 @@ dependencies = [
 
 [[package]]
 name = "dendryform-layout"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "dendryform-core",
  "dendryform-parse",
@@ -275,7 +275,7 @@ dependencies = [
 
 [[package]]
 name = "dendryform-parse"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "dendryform-core",
  "serde",
@@ -286,7 +286,7 @@ dependencies = [
 
 [[package]]
 name = "dendryform-png"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "dendryform-core",
  "dendryform-layout",
@@ -298,7 +298,7 @@ dependencies = [
 
 [[package]]
 name = "dendryform-svg"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "dendryform-core",
  "dendryform-layout",

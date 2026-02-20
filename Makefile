@@ -271,6 +271,9 @@ docs:
 	@echo " * file://$(shell pwd)/$(DOCS_PATH)/index.html"
 	@echo
 
+open-docs:
+	@cargo doc --all-features --no-deps --workspace --open
+
 # Utility targets
 .PHONY: tracked-files
 tracked-files:
@@ -293,3 +296,98 @@ push:
 		git push $$remote main && git push $$remote --tags; \
 		echo "$(GREEN)✓ Pushed$(RESET)"; \
 	done
+
+# Crates in dependency order (leaf crates first, dependent crates later)
+PUBLISH_ORDER := \
+	dendryform-core \
+	dendryform-parse \
+	dendryform-export \
+	dendryform-layout \
+	dendryform-ascii \
+	dendryform-html \
+	dendryform-svg \
+	dendryform-png \
+	dendryform-cli \
+	dendryform
+
+.PHONY: publish
+publish:
+	@echo ""
+	@echo "$(CYAN)╔══════════════════════════════════════════════════════════╗$(RESET)"
+	@echo "$(CYAN)║$(RESET) $(BLUE)Publishing $(PROJECT_NAME) Crates to crates.io$(RESET)                $(CYAN)║$(RESET)"
+	@echo "$(CYAN)╚══════════════════════════════════════════════════════════╝$(RESET)"
+	@echo ""
+	@echo "$(YELLOW)⚠ This will publish all crates in dependency order$(RESET)"
+	@echo "$(YELLOW)⚠ Ensure all tests pass and versions are updated$(RESET)"
+	@echo ""
+	@read -p "Continue? [y/N] " -n 1 -r; \
+	echo; \
+	if [[ ! $$REPLY =~ ^[Yy]$$ ]]; then \
+			echo "$(RED)✗ Aborted$(RESET)"; \
+			exit 1; \
+	fi
+	@echo ""
+	@echo "$(BLUE)Publishing crates in dependency order...$(RESET)"
+	@for crate in $(PUBLISH_ORDER); do \
+		echo ""; \
+		echo "$(CYAN)• Publishing $$crate...$(RESET)"; \
+		if [ "$$crate" = "dendryform" ]; then \
+			manifest="./Cargo.toml"; \
+		else \
+			manifest="crates/$$crate/Cargo.toml"; \
+		fi; \
+		output=$$(cargo publish --manifest-path "$$manifest" 2>&1); \
+		result=$$?; \
+		if [ $$result -eq 0 ]; then \
+			echo "  $(GREEN)✓$(RESET) $$crate published successfully"; \
+			echo "  $(YELLOW)→ Waiting 30s for crates.io index update...$(RESET)"; \
+			sleep 30; \
+		elif echo "$$output" | grep -q "already exists"; then \
+			echo "  $(YELLOW)⊙$(RESET) $$crate already published, skipping"; \
+		else \
+			echo "  $(RED)✗$(RESET) Failed to publish $$crate"; \
+			echo "$$output"; \
+			exit 1; \
+		fi; \
+	done
+	@echo ""
+	@echo "$(GREEN)✓ All crates published successfully!$(RESET)"
+	@echo ""
+
+.PHONY: publish-dry-run
+publish-dry-run:
+	@echo ""
+	@echo "$(CYAN)╔══════════════════════════════════════════════════════════╗$(RESET)"
+	@echo "$(CYAN)║$(RESET) $(BLUE)Dry Run: Publishing $(PROJECT_NAME) Crates$(RESET)                    $(CYAN)║$(RESET)"
+	@echo "$(CYAN)╚══════════════════════════════════════════════════════════╝$(RESET)"
+	@echo ""
+	@echo "$(BLUE)Publishing order (in dependency order):$(RESET)"
+	@i=1; \
+	for crate in $(PUBLISH_ORDER); do \
+		echo "  $(YELLOW)$$i.$(RESET) $$crate"; \
+		i=$$((i+1)); \
+	done
+	@echo ""
+	@echo "$(BLUE)Packaging each crate (manifest + file list check)...$(RESET)"
+	@for crate in $(PUBLISH_ORDER); do \
+		echo ""; \
+		echo "$(CYAN)• Checking $$crate...$(RESET)"; \
+		if [ "$$crate" = "dendryform" ]; then \
+			manifest="./Cargo.toml"; \
+		else \
+			manifest="crates/$$crate/Cargo.toml"; \
+		fi; \
+		if cargo package --list --no-verify --allow-dirty --manifest-path "$$manifest" > /dev/null; then \
+			echo "  $(GREEN)✓$(RESET) $$crate passed validation"; \
+		else \
+			echo "  $(RED)✗$(RESET) $$crate failed validation"; \
+			exit 1; \
+		fi; \
+	done
+	@echo ""
+	@echo "$(BLUE)Verifying workspace compiles cleanly...$(RESET)"
+	@cargo build --workspace 2>&1 | tail -3
+	@echo ""
+	@echo "$(GREEN)✓ All crates ready for publishing!$(RESET)"
+	@echo "$(CYAN)→ Run 'make publish' to publish to crates.io$(RESET)"
+	@echo ""

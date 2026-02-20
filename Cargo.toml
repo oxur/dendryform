@@ -13,6 +13,7 @@ members = [
 resolver = "3"
 
 [workspace.package]
+version = "0.1.0"
 edition = "2024"
 authors = ["Duncan"]
 license = "MIT OR Apache-2.0"
@@ -37,18 +38,18 @@ clap = { version = "4", features = ["derive"] }
 resvg = "0.44"
 
 # Internal crates
-dendryform-core = { path = "crates/dendryform-core" }
-dendryform-parse = { path = "crates/dendryform-parse" }
-dendryform-layout = { path = "crates/dendryform-layout" }
-dendryform-html = { path = "crates/dendryform-html" }
-dendryform-svg = { path = "crates/dendryform-svg" }
-dendryform-png = { path = "crates/dendryform-png" }
-dendryform-ascii = { path = "crates/dendryform-ascii" }
-dendryform-export = { path = "crates/dendryform-export" }
+dendryform-core = { path = "crates/dendryform-core", version = "0.1.0" }
+dendryform-parse = { path = "crates/dendryform-parse", version = "0.1.0" }
+dendryform-layout = { path = "crates/dendryform-layout", version = "0.1.0" }
+dendryform-html = { path = "crates/dendryform-html", version = "0.1.0" }
+dendryform-svg = { path = "crates/dendryform-svg", version = "0.1.0" }
+dendryform-png = { path = "crates/dendryform-png", version = "0.1.0" }
+dendryform-ascii = { path = "crates/dendryform-ascii", version = "0.1.0" }
+dendryform-export = { path = "crates/dendryform-export", version = "0.1.0" }
 
 [package]
 name = "dendryform"
-version = "0.1.0"
+version.workspace = true
 edition.workspace = true
 authors.workspace = true
 license.workspace = true
