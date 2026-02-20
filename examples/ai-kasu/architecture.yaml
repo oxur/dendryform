@@ -1,0 +1,432 @@
+diagram:
+  title:
+    text: "MCP server architecture"
+    accent: "ai-kasu"
+  subtitle: "knowledge engine over 1,139 concept cards and 8 source corpora"
+  theme: dark
+
+layers:
+  # --- Clients ---
+  - tier:
+      id: clients
+      label: "MCP Clients"
+      layout:
+        grid:
+          columns: 3
+      nodes:
+        - id: claude-code
+          kind: person
+          color: blue
+          icon: "◇"
+          title: "Claude Code"
+          description: "AI coding assistant consuming knowledge tools via MCP"
+          tech: ["MCP"]
+        - id: ide-plugin
+          kind: person
+          color: blue
+          icon: "◇"
+          title: "IDE Plugin"
+          description: "Editor extensions querying concept cards and search"
+          tech: ["MCP"]
+        - id: cli-client
+          kind: person
+          color: blue
+          icon: "◇"
+          title: "CLI / Scripts"
+          description: "Automation and batch queries over stdio transport"
+          tech: ["stdio"]
+
+  - connector:
+      style: line
+      label: "MCP protocol (stdio or streamable HTTP)"
+
+  # --- Server boundary ---
+  - tier:
+      id: server
+      container:
+        label: "kasu-server · rust binary"
+        border: solid
+        label_color: green
+        layers:
+          # Transport + auth
+          - tier:
+              id: transport
+              label: "Transport & Auth"
+              layout:
+                grid:
+                  columns: 3
+              nodes:
+                - id: stdio-transport
+                  kind: component
+                  color: green
+                  icon: "◈"
+                  title: "Stdio Transport"
+                  description: "Local MCP over stdin/stdout for development and CLI use"
+                  tech: ["rmcp 0.14"]
+                - id: http-transport
+                  kind: component
+                  color: green
+                  icon: "◈"
+                  title: "HTTP Transport"
+                  description: "Streamable HTTP with axum router, health endpoint, graceful shutdown"
+                  tech: ["axum 0.8", "rmcp 0.14"]
+                - id: oauth2-auth
+                  kind: component
+                  color: green
+                  icon: "◈"
+                  title: "OAuth2 Auth"
+                  description: "Google OAuth2 token validation, RFC 9728/8414 MCP discovery endpoints"
+                  tech: ["fabryk-auth-google", "Tower"]
+
+          - connector:
+              style: dots
+
+          # MCP server + tool registries
+          - tier:
+              id: mcp-layer
+              label: "MCP Server"
+              layout: single
+              nodes:
+                - id: fabryk-mcp-server
+                  kind: component
+                  color: green
+                  icon: "◈"
+                  title: "FabrykMcpServer"
+                  description: "Trait-based MCP server with CompositeRegistry dispatching tool calls to registered backends"
+                  tech: ["fabryk-mcp", "rmcp 0.14"]
+
+          - connector:
+              style: dots
+
+          # Tool registries
+          - tier:
+              id: tools
+              label: "Tool Registries"
+              layout:
+                grid:
+                  columns: 3
+              nodes:
+                - id: content-tools
+                  kind: component
+                  color: amber
+                  icon: "▣"
+                  title: "ContentTools"
+                  description: "list_concepts, get_concept — card lookup and browsing by category/tier"
+                  tech: ["fabryk-mcp-content"]
+                - id: fts-tools
+                  kind: component
+                  color: amber
+                  icon: "▣"
+                  title: "FtsTools"
+                  description: "search — full-text search across concept cards and source documents"
+                  tech: ["fabryk-mcp-fts"]
+                - id: graph-tools
+                  kind: component
+                  color: amber
+                  icon: "▣"
+                  title: "GraphTools"
+                  description: "graph_query, get_neighbors — traverse prerequisite, related, and contrast edges"
+                  tech: ["fabryk-mcp-graph"]
+                - id: semantic-tools
+                  kind: component
+                  color: amber
+                  icon: "▣"
+                  title: "SemanticSearchTools"
+                  description: "semantic_search — hybrid vector + FTS with reciprocal rank fusion"
+                  tech: ["custom"]
+                - id: diagnostic-tools
+                  kind: component
+                  color: amber
+                  icon: "▣"
+                  title: "DiagnosticTools"
+                  description: "ping, debug_config — health checks and configuration inspection"
+                  tech: ["custom"]
+
+          - connector:
+              style: dots
+
+          # Knowledge engine
+          - tier:
+              id: engine-tier
+              container:
+                label: "knowledge engine"
+                border: dashed
+                label_color: purple
+                layers:
+                  - tier:
+                      id: facade
+                      layout: single
+                      nodes:
+                        - id: knowledge-engine
+                          kind: component
+                          color: purple
+                          icon: "◆"
+                          title: "KnowledgeEngine"
+                          description: "Central facade — loads cards, orchestrates index builds, decomposes into provider + backends for tool wiring"
+                          tech: ["async build"]
+
+                  - connector:
+                      style: dots
+
+                  - tier:
+                      id: backends
+                      label: "Backends"
+                      layout:
+                        grid:
+                          columns: 4
+                      nodes:
+                        - id: provider
+                          kind: component
+                          color: purple
+                          icon: "◆"
+                          title: "InMemoryProvider"
+                          description: "HashMap-backed card store with filtered listing and category grouping"
+                          tech: ["ContentItemProvider"]
+                        - id: fts-backend
+                          kind: component
+                          color: purple
+                          icon: "◆"
+                          title: "FTS Backend"
+                          description: "Tantivy full-text search over cards and source documents"
+                          tech: ["fabryk-fts", "Tantivy"]
+                        - id: graph-backend
+                          kind: component
+                          color: purple
+                          icon: "◆"
+                          title: "Graph Backend"
+                          description: "In-memory knowledge graph with rkyv serialisation cache"
+                          tech: ["fabryk-graph", "rkyv"]
+                        - id: vector-backend
+                          kind: component
+                          color: purple
+                          icon: "◆"
+                          title: "Vector Backend"
+                          description: "LanceDB vector store with FastEmbed embeddings (bge-small-en-v1.5, 384d)"
+                          tech: ["fabryk-vector", "LanceDB"]
+
+                  - connector:
+                      style: dots
+
+                  - tier:
+                      id: adapters
+                      label: "Adapters"
+                      layout:
+                        grid:
+                          columns: 3
+                      nodes:
+                        - id: graph-extractor
+                          kind: component
+                          color: teal
+                          icon: "◆"
+                          title: "GraphExtractor"
+                          description: "Extracts nodes (slug, concept, category, tier) and edges (prerequisites, extends, related, contrasts, harmonisation) from card frontmatter"
+                          tech: ["fabryk_graph::GraphExtractor"]
+                        - id: doc-extractor
+                          kind: component
+                          color: teal
+                          icon: "◆"
+                          title: "DocumentExtractor"
+                          description: "Two impls — card extractor (rich metadata) and source doc extractor (chapter-level) for FTS indexing"
+                          tech: ["fabryk_fts::DocumentExtractor"]
+                        - id: vector-extractor
+                          kind: component
+                          color: teal
+                          icon: "◆"
+                          title: "VectorExtractor"
+                          description: "Composes embedding text from concept, category, aliases, quick definition, and body excerpt"
+                          tech: ["fabryk_vector::VectorExtractor"]
+
+  # Flow labels to data
+  - flow_labels:
+      items:
+        - "glob *.md + parse YAML frontmatter"
+        - "index content at startup"
+
+  # --- Data layer ---
+  - tier:
+      id: data
+      label: "Content Data"
+      layout:
+        grid:
+          columns: 2
+      nodes:
+        - id: concept-cards
+          kind: infrastructure
+          color: red
+          icon: "⬡"
+          title: "Concept Cards"
+          description: "1,139 harmonised markdown files with rich YAML frontmatter — graph nodes, relationships, aliases, tiers"
+          tech: ["concept-cards/harmonised/"]
+        - id: source-docs
+          kind: infrastructure
+          color: red
+          icon: "⬡"
+          title: "Source Documents"
+          description: "~97 MB of chapter-level markdown across 8 corpora for deep full-text and vector search"
+          tech: ["sources-md/", "8 corpora"]
+
+  - connector:
+      style: line
+      label: "on-disk markdown + YAML"
+
+  # --- External services ---
+  - tier:
+      id: external
+      label: "External Services"
+      layout:
+        grid:
+          columns: 2
+      nodes:
+        - id: google-oauth
+          kind: system
+          color: teal
+          icon: "⬡"
+          title: "Google OAuth2"
+          description: "JWKS public keys and userinfo endpoint for token validation and domain-scoped access control"
+          tech: ["JWKS", "OpenID Connect"]
+        - id: fabryk-crates
+          kind: system
+          color: teal
+          icon: "⬡"
+          title: "Fabryk Crate Ecosystem"
+          description: "Shared Rust libraries (core, content, fts, graph, vector, mcp, auth) providing reusable knowledge infrastructure"
+          tech: ["~/lab/oxur/ecl/", "path deps"]
+
+legend:
+  - color: blue
+    label: "MCP Clients"
+  - color: green
+    label: "Transport & Server"
+  - color: amber
+    label: "Tool Registries"
+  - color: purple
+    label: "Knowledge Engine"
+  - color: teal
+    label: "Adapters & External"
+  - color: red
+    label: "Content Data"
+
+edges:
+  # Clients → transport
+  - from: claude-code
+    to: http-transport
+    kind: uses
+    label: "streamable HTTP"
+  - from: ide-plugin
+    to: http-transport
+    kind: uses
+    label: "streamable HTTP"
+  - from: cli-client
+    to: stdio-transport
+    kind: uses
+    label: "stdio"
+
+  # Auth
+  - from: http-transport
+    to: oauth2-auth
+    kind: uses
+    label: "Tower middleware"
+  - from: oauth2-auth
+    to: google-oauth
+    kind: reads
+    label: "JWKS + userinfo"
+
+  # Transport → MCP server
+  - from: stdio-transport
+    to: fabryk-mcp-server
+    kind: uses
+  - from: http-transport
+    to: fabryk-mcp-server
+    kind: uses
+
+  # MCP server → tools
+  - from: fabryk-mcp-server
+    to: content-tools
+    kind: uses
+    label: "CompositeRegistry dispatch"
+  - from: fabryk-mcp-server
+    to: fts-tools
+    kind: uses
+  - from: fabryk-mcp-server
+    to: graph-tools
+    kind: uses
+  - from: fabryk-mcp-server
+    to: semantic-tools
+    kind: uses
+  - from: fabryk-mcp-server
+    to: diagnostic-tools
+    kind: uses
+
+  # Tools → backends
+  - from: content-tools
+    to: provider
+    kind: reads
+    label: "card lookup"
+  - from: fts-tools
+    to: fts-backend
+    kind: reads
+    label: "full-text query"
+  - from: graph-tools
+    to: graph-backend
+    kind: reads
+    label: "graph traversal"
+  - from: semantic-tools
+    to: fts-backend
+    kind: reads
+    label: "keyword leg"
+  - from: semantic-tools
+    to: vector-backend
+    kind: reads
+    label: "vector leg + RRF"
+
+  # Engine orchestration
+  - from: knowledge-engine
+    to: provider
+    kind: contains
+  - from: knowledge-engine
+    to: fts-backend
+    kind: contains
+  - from: knowledge-engine
+    to: graph-backend
+    kind: contains
+  - from: knowledge-engine
+    to: vector-backend
+    kind: contains
+
+  # Adapters → backends (build-time)
+  - from: graph-extractor
+    to: graph-backend
+    kind: writes
+    label: "build graph"
+  - from: doc-extractor
+    to: fts-backend
+    kind: writes
+    label: "build FTS index"
+  - from: vector-extractor
+    to: vector-backend
+    kind: writes
+    label: "build vector index"
+
+  # Adapters → data
+  - from: graph-extractor
+    to: concept-cards
+    kind: reads
+    label: "parse frontmatter"
+  - from: doc-extractor
+    to: concept-cards
+    kind: reads
+  - from: doc-extractor
+    to: source-docs
+    kind: reads
+  - from: vector-extractor
+    to: concept-cards
+    kind: reads
+  - from: vector-extractor
+    to: source-docs
+    kind: reads
+
+  # Provider → data
+  - from: provider
+    to: concept-cards
+    kind: reads
+    label: "load at startup"

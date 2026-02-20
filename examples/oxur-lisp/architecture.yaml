@@ -1,0 +1,373 @@
+diagram:
+  title:
+    text: "language architecture"
+    accent: "oxur"
+  subtitle: "lisp dialect compiling to rust via a 6-stage pipeline"
+  theme: dark
+
+layers:
+  # ── Oxur Source Input ──────────────────────────────────────────
+  - tier:
+      id: source-input
+      label: "Source Input"
+      layout: single
+      nodes:
+        - id: oxur-source
+          kind: person
+          color: blue
+          icon: "◇"
+          title: "Oxur Source (.oxr)"
+          description: "Lisp syntax with macros, sugar, and Rust interop"
+          tech: ["S-expressions", "Homoiconic"]
+
+  - connector:
+      style: line
+      label: "raw text"
+
+  # ── Compilation Pipeline Container ─────────────────────────────
+  - tier:
+      id: pipeline
+      container:
+        label: "oxur compilation pipeline"
+        border: solid
+        label_color: green
+        layers:
+          # ── Frontend: oxur-lang ──────────────────────────────
+          - tier:
+              id: frontend
+              container:
+                label: "oxur-lang (frontend)"
+                border: dashed
+                label_color: green
+                layers:
+                  - tier:
+                      id: frontend-stages
+                      layout:
+                        grid:
+                          columns: 2
+                      nodes:
+                        - id: stage1-parse
+                          kind: component
+                          color: green
+                          icon: "◈"
+                          title: "Stage 1: Parse"
+                          description: "Lexer and reader convert raw text to Surface Forms with source position tracking"
+                          tech: ["Tokenizer", "Reader Macros"]
+                        - id: stage2-expand
+                          kind: component
+                          color: green
+                          icon: "◈"
+                          title: "Stage 2: Expand"
+                          description: "Macro expansion and desugaring produce Core Forms (the stable IR)"
+                          tech: ["Macro Expander", "Core Forms IR"]
+
+          - connector:
+              style: dots
+
+          # ── Backend: oxur-comp ───────────────────────────────
+          - tier:
+              id: backend
+              container:
+                label: "oxur-comp (backend)"
+                border: dashed
+                label_color: purple
+                layers:
+                  - tier:
+                      id: backend-stages
+                      layout:
+                        grid:
+                          columns: 2
+                      nodes:
+                        - id: stage3-lower
+                          kind: component
+                          color: purple
+                          icon: "◆"
+                          title: "Stage 3: Lower"
+                          description: "Crosses semantic boundary from Lisp concepts to Rust concepts in S-expression form (Oxur AST)"
+                          tech: ["Semantic Lowering"]
+                        - id: stage4-desx
+                          kind: component
+                          color: purple
+                          icon: "◆"
+                          title: "Stage 4: De-S-expression"
+                          description: "Converts Oxur AST S-expressions to syn crate Rust AST structures via oxur-ast builders"
+                          tech: ["oxur-ast", "syn"]
+
+          - connector:
+              style: dots
+
+          # ── Code Generation ──────────────────────────────────
+          - tier:
+              id: codegen
+              layout:
+                grid:
+                  columns: 2
+              nodes:
+                - id: stage5-generate
+                  kind: component
+                  color: amber
+                  icon: "◈"
+                  title: "Stage 5: Generate"
+                  description: "Pretty-prints Rust source from syn AST (fast via quote or pretty via prettyplease)"
+                  tech: ["quote", "prettyplease"]
+                - id: stage6-compile
+                  kind: component
+                  color: amber
+                  icon: "◈"
+                  title: "Stage 6: Compile"
+                  description: "Delegates to rustc for type checking, borrow checking, LLVM codegen, and native binary output"
+                  tech: ["rustc", "cargo", "LLVM"]
+
+  # ── Flow labels to foundation & tooling ──────────────────────
+  - flow_labels:
+      items:
+        - "source tracking"
+        - "AST bridge"
+        - "REPL evaluation"
+
+  # ── Foundation & Tooling Layer ─────────────────────────────────
+  - tier:
+      id: foundation
+      label: "Foundation and Tooling"
+      container:
+        label: "supporting crates"
+        border: solid
+        label_color: teal
+        layers:
+          - tier:
+              id: foundation-core
+              layout:
+                grid:
+                  columns: 3
+              nodes:
+                - id: oxur-smap
+                  kind: component
+                  color: teal
+                  icon: "◆"
+                  title: "oxur-smap"
+                  description: "Multi-stage source mapping tracks Node IDs through Surface, Core, and Rust transformations for error translation"
+                  tech: ["NodeId", "SourcePos", "SourceMap"]
+                - id: oxur-ast
+                  kind: component
+                  color: teal
+                  icon: "◆"
+                  title: "oxur-ast (aster)"
+                  description: "Bidirectional Rust AST to S-expression conversion with round-trip verification (95% complete)"
+                  tech: ["syn", "S-expressions", "Builder"]
+                - id: oxur-pretty
+                  kind: component
+                  color: teal
+                  icon: "◆"
+                  title: "oxur-pretty (oxurfmt)"
+                  description: "Configurable S-expression formatter with multiple layout strategies"
+                  tech: ["Formatter", "Rules Engine"]
+
+          - connector:
+              style: dots
+
+          - tier:
+              id: repl-system
+              container:
+                label: "oxur-repl (interactive execution)"
+                border: dashed
+                label_color: amber
+                layers:
+                  - tier:
+                      id: repl-server
+                      layout:
+                        grid:
+                          columns: 3
+                      nodes:
+                        - id: repl-client
+                          kind: component
+                          color: amber
+                          icon: "◈"
+                          title: "REPL Client"
+                          description: "Thin protocol endpoint with terminal UI via reedline and in-process or TCP transport"
+                          tech: ["reedline", "postcard"]
+                        - id: repl-engine
+                          kind: component
+                          color: amber
+                          icon: "◈"
+                          title: "REPL Server"
+                          description: "Session manager with three-tier evaluation: calculator mode, cached compilation, and JIT subprocess"
+                          tech: ["SessionManager", "CachedCompiler"]
+                        - id: repl-subprocess
+                          kind: component
+                          color: amber
+                          icon: "◈"
+                          title: "Subprocess Executor"
+                          description: "Isolated process for user code execution enabling Ctrl-C interruption and crash recovery"
+                          tech: ["dlopen", "stdin/stdout"]
+
+          - connector:
+              style: dots
+
+          - tier:
+              id: cli-tools
+              layout:
+                grid:
+                  columns: 3
+              nodes:
+                - id: oxur-cli
+                  kind: component
+                  color: blue
+                  icon: "◈"
+                  title: "oxur-cli (oxur)"
+                  description: "Unified CLI with common I/O, colored output, progress tracking, and REPL integration"
+                  tech: ["clap", "colored", "tabled"]
+                - id: cargo-oxur
+                  kind: component
+                  color: blue
+                  icon: "◈"
+                  title: "cargo-oxur"
+                  description: "Cargo subcommand for building Oxur projects with caching and project scanning"
+                  tech: ["cargo metadata"]
+                - id: oxur-odm
+                  kind: component
+                  color: blue
+                  icon: "◈"
+                  title: "oxur-odm (odm)"
+                  description: "Design document manager with state lifecycle tracking, git integration, and indexing"
+                  tech: ["YAML", "Git", "State Machine"]
+
+  - flow_labels:
+      items:
+        - "Treebeard interpreter"
+        - "tiered storage"
+
+  # ── Runtime / Future Layer ─────────────────────────────────────
+  - tier:
+      id: runtime
+      label: "Runtime (Planned)"
+      layout:
+        grid:
+          columns: 3
+      nodes:
+        - id: treebeard
+          kind: system
+          color: red
+          icon: "⬡"
+          title: "Treebeard Runtime"
+          description: "Tree-walking interpreter for syn AST with LanguageFrontend trait, environment bindings, and rustc escape hatch"
+          tech: ["syn AST eval", "Value repr", "TCO"]
+        - id: repl-storage
+          kind: system
+          color: red
+          icon: "⬡"
+          title: "Tiered Storage"
+          description: "Four-tier storage: in-memory (DashMap), persistent KV (redb), SQLite for history search, filesystem archive"
+          tech: ["DashMap", "redb", "SQLite"]
+        - id: macro-system
+          kind: system
+          color: red
+          icon: "⬡"
+          title: "Macro System"
+          description: "Phased macro system: core macros (v1.0) with defmacro, quasiquote, gensym; user macros in v2.0"
+          tech: ["Hygienic", "Quote/Unquote"]
+
+  - connector:
+      style: line
+      label: "native binary output"
+
+  # ── Output ─────────────────────────────────────────────────────
+  - tier:
+      id: output
+      label: "Output"
+      layout: single
+      nodes:
+        - id: binary
+          kind: infrastructure
+          color: blue
+          icon: "⬡"
+          title: "Native Binary / Library"
+          description: "Compiled Rust binary with full type safety, memory safety, LLVM optimizations, and access to the entire Rust crate ecosystem"
+          tech: ["rustc", "LLVM", "Cargo ecosystem"]
+
+legend:
+  - color: green
+    label: "Frontend (oxur-lang)"
+  - color: purple
+    label: "Backend (oxur-comp)"
+  - color: amber
+    label: "Codegen and REPL"
+  - color: teal
+    label: "Foundation Crates"
+  - color: blue
+    label: "CLI Tooling and I/O"
+  - color: red
+    label: "Planned / In Design"
+
+edges:
+  - from: oxur-source
+    to: stage1-parse
+    kind: uses
+    label: "raw .oxr text"
+  - from: stage1-parse
+    to: stage2-expand
+    kind: uses
+    label: "Surface Forms"
+  - from: stage2-expand
+    to: stage3-lower
+    kind: uses
+    label: "Core Forms (stable IR)"
+  - from: stage3-lower
+    to: stage4-desx
+    kind: uses
+    label: "Oxur AST (S-expressions)"
+  - from: stage4-desx
+    to: stage5-generate
+    kind: uses
+    label: "syn AST (Rust structures)"
+  - from: stage5-generate
+    to: stage6-compile
+    kind: uses
+    label: "Rust source (.rs)"
+  - from: stage6-compile
+    to: binary
+    kind: uses
+    label: "rustc pipeline"
+  - from: stage1-parse
+    to: oxur-smap
+    kind: writes
+    label: "record surface nodes"
+  - from: stage2-expand
+    to: oxur-smap
+    kind: writes
+    label: "record expansions"
+  - from: stage3-lower
+    to: oxur-smap
+    kind: writes
+    label: "record lowering"
+  - from: stage4-desx
+    to: oxur-ast
+    kind: uses
+    label: "S-expr to syn builders"
+  - from: repl-client
+    to: repl-engine
+    kind: uses
+    label: "postcard protocol"
+  - from: repl-engine
+    to: repl-subprocess
+    kind: uses
+    label: "stdin/stdout commands"
+  - from: repl-engine
+    to: stage1-parse
+    kind: uses
+    label: "parse REPL input"
+  - from: repl-engine
+    to: oxur-smap
+    kind: reads
+    label: "error translation"
+  - from: oxur-cli
+    to: repl-client
+    kind: contains
+    label: "oxur repl command"
+  - from: treebeard
+    to: oxur-ast
+    kind: uses
+    label: "syn AST evaluation"
+  - from: repl-engine
+    to: treebeard
+    kind: uses
+    label: "calculator tier"

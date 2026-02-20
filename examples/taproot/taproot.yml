@@ -1,0 +1,355 @@
+# Taproot — System Architecture Diagram
+# dendryform YAML format
+#
+# This file declares the full visual architecture diagram for Taproot.
+# It should produce HTML identical to architecture-diagram.html.
+
+diagram:
+  title:
+    text: "system architecture"
+    accent: "taproot"
+  subtitle: "natural language analytics over BigQuery via MCP"
+  theme: dark
+
+# Ordered sequence of visual layers (tiers, connectors, flow labels)
+layers:
+
+  # ── Tier 1: Client ──────────────────────────────────────────────
+  - tier:
+      id: client-layer
+      label: "Client Layer"
+      layout: single
+      nodes:
+        - id: claude-desktop
+          kind: system
+          color: blue
+          icon: "◇"
+          title: "Claude Desktop / claude.ai"
+          description: "MCP client — handles OAuth dance, sends tool calls, renders responses"
+          tech:
+            - "MCP Protocol"
+            - "OAuth2 PKCE"
+            - "Streamable HTTP"
+
+  # ── Connector: Client → Server ──────────────────────────────────
+  - connector:
+      style: line
+      label: "Streamable HTTP + SSE"
+
+  # ── Tier 2: Server Container ────────────────────────────────────
+  - tier:
+      id: server
+      container:
+        label: "taproot server · cloud run"
+        border: solid
+        label_color: green
+        layers:
+
+          # ── Sub-tier: Edge ──────────────────────────────────────
+          - tier:
+              id: edge
+              label: "Edge"
+              layout:
+                grid:
+                  columns: 4
+              nodes:
+                - id: auth
+                  kind: component
+                  color: green
+                  icon: "◈"
+                  title: "Auth"
+                  description: "Google JWT validation, domain gating"
+                  tech:
+                    - "axum middleware"
+                - id: transport
+                  kind: component
+                  color: green
+                  icon: "◈"
+                  title: "Transport"
+                  description: "MCP server, tool dispatch, SSE streams"
+                  tech:
+                    - "rmcp 0.8"
+                - id: intercept
+                  kind: component
+                  color: green
+                  icon: "◈"
+                  title: "Intercept"
+                  description: "Mechanical query capture to Redis"
+                  tech:
+                    - "axum middleware"
+                - id: config
+                  kind: component
+                  color: green
+                  icon: "◈"
+                  title: "Config"
+                  description: "Runtime settings, cost budgets, feature flags"
+                  tech:
+                    - "confyg"
+                    - "twyg"
+
+          # ── Internal connector (dots) ───────────────────────────
+          - connector:
+              style: dots
+
+          # ── Sub-tier: Tools ─────────────────────────────────────
+          - tier:
+              id: tools
+              label: "Tools — 20 MCP tools exposed to Claude"
+              layout:
+                grid:
+                  columns: 4
+              nodes:
+                - id: bq-tools
+                  kind: component
+                  color: amber
+                  icon: "▣"
+                  title: "BQ Tools"
+                  description: "execute_query, explain_query, describe_table, get_sample_rows, list_datasets"
+                - id: knowledge-tools
+                  kind: component
+                  color: amber
+                  icon: "▣"
+                  title: "Knowledge"
+                  description: "search_domain, semantic_search, get_concept, list_concepts"
+                - id: graph-tools
+                  kind: component
+                  color: amber
+                  icon: "▣"
+                  title: "Graph"
+                  description: "query_knowledge_graph, related_concepts, find_path, neighborhood"
+                - id: user-model-tools
+                  kind: component
+                  color: amber
+                  icon: "▣"
+                  title: "User Model"
+                  description: "get_user_profile, search_user_model, get_query_history, get_daily_cost"
+
+          # ── Internal connector (dots) ───────────────────────────
+          - connector:
+              style: dots
+
+          # ── Sub-tier: Intelligence (with knowledge container) ───
+          - tier:
+              id: intelligence
+              label: "Intelligence"
+              container:
+                label: "knowledge engine"
+                border: dashed
+                label_color: purple
+                layers:
+                  - tier:
+                      id: ke-search
+                      layout:
+                        grid:
+                          columns: 3
+                      nodes:
+                        - id: graph-db
+                          kind: component
+                          color: purple
+                          icon: "◆"
+                          title: "Graph DB"
+                          description: "153 concepts, 1,232 relationships"
+                          tech:
+                            - "petgraph"
+                        - id: full-text-search
+                          kind: component
+                          color: purple
+                          icon: "◆"
+                          title: "Full-Text Search"
+                          description: "Ranked keyword search over concept corpus"
+                          tech:
+                            - "tantivy"
+                        - id: vector-search
+                          kind: component
+                          color: purple
+                          icon: "◆"
+                          title: "Vector Search"
+                          description: "Semantic similarity, hybrid mode"
+                          tech:
+                            - "bge-small-en-v1.5"
+                  - tier:
+                      id: ke-providers
+                      layout:
+                        grid:
+                          columns: 2
+                      nodes:
+                        - id: card-loader
+                          kind: component
+                          color: purple
+                          icon: "◆"
+                          title: "Card Loader"
+                          description: "Domain + query-derived concept cards with access_type/access_path"
+                          tech:
+                            - "fabryk"
+                        - id: content-provider
+                          kind: component
+                          color: purple
+                          icon: "◆"
+                          title: "Content Provider"
+                          description: "In-memory provider, incremental index updates"
+                          tech:
+                            - "InMemoryProvider"
+
+          # ── Sub-tier: Infrastructure Clients ────────────────────
+          - tier:
+              id: infrastructure
+              label: "Infrastructure Clients"
+              layout:
+                grid:
+                  columns: 3
+              nodes:
+                - id: bq-client
+                  kind: component
+                  color: red
+                  icon: "◉"
+                  title: "BigQuery Client"
+                  description: "Read-only queries, cost estimation, scan budgets"
+                  tech:
+                    - "gcp-bigquery-client"
+                - id: redis-client
+                  kind: component
+                  color: teal
+                  icon: "◉"
+                  title: "Redis Client"
+                  description: "Query history, daily cost tracking, user model cards"
+                  tech:
+                    - "redis-rs"
+                - id: user-model-engine
+                  kind: component
+                  color: teal
+                  icon: "◉"
+                  title: "User Model Engine"
+                  description: "Pattern analysis, mental model generation, profile synthesis"
+                  tech:
+                    - "async pipeline"
+
+  # ── Flow Labels: Server → External ──────────────────────────────
+  - flow_labels:
+      items:
+        - "SQL queries"
+        - "history + cost"
+        - "concept cards"
+
+  # ── Tier 3: External Services ───────────────────────────────────
+  - tier:
+      id: external-services
+      label: "External Services"
+      layout:
+        grid:
+          columns: 3
+      nodes:
+        - id: bigquery
+          kind: infrastructure
+          color: red
+          icon: "⬡"
+          title: "BigQuery"
+          description: "banyan · banyan_intermediate · banyan_metrics — 250M+ rows, partitioned by row_created_ts"
+          tech:
+            - "banyan-analytics-prod"
+        - id: redis-valkey
+          kind: infrastructure
+          color: teal
+          icon: "⬡"
+          title: "Redis / Valkey"
+          description: "taproot:history:{email}:{ts} · taproot:cost:{email}:{date}"
+          tech:
+            - "GCP Memorystore"
+        - id: google-oauth2
+          kind: infrastructure
+          color: blue
+          icon: "⬡"
+          title: "Google OAuth2"
+          description: "Identity tokens, Banyan domain validation"
+          tech:
+            - "oauth2.googleapis.com"
+
+# Legend — color key for the diagram
+legend:
+  - color: blue
+    label: "Client / Auth"
+  - color: green
+    label: "Server Edge"
+  - color: amber
+    label: "MCP Tools"
+  - color: purple
+    label: "Knowledge Engine"
+  - color: red
+    label: "BigQuery"
+  - color: teal
+    label: "Redis / Persistence"
+
+# Semantic edges — relationships between nodes
+# (Used for Structurizr/Mermaid export; connectors handle visual rendering)
+edges:
+  - from: claude-desktop
+    to: auth
+    kind: uses
+    label: "OAuth2 Bearer tokens"
+  - from: claude-desktop
+    to: transport
+    kind: uses
+    label: "MCP tool calls via Streamable HTTP"
+  - from: transport
+    to: bq-tools
+    kind: uses
+    label: "tool dispatch"
+  - from: transport
+    to: knowledge-tools
+    kind: uses
+    label: "tool dispatch"
+  - from: transport
+    to: graph-tools
+    kind: uses
+    label: "tool dispatch"
+  - from: transport
+    to: user-model-tools
+    kind: uses
+    label: "tool dispatch"
+  - from: bq-tools
+    to: bq-client
+    kind: uses
+    label: "SQL execution"
+  - from: knowledge-tools
+    to: full-text-search
+    kind: reads
+    label: "keyword search"
+  - from: knowledge-tools
+    to: vector-search
+    kind: reads
+    label: "semantic search"
+  - from: knowledge-tools
+    to: graph-db
+    kind: reads
+    label: "graph queries"
+  - from: graph-tools
+    to: graph-db
+    kind: reads
+    label: "traversals"
+  - from: user-model-tools
+    to: user-model-engine
+    kind: uses
+    label: "profile + history"
+  - from: user-model-tools
+    to: redis-client
+    kind: reads
+    label: "query history"
+  - from: card-loader
+    to: content-provider
+    kind: writes
+    label: "concept cards"
+  - from: bq-client
+    to: bigquery
+    kind: uses
+    label: "SQL queries"
+  - from: redis-client
+    to: redis-valkey
+    kind: uses
+    label: "history + cost data"
+  - from: intercept
+    to: redis-client
+    kind: writes
+    label: "query capture"
+  - from: auth
+    to: google-oauth2
+    kind: uses
+    label: "JWKS validation"

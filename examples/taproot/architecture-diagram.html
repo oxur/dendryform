@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taproot — System Architecture</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0a0e14;
+    --bg-card: #111820;
+    --bg-card-hover: #161e29;
+    --border: #1e2a3a;
+    --border-highlight: #2a3f5a;
+    --text: #c4cdd9;
+    --text-dim: #5a6a7a;
+    --text-bright: #e8edf3;
+    --accent-green: #3ddc84;
+    --accent-green-dim: rgba(61, 220, 132, 0.12);
+    --accent-blue: #4fc3f7;
+    --accent-blue-dim: rgba(79, 195, 247, 0.10);
+    --accent-amber: #ffb74d;
+    --accent-amber-dim: rgba(255, 183, 77, 0.10);
+    --accent-purple: #b39ddb;
+    --accent-purple-dim: rgba(179, 157, 219, 0.10);
+    --accent-red: #ef5350;
+    --accent-red-dim: rgba(239, 83, 80, 0.10);
+    --accent-teal: #4dd0e1;
+    --accent-teal-dim: rgba(77, 208, 225, 0.10);
+    --radius: 10px;
+    --radius-sm: 6px;
+    --shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .canvas {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 32px 64px;
+    position: relative;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 56px;
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  .header h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 28px;
+    color: var(--text-bright);
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+
+  .header h1 span {
+    color: var(--accent-green);
+  }
+
+  .header .subtitle {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 300;
+  }
+
+  /* Tier labels */
+  .tier {
+    position: relative;
+    margin-bottom: 20px;
+    animation: slideUp 0.5s ease-out both;
+  }
+
+  .tier:nth-child(2) { animation-delay: 0.1s; }
+  .tier:nth-child(3) { animation-delay: 0.2s; }
+  .tier:nth-child(4) { animation-delay: 0.3s; }
+  .tier:nth-child(5) { animation-delay: 0.4s; }
+  .tier:nth-child(6) { animation-delay: 0.5s; }
+
+  .tier-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+    padding-left: 4px;
+  }
+
+  /* Connector lines */
+  .connector {
+    display: flex;
+    justify-content: center;
+    margin: 4px 0;
+    position: relative;
+  }
+
+  .connector .line {
+    width: 2px;
+    height: 28px;
+    background: linear-gradient(to bottom, var(--border-highlight), var(--border));
+    position: relative;
+  }
+
+  .connector .line::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid var(--border);
+  }
+
+  .connector .protocol-label {
+    position: absolute;
+    right: calc(50% + 16px);
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  /* Node blocks */
+  .node {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    transition: all 0.25s ease;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .node:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-highlight);
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+  }
+
+  .node::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+
+  .node .node-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--text-bright);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .node .node-title .icon {
+    font-size: 15px;
+    line-height: 1;
+  }
+
+  .node .node-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .node .node-tech {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .node .node-tech span {
+    background: rgba(255,255,255,0.04);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* Color variants */
+  .node.green::before { background: var(--accent-green); }
+  .node.green:hover { border-color: rgba(61, 220, 132, 0.3); }
+  .node.green .node-title .icon { color: var(--accent-green); }
+
+  .node.blue::before { background: var(--accent-blue); }
+  .node.blue:hover { border-color: rgba(79, 195, 247, 0.3); }
+  .node.blue .node-title .icon { color: var(--accent-blue); }
+
+  .node.amber::before { background: var(--accent-amber); }
+  .node.amber:hover { border-color: rgba(255, 183, 77, 0.3); }
+  .node.amber .node-title .icon { color: var(--accent-amber); }
+
+  .node.purple::before { background: var(--accent-purple); }
+  .node.purple:hover { border-color: rgba(179, 157, 219, 0.3); }
+  .node.purple .node-title .icon { color: var(--accent-purple); }
+
+  .node.red::before { background: var(--accent-red); }
+  .node.red:hover { border-color: rgba(239, 83, 80, 0.3); }
+  .node.red .node-title .icon { color: var(--accent-red); }
+
+  .node.teal::before { background: var(--accent-teal); }
+  .node.teal:hover { border-color: rgba(77, 208, 225, 0.3); }
+  .node.teal .node-title .icon { color: var(--accent-teal); }
+
+  /* Client tier — single wide node */
+  .client-node {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .client-node .node-title {
+    justify-content: center;
+  }
+
+  /* Server tier — the big container */
+  .server-container {
+    background: rgba(17, 24, 32, 0.5);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    position: relative;
+  }
+
+  .server-container::before {
+    content: 'taproot server · cloud run';
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent-green);
+    background: var(--bg);
+    padding: 0 10px;
+  }
+
+  /* Grids */
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  /* Knowledge engine sub-container */
+  .knowledge-container {
+    background: rgba(179, 157, 219, 0.04);
+    border: 1px dashed rgba(179, 157, 219, 0.2);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .knowledge-container::before {
+    content: 'knowledge engine';
+    position: absolute;
+    top: -9px;
+    left: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent-purple);
+    background: var(--bg-card);
+    padding: 0 8px;
+  }
+
+  .knowledge-container .grid-3 .node {
+    padding: 12px 14px;
+  }
+
+  /* Internal connector */
+  .internal-connector {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+  }
+
+  .internal-connector .dots {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .internal-connector .dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--border-highlight);
+  }
+
+  /* Data flow lines between infra tier */
+  .flow-labels {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin: 8px 0 4px;
+  }
+
+  .flow-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .flow-label .arrow {
+    color: var(--border-highlight);
+  }
+
+  /* Footer legend */
+  .legend {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  .legend-item .swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+  }
+
+  .swatch.green { background: var(--accent-green); }
+  .swatch.blue { background: var(--accent-blue); }
+  .swatch.amber { background: var(--accent-amber); }
+  .swatch.purple { background: var(--accent-purple); }
+  .swatch.red { background: var(--accent-red); }
+  .swatch.teal { background: var(--accent-teal); }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Responsive */
+  @media (max-width: 800px) {
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: 1fr; }
+    .canvas { padding: 24px 16px; }
+    .flow-labels { gap: 16px; flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <!-- Header -->
+  <div class="header">
+    <h1><span>taproot</span> · system architecture</h1>
+    <div class="subtitle">natural language analytics over BigQuery via MCP</div>
+  </div>
+
+  <!-- Tier 1: Client -->
+  <div class="tier">
+    <div class="tier-label">Client Layer</div>
+    <div class="node blue client-node">
+      <div class="node-title"><span class="icon">◇</span> Claude Desktop / claude.ai</div>
+      <div class="node-desc">MCP client — handles OAuth dance, sends tool calls, renders responses</div>
+      <div class="node-tech"><span>MCP Protocol</span><span>OAuth2 PKCE</span><span>Streamable HTTP</span></div>
+    </div>
+  </div>
+
+  <!-- Connector -->
+  <div class="connector">
+    <div class="line"></div>
+    <div class="protocol-label">Streamable HTTP + SSE</div>
+  </div>
+
+  <!-- Tier 2: Server Container -->
+  <div class="tier">
+    <div class="server-container">
+
+      <!-- Edge: Auth + Config + Transport -->
+      <div class="tier-label" style="margin-top: 4px;">Edge</div>
+      <div class="grid-4">
+        <div class="node green">
+          <div class="node-title"><span class="icon">◈</span> Auth</div>
+          <div class="node-desc">Google JWT validation, domain gating</div>
+          <div class="node-tech"><span>axum middleware</span></div>
+        </div>
+        <div class="node green">
+          <div class="node-title"><span class="icon">◈</span> Transport</div>
+          <div class="node-desc">MCP server, tool dispatch, SSE streams</div>
+          <div class="node-tech"><span>rmcp 0.8</span></div>
+        </div>
+        <div class="node green">
+          <div class="node-title"><span class="icon">◈</span> Intercept</div>
+          <div class="node-desc">Mechanical query capture to Redis</div>
+          <div class="node-tech"><span>axum middleware</span></div>
+        </div>
+        <div class="node green">
+          <div class="node-title"><span class="icon">◈</span> Config</div>
+          <div class="node-desc">Runtime settings, cost budgets, feature flags</div>
+          <div class="node-tech"><span>confyg</span><span>twyg</span></div>
+        </div>
+      </div>
+
+      <!-- Internal flow -->
+      <div class="internal-connector">
+        <div class="dots">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div>
+        </div>
+      </div>
+
+      <!-- Tools layer -->
+      <div class="tier-label">Tools — 20 MCP tools exposed to Claude</div>
+      <div class="grid-4">
+        <div class="node amber">
+          <div class="node-title"><span class="icon">▣</span> BQ Tools</div>
+          <div class="node-desc">execute_query, explain_query, describe_table, get_sample_rows, list_datasets</div>
+        </div>
+        <div class="node amber">
+          <div class="node-title"><span class="icon">▣</span> Knowledge</div>
+          <div class="node-desc">search_domain, semantic_search, get_concept, list_concepts</div>
+        </div>
+        <div class="node amber">
+          <div class="node-title"><span class="icon">▣</span> Graph</div>
+          <div class="node-desc">query_knowledge_graph, related_concepts, find_path, neighborhood</div>
+        </div>
+        <div class="node amber">
+          <div class="node-title"><span class="icon">▣</span> User Model</div>
+          <div class="node-desc">get_user_profile, search_user_model, get_query_history, get_daily_cost</div>
+        </div>
+      </div>
+
+      <!-- Internal flow -->
+      <div class="internal-connector">
+        <div class="dots">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div>
+        </div>
+      </div>
+
+      <!-- Knowledge Engine -->
+      <div class="tier-label">Intelligence</div>
+      <div class="knowledge-container">
+        <div class="grid-3" style="margin-bottom: 12px;">
+          <div class="node purple">
+            <div class="node-title"><span class="icon">◆</span> Graph DB</div>
+            <div class="node-desc">153 concepts, 1,232 relationships</div>
+            <div class="node-tech"><span>petgraph</span></div>
+          </div>
+          <div class="node purple">
+            <div class="node-title"><span class="icon">◆</span> Full-Text Search</div>
+            <div class="node-desc">Ranked keyword search over concept corpus</div>
+            <div class="node-tech"><span>tantivy</span></div>
+          </div>
+          <div class="node purple">
+            <div class="node-title"><span class="icon">◆</span> Vector Search</div>
+            <div class="node-desc">Semantic similarity, hybrid mode</div>
+            <div class="node-tech"><span>bge-small-en-v1.5</span></div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="node purple">
+            <div class="node-title"><span class="icon">◆</span> Card Loader</div>
+            <div class="node-desc">Domain + query-derived concept cards with access_type/access_path</div>
+            <div class="node-tech"><span>fabryk</span></div>
+          </div>
+          <div class="node purple">
+            <div class="node-title"><span class="icon">◆</span> Content Provider</div>
+            <div class="node-desc">In-memory provider, incremental index updates</div>
+            <div class="node-tech"><span>InMemoryProvider</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Infrastructure clients -->
+      <div class="tier-label">Infrastructure Clients</div>
+      <div class="grid-3">
+        <div class="node red">
+          <div class="node-title"><span class="icon">◉</span> BigQuery Client</div>
+          <div class="node-desc">Read-only queries, cost estimation, scan budgets</div>
+          <div class="node-tech"><span>gcp-bigquery-client</span></div>
+        </div>
+        <div class="node teal">
+          <div class="node-title"><span class="icon">◉</span> Redis Client</div>
+          <div class="node-desc">Query history, daily cost tracking, user model cards</div>
+          <div class="node-tech"><span>redis-rs</span></div>
+        </div>
+        <div class="node teal">
+          <div class="node-title"><span class="icon">◉</span> User Model Engine</div>
+          <div class="node-desc">Pattern analysis, mental model generation, profile synthesis</div>
+          <div class="node-tech"><span>async pipeline</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Connector to external services -->
+  <div class="flow-labels">
+    <div class="flow-label"><span class="arrow">↓</span> SQL queries</div>
+    <div class="flow-label"><span class="arrow">↓</span> history + cost</div>
+    <div class="flow-label"><span class="arrow">↓</span> concept cards</div>
+  </div>
+
+  <!-- Tier 3: External Services -->
+  <div class="tier">
+    <div class="tier-label">External Services</div>
+    <div class="grid-3">
+      <div class="node red">
+        <div class="node-title"><span class="icon">⬡</span> BigQuery</div>
+        <div class="node-desc">banyan · banyan_intermediate · banyan_metrics — 250M+ rows, partitioned by row_created_ts</div>
+        <div class="node-tech"><span>banyan-analytics-prod</span></div>
+      </div>
+      <div class="node teal">
+        <div class="node-title"><span class="icon">⬡</span> Redis / Valkey</div>
+        <div class="node-desc">taproot:history:{email}:{ts} · taproot:cost:{email}:{date}</div>
+        <div class="node-tech"><span>GCP Memorystore</span></div>
+      </div>
+      <div class="node blue">
+        <div class="node-title"><span class="icon">⬡</span> Google OAuth2</div>
+        <div class="node-desc">Identity tokens, Banyan domain validation</div>
+        <div class="node-tech"><span>oauth2.googleapis.com</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><div class="swatch blue"></div> Client / Auth</div>
+    <div class="legend-item"><div class="swatch green"></div> Server Edge</div>
+    <div class="legend-item"><div class="swatch amber"></div> MCP Tools</div>
+    <div class="legend-item"><div class="swatch purple"></div> Knowledge Engine</div>
+    <div class="legend-item"><div class="swatch red"></div> BigQuery</div>
+    <div class="legend-item"><div class="swatch teal"></div> Redis / Persistence</div>
+  </div>
+
+</div>
+</body>
+</html>
